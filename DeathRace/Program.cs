@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DeathRace
+namespace Pedestrian
 {
     /// <summary>
     /// The main class.
@@ -13,8 +13,10 @@ namespace DeathRace
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new PedestrianGame())
+            {
                 game.Run();
+            }
         }
     }
 }

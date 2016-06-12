@@ -38,9 +38,18 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Game1.cs" />
+    <Compile Include="AnimatedTexture.cs" />
+    <Compile Include="Border.cs" />
+    <Compile Include="DashedLine.cs" />
+    <Compile Include="IEntity.cs" />
+    <Compile Include="PedestrianEnemy.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="PedestrianGame.cs" />
+    <Compile Include="PlayerCar.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scene1.cs" />
+    <Compile Include="MathUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenTK">
