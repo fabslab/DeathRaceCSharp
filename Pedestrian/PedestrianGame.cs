@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
 
 namespace Pedestrian
 {
@@ -20,7 +19,7 @@ namespace Pedestrian
         SpriteBatch spriteBatch;
         RenderTarget2D renderTarget;
         Rectangle destinationRectangle;
-        Scene1 scene;
+        Scene scene;
         double targetUpdateTime = 1 / 60d * 1000;
         double timeSinceUpdate = 0;
 
@@ -65,7 +64,7 @@ namespace Pedestrian
         /// </summary>
         protected override void LoadContent()
         {
-            scene = new Scene1();
+            scene = new Scene();
             scene.Load();
         }
 

@@ -8,16 +8,19 @@ namespace Pedestrian
     {
         Texture2D texture;
         Vector2 origin;
+        float snappedRotation;
 
+        public bool IsCollided { get; set; } = false;
+        public int Score { get; set; } = 0;
         public Color Color { get; set; } = Color.White;
         public Vector2 Position { get; set; } = Vector2.Zero;
         public PlayerInput Input { get; set; } = new KeyboardInput();
         // Assume sprite was drawn pointing up for default direction
-        public Vector2 InitialDirection { get; set; } = -Vector2.UnitY;
+        public Vector2 InitialDirection { get; set; } = DirectionMap.DIRECTION_VECTOR[Direction.Up];
         // Rotation from InitialDirection vector in radians
         public float Rotation { get; set; } = 0;
         // Maximum turn value in one frame in radians
-        public float MaxTurnAngle { get; set; } = MathHelper.PiOver4 / 8;
+        public float MaxTurnAngle { get; set; } = MathHelper.PiOver4 / 6;
         public float RotationSnapValue { get; set; } = MathHelper.PiOver4;
         // Max number of pixels to move in one movement
         public float MaxSpeed { get; set; } = 1f;
@@ -31,11 +34,28 @@ namespace Pedestrian
                 origin = new Vector2(value.Width / 2, value.Height / 2);
             }
         }
+        public Rectangle Bounds
+        {
+            get
+            {
+                return new Rectangle(
+                    (int)Position.X - Texture.Width / 2,
+                    (int)Position.Y - Texture.Height / 2,
+                    Texture.Width,
+                    Texture.Height
+                );
+            }
+        }
 
         public PlayerCar(Vector2 position)
         {
             Position = position;
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car01");
+        }
+
+        public void Crash()
+        {
+            IsCollided = true;
         }
 
         public void Update(GameTime time)
@@ -56,7 +76,7 @@ namespace Pedestrian
             else if (speed == 0) { turnRadians /= 2; }
 
             Rotation += turnRadians;
-            var snappedRotation = MathUtil.Snap(Rotation, RotationSnapValue);
+            snappedRotation = MathUtil.Snap(Rotation, RotationSnapValue);
             // Reset rotation back to snapped value if player stops turning
             if (turnRadians == 0) { Rotation = snappedRotation; }
 
@@ -69,7 +89,6 @@ namespace Pedestrian
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            var snappedRotation = MathUtil.Snap(Rotation, RotationSnapValue);
             spriteBatch.Draw(
                 texture: Texture,
                 origin: origin,

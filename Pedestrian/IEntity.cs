@@ -5,6 +5,7 @@ namespace Pedestrian
 {
     public interface IEntity
     {
+        Rectangle Bounds { get; }
         void Update(GameTime gameTime);
         void Draw(GameTime gameTime, SpriteBatch spriteBatch);
     }
