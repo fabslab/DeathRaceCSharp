@@ -7,8 +7,16 @@ namespace Pedestrian
     public class Scene
     {
         List<IEntity> entities = new List<IEntity>();
-        List<PedestrianEnemy> enemies = new List<PedestrianEnemy>();
-        List<PlayerCar> players = new List<PlayerCar>();
+        List<Enemy> enemies = new List<Enemy>();
+        List<Player> players = new List<Player>();
+        List<Tombstone> tombstones = new List<Tombstone>();
+        Rectangle borderRectangle = new Rectangle(
+            0,
+            scoreBoardHeight,
+            PedestrianGame.VIRTUAL_WIDTH,
+            PedestrianGame.VIRTUAL_HEIGHT - scoreBoardHeight - 1
+        );
+
 
         SpriteBatch spriteBatch;
         public const int sidewalkWidth = 16;
@@ -16,26 +24,28 @@ namespace Pedestrian
         public const int borderWidth = 1;
 
         public int Width { get { return PedestrianGame.VIRTUAL_WIDTH; } }
-        public int Height { get { return PedestrianGame.VIRTUAL_HEIGHT; } }
-        public static Rectangle Bounds { get; private set; }
-            = new Rectangle(
-                0,
-                scoreBoardHeight + borderWidth,
-                PedestrianGame.VIRTUAL_WIDTH,
-                PedestrianGame.VIRTUAL_HEIGHT - scoreBoardHeight - borderWidth - 1
-              );
+        public int Height { get { return PedestrianGame.VIRTUAL_HEIGHT - scoreBoardHeight - 1; } }
 
+        // Rectangle for play area - area inside border
+        public static Rectangle Bounds { get; private set; }
 
         public void Load()
         {
+            Bounds = new Rectangle(
+                borderRectangle.X + borderWidth,
+                borderRectangle.Y + borderWidth,
+                borderRectangle.Width - 2 * borderWidth,
+                borderRectangle.Height - 2 * borderWidth
+            );
+
             spriteBatch = new SpriteBatch(PedestrianGame.Instance.GraphicsDevice);
 
             // Initialize the players
             var player1Position = new Vector2((int)(Width * 0.25), (int)(Height * 0.8));
-            var player1 = new PlayerCar(player1Position);
+            var player1 = new Player(player1Position);
 
             var player2Position = new Vector2((int)(Width * 0.75), (int)(Height * 0.8));
-            var player2 = new PlayerCar(player2Position)
+            var player2 = new Player(player2Position)
             {
                 Color = Color.DimGray,
                 Input = new KeyboardInput(KeyboardInput.INPUT_MAP_SECONDARY)
@@ -46,13 +56,13 @@ namespace Pedestrian
                 (int)(sidewalkWidth / 2 + borderWidth),
                 (int)(Height * 0.2 + scoreBoardHeight + borderWidth)
             );
-            var enemy1 = new PedestrianEnemy(enemy1Position);
+            var enemy1 = new Enemy(enemy1Position);
 
             var enemy2Position = new Vector2(
                 (int)(Width - borderWidth - sidewalkWidth / 2),
                 (int)(Height * 0.2 + scoreBoardHeight + borderWidth)
             );
-            var enemy2 = new PedestrianEnemy(enemy2Position);
+            var enemy2 = new Enemy(enemy2Position);
 
             players.Add(player1);
             players.Add(player2);
@@ -72,7 +82,7 @@ namespace Pedestrian
             {
                 entity.Update(gameTime);
             }
-            Collision.Update(players, enemies);
+            Collision.Update(players, enemies, tombstones);
         }
 
         public void Draw(GameTime gameTime)
@@ -81,20 +91,26 @@ namespace Pedestrian
 
             Border.Draw(
                 spriteBatch,
-                Bounds,
+                borderRectangle,
                 Color.White,
                 borderWidth
             );
 
-            var dashedLineLength = Height - scoreBoardHeight - borderWidth - 2;
-            var sidewalkLine1Position = new Vector2(borderWidth + sidewalkWidth, scoreBoardHeight + borderWidth);
-            var sidewalkLine2Position = new Vector2(Width - borderWidth - sidewalkWidth - 1, scoreBoardHeight + borderWidth);
+            // Space of 2 pixels between each dash in line
+            var dashedLineLength = Height - borderWidth - 2;
+
+            var sidewalkLine1Position = new Vector2(sidewalkWidth, scoreBoardHeight + borderWidth);
+            var sidewalkLine2Position = new Vector2(Width - sidewalkWidth - borderWidth, scoreBoardHeight + borderWidth);
             DashedLine.Draw(spriteBatch, sidewalkLine1Position, dashedLineLength, Color.White);
             DashedLine.Draw(spriteBatch, sidewalkLine2Position, dashedLineLength, Color.White);
 
             foreach (var entity in entities)
             {
                 entity.Draw(gameTime, spriteBatch);
+                if (PedestrianGame.DEBUG)
+                {
+                    entity.DrawDebug(gameTime, spriteBatch);
+                }
             }
 
             spriteBatch.End();

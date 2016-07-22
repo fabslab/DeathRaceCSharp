@@ -12,6 +12,7 @@ namespace Pedestrian
         float totalElapsed;
         Vector2 origin;
 
+        public Color Color { get; set; } = Color.White;
         public int FrameWidth { get; set; }
         public int FrameHeight {
             get
@@ -56,7 +57,7 @@ namespace Pedestrian
                 texture: texture, 
                 position: screenPos, 
                 sourceRectangle: sourcerect, 
-                color: Color.White,
+                color: Color,
                 origin: origin
             );
         }

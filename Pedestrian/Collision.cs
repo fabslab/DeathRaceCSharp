@@ -14,40 +14,37 @@ namespace Pedestrian
         /// <returns></returns>
         public static IEnumerable<IEntity> GetCollisions(IEntity entity, IEnumerable<IEntity> collisionEntities)
         {
-            return collisionEntities.Where(c => c != entity && c.Bounds.Intersects(entity.Bounds));
+            if (entity.Collider == null)
+            {
+                return Enumerable.Empty<IEntity>();
+            }
+
+            return collisionEntities.Where(c =>
+                    c != entity &&
+                    c.Collider != null &&
+                    c.Collider.Bounds.Intersects(entity.Collider.Bounds)
+                );
         }
 
         public static bool IsColliding(IEntity entity1, IEntity entity2)
         {
-            return entity1 != entity2 && entity1.Bounds.Intersects(entity2.Bounds);
+            return 
+                entity1 != entity2 && 
+                entity1.Collider != null &&
+                entity2.Collider != null &&
+                entity1.Collider.Bounds.Intersects(entity2.Collider.Bounds);
         }
 
-        public static void Update(IEnumerable<PlayerCar> players, IEnumerable<PedestrianEnemy> enemies)
+        public static void Update(
+                IEnumerable<Player> players, 
+                IEnumerable<Enemy> enemies, 
+                IEnumerable<Tombstone> tombstones
+            )
         {
             foreach (var player in players)
             {
                 var playerCollisions = GetCollisions(player, players);
                 var enemyCollisions = GetCollisions(player, enemies);
-
-                if (!playerCollisions.Any() && !enemyCollisions.Any())
-                {
-                    player.IsCollided = false;
-                }
-                else
-                {
-                    foreach (PedestrianEnemy enemy in enemyCollisions)
-                    {
-                        enemy.Kill();
-                        // TODO: Create tombstone
-                        player.Score++;
-                    }
-
-                    if (!player.IsCollided)
-                    {
-                        player.Crash();
-                    }
-                    player.IsCollided = true;
-                }
             }
         }
     }

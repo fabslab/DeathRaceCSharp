@@ -11,6 +11,7 @@ namespace Pedestrian
     public class PedestrianGame : Game
     {
         public static PedestrianGame Instance { get; private set; }
+        public const bool DEBUG = true;
         public const int VIRTUAL_WIDTH = 240;
         public const int VIRTUAL_HEIGHT = 180;
         public const float PREFERRED_ASPECT_RATIO = VIRTUAL_WIDTH / (float)VIRTUAL_HEIGHT;

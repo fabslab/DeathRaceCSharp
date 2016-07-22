@@ -1,17 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Pedestrian
 {
-    public class PlayerCar : IEntity
+    public class Player : IEntity
     {
         Texture2D texture;
         Vector2 origin;
         float snappedRotation;
+        
+        public int Score { get; private set; } = 0;
 
-        public bool IsCollided { get; set; } = false;
-        public int Score { get; set; } = 0;
         public Color Color { get; set; } = Color.White;
         public Vector2 Position { get; set; } = Vector2.Zero;
         public PlayerInput Input { get; set; } = new KeyboardInput();
@@ -34,28 +36,45 @@ namespace Pedestrian
                 origin = new Vector2(value.Width / 2, value.Height / 2);
             }
         }
-        public Rectangle Bounds
-        {
-            get
-            {
-                return new Rectangle(
-                    (int)Position.X - Texture.Width / 2,
-                    (int)Position.Y - Texture.Height / 2,
-                    Texture.Width,
-                    Texture.Height
-                );
-            }
-        }
+        public Collider Collider { get; }
 
-        public PlayerCar(Vector2 position)
+        public Player(Vector2 position)
         {
             Position = position;
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car01");
+
+            Collider = new Collider
+            {
+                Position = Position,
+                Width = Texture.Width,
+                Height = Texture.Height
+            };
         }
 
-        public void Crash()
+        public void OnCollisionEnter(IEnumerable<IEntity> entities)
         {
-            IsCollided = true;
+            foreach (var entity in entities)
+            {
+                if (entity is Enemy)
+                {
+                    OnEnemyKill();
+                }
+            }
+
+            if (entities.Any())
+            {
+                Crash();
+            }
+        }
+
+        private void OnEnemyKill()
+        {
+            Score++;
+        }
+
+        private void Crash()
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(GameTime time)
@@ -85,6 +104,7 @@ namespace Pedestrian
             var movement = speed * movementDirection;
 
             Position += movement;
+            Collider.Position = Position;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -96,6 +116,11 @@ namespace Pedestrian
                 rotation: snappedRotation,
                 color: Color
             );
+        }
+
+        public void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            Collider.Draw(spriteBatch);
         }
     }
 }
