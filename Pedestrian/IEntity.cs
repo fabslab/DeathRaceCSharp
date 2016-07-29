@@ -7,7 +7,8 @@ namespace Pedestrian
     public interface IEntity
     {
         Collider Collider { get; }
-        void OnCollisionEnter(IEnumerable<IEntity> entities);
+        Vector2 Position { get; }
+
         void Update(GameTime gameTime);
         void Draw(GameTime gameTime, SpriteBatch spriteBatch);
         void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch);

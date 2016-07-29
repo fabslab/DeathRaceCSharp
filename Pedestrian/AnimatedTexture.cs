@@ -32,9 +32,9 @@ namespace Pedestrian
             totalElapsed = 0;
         }
 
-        public void UpdateFrame(float elapsed)
+        public void Update(GameTime time)
         {
-            totalElapsed += elapsed;
+            totalElapsed += (float)time.ElapsedGameTime.TotalMilliseconds;
 
             if (totalElapsed > frameDuration)
             {
@@ -45,18 +45,18 @@ namespace Pedestrian
             }
         }
         
-        public void DrawFrame(SpriteBatch batch, Vector2 screenPos)
+        public void Draw(SpriteBatch batch, Vector2 screenPos)
         {
-            DrawFrame(batch, currentFrameIndex, screenPos);
+            Draw(batch, currentFrameIndex, screenPos);
         }
 
-        public void DrawFrame(SpriteBatch batch, int frame, Vector2 screenPos)
+        public void Draw(SpriteBatch batch, int frame, Vector2 screenPos)
         {
-            var sourcerect = new Rectangle(FrameWidth * frame, 0, FrameWidth, texture.Height);
+            var frameRectangle = new Rectangle(FrameWidth * frame, 0, FrameWidth, texture.Height);
             batch.Draw(
-                texture: texture, 
-                position: screenPos, 
-                sourceRectangle: sourcerect, 
+                texture: texture,
+                position: screenPos,
+                sourceRectangle: frameRectangle, 
                 color: Color,
                 origin: origin
             );

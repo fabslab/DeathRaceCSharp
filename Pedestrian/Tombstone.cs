@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Pedestrian
@@ -19,17 +17,16 @@ namespace Pedestrian
             set
             {
                 texture = value;
-                origin = new Vector2(value.Width / 2 - 1, value.Height / 2 - 1);
+                origin = new Vector2(value.Width / 2 - 1, value.Height / 2);
             }
         }
 
         public Tombstone(Vector2 position)
         {
-            Position = position;
+            Position = position;    
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("cross01");
             Collider = new Collider
             {
-                Offset = new Vector2(2, 0),
                 Position = position,
                 Width = Texture.Width - 3,
                 Height = Texture.Height
@@ -52,7 +49,5 @@ namespace Pedestrian
         {
             Collider.Draw(spriteBatch);
         }
-
-        public void OnCollisionEnter(IEnumerable<IEntity> entities) {}
     }
 }

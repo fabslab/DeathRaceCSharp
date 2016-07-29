@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pedestrian.BitmapFonts;
 using System.Collections.Generic;
 
 namespace Pedestrian
@@ -7,38 +8,41 @@ namespace Pedestrian
     public class Scene
     {
         List<IEntity> entities = new List<IEntity>();
-        List<Enemy> enemies = new List<Enemy>();
-        List<Player> players = new List<Player>();
-        List<Tombstone> tombstones = new List<Tombstone>();
         Rectangle borderRectangle = new Rectangle(
             0,
             scoreBoardHeight,
             PedestrianGame.VIRTUAL_WIDTH,
             PedestrianGame.VIRTUAL_HEIGHT - scoreBoardHeight - 1
         );
-
-
+        Scoreboard scoreboard;
         SpriteBatch spriteBatch;
-        public const int sidewalkWidth = 16;
-        public const int scoreBoardHeight = 16;
-        public const int borderWidth = 1;
+
+        const int sidewalkWidth = 16;
+        const int scoreBoardHeight = 16;
+        const int borderWidth = 1;
 
         public int Width { get { return PedestrianGame.VIRTUAL_WIDTH; } }
         public int Height { get { return PedestrianGame.VIRTUAL_HEIGHT - scoreBoardHeight - 1; } }
 
         // Rectangle for play area - area inside border
         public static Rectangle Bounds { get; private set; }
+        public static EventEmitter<CoreEvents, IEntity> Events { get; set; }
+
+        public void CreateTombstone(IEntity enemy)
+        {
+            entities.Add(new Tombstone(enemy.Position));
+        }
 
         public void Load()
         {
+            spriteBatch = new SpriteBatch(PedestrianGame.Instance.GraphicsDevice);
+
             Bounds = new Rectangle(
                 borderRectangle.X + borderWidth,
                 borderRectangle.Y + borderWidth,
                 borderRectangle.Width - 2 * borderWidth,
                 borderRectangle.Height - 2 * borderWidth
             );
-
-            spriteBatch = new SpriteBatch(PedestrianGame.Instance.GraphicsDevice);
 
             // Initialize the players
             var player1Position = new Vector2((int)(Width * 0.25), (int)(Height * 0.8));
@@ -64,16 +68,15 @@ namespace Pedestrian
             );
             var enemy2 = new Enemy(enemy2Position);
 
-            players.Add(player1);
-            players.Add(player2);
-
-            enemies.Add(enemy1);
-            enemies.Add(enemy2);
-
             entities.Add(enemy1);
             entities.Add(enemy2);
             entities.Add(player1);
             entities.Add(player2);
+
+            scoreboard = new Scoreboard(new Player[] { player1, player2 });
+
+            Events = new EventEmitter<CoreEvents, IEntity>(new CoreEventsComparer());
+            Events.AddObserver(CoreEvents.EnemyKilled, CreateTombstone);
         }
 
         public void Update(GameTime gameTime)
@@ -82,7 +85,9 @@ namespace Pedestrian
             {
                 entity.Update(gameTime);
             }
-            Collision.Update(players, enemies, tombstones);
+
+            Collision.Update(entities);
+            scoreboard.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime)
@@ -103,6 +108,8 @@ namespace Pedestrian
             var sidewalkLine2Position = new Vector2(Width - sidewalkWidth - borderWidth, scoreBoardHeight + borderWidth);
             DashedLine.Draw(spriteBatch, sidewalkLine1Position, dashedLineLength, Color.White);
             DashedLine.Draw(spriteBatch, sidewalkLine2Position, dashedLineLength, Color.White);
+
+            scoreboard.Draw(gameTime, spriteBatch);
 
             foreach (var entity in entities)
             {

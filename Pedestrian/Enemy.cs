@@ -38,7 +38,8 @@ namespace Pedestrian
             {
                 Position = enemyPosition,
                 Width = sprite.FrameWidth - 2,
-                Height = sprite.FrameHeight
+                Height = sprite.FrameHeight,
+                OnCollisionEnter = OnCollisionEnter
             };
         }
 
@@ -46,6 +47,7 @@ namespace Pedestrian
         {
             if (entities.Any(e => e is Player))
             {
+                Scene.Events.Emit(CoreEvents.EnemyKilled, this);
                 Die();
             }
         }
@@ -60,7 +62,7 @@ namespace Pedestrian
 
         public void Update(GameTime time)
         {
-            sprite.UpdateFrame((float)time.ElapsedGameTime.TotalMilliseconds);
+            sprite.Update(time);
 
             updatesSinceTurn++;
             var mustTurn = false;
@@ -109,7 +111,7 @@ namespace Pedestrian
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            sprite.DrawFrame(spriteBatch, Position);
+            sprite.Draw(spriteBatch, Position);
         }
 
         public void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch)

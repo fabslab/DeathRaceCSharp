@@ -47,19 +47,14 @@ namespace Pedestrian
             {
                 Position = Position,
                 Width = Texture.Width,
-                Height = Texture.Height
+                Height = Texture.Height,
+                OnCollisionEnter = OnCollisionEnter
             };
         }
 
         public void OnCollisionEnter(IEnumerable<IEntity> entities)
         {
-            foreach (var entity in entities)
-            {
-                if (entity is Enemy)
-                {
-                    OnEnemyKill();
-                }
-            }
+            Score += entities.Count(e => e is Enemy);
 
             if (entities.Any())
             {
@@ -67,14 +62,9 @@ namespace Pedestrian
             }
         }
 
-        private void OnEnemyKill()
-        {
-            Score++;
-        }
-
         private void Crash()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void Update(GameTime time)

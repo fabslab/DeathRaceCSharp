@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\PipelineExtensions\bin\Release\PipelineExtensions.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -48,4 +49,21 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:cross01.png
+
+#begin munro-font01_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:munro-font01_0.png
+
+#begin munro-font01.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:munro-font01.fnt
 

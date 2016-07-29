@@ -11,7 +11,13 @@ namespace Pedestrian
     public class PedestrianGame : Game
     {
         public static PedestrianGame Instance { get; private set; }
-        public const bool DEBUG = true;
+
+        #if DEBUG
+        public const bool DEBUG = false;
+        #else
+        public const bool DEBUG = false;
+        #endif
+
         public const int VIRTUAL_WIDTH = 240;
         public const int VIRTUAL_HEIGHT = 180;
         public const float PREFERRED_ASPECT_RATIO = VIRTUAL_WIDTH / (float)VIRTUAL_HEIGHT;
@@ -32,7 +38,7 @@ namespace Pedestrian
             // run in fullscreen and fill player's screen resolution
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            graphics.ToggleFullScreen();
+            //graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
         }

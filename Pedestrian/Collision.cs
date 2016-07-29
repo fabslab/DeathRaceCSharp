@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Pedestrian
@@ -14,16 +16,7 @@ namespace Pedestrian
         /// <returns></returns>
         public static IEnumerable<IEntity> GetCollisions(IEntity entity, IEnumerable<IEntity> collisionEntities)
         {
-            if (entity.Collider == null)
-            {
-                return Enumerable.Empty<IEntity>();
-            }
-
-            return collisionEntities.Where(c =>
-                    c != entity &&
-                    c.Collider != null &&
-                    c.Collider.Bounds.Intersects(entity.Collider.Bounds)
-                );
+            return collisionEntities.Where(c => IsColliding(entity, c));
         }
 
         public static bool IsColliding(IEntity entity1, IEntity entity2)
@@ -32,19 +25,34 @@ namespace Pedestrian
                 entity1 != entity2 && 
                 entity1.Collider != null &&
                 entity2.Collider != null &&
+                entity1.Collider != entity2.Collider &&
                 entity1.Collider.Bounds.Intersects(entity2.Collider.Bounds);
         }
 
-        public static void Update(
-                IEnumerable<Player> players, 
-                IEnumerable<Enemy> enemies, 
-                IEnumerable<Tombstone> tombstones
-            )
+        public static void Update(IEnumerable<IEntity> entities)
         {
-            foreach (var player in players)
+            // Get all collisions first before notifying colliders to avoid any
+            // changes inside collision handlers affecting subsequent collision checks
+            foreach (var entity in entities)
             {
-                var playerCollisions = GetCollisions(player, players);
-                var enemyCollisions = GetCollisions(player, enemies);
+                entity.Collider.CurrentCollidingEntities = GetCollisions(entity, entities).ToArray();
+            }
+
+            var collidingEntities = entities.ToArray();
+            foreach (var entity in collidingEntities)
+            {
+                var collider = entity.Collider;
+                var entered = Enumerable.Except(collider.CurrentCollidingEntities, collider.PreviousCollidingEntities);
+                var exited = Enumerable.Except(collider.PreviousCollidingEntities, collider.CurrentCollidingEntities);
+                if (entered.Any())
+                {
+                    collider.OnCollisionEnter(entered);
+                }
+                if (exited.Any())
+                {
+                    collider.OnCollisionExit(exited);
+                }
+                collider.PreviousCollidingEntities = collider.CurrentCollidingEntities;
             }
         }
     }
