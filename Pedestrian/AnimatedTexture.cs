@@ -47,18 +47,24 @@ namespace Pedestrian
         
         public void Draw(SpriteBatch batch, Vector2 screenPos)
         {
-            Draw(batch, currentFrameIndex, screenPos);
+            Draw(batch, screenPos, SpriteEffects.None);
         }
 
-        public void Draw(SpriteBatch batch, int frame, Vector2 screenPos)
+        public void Draw(SpriteBatch batch, Vector2 screenPos, SpriteEffects spriteEffect)
+        {
+            Draw(batch, currentFrameIndex, screenPos, spriteEffect);
+        }
+
+        public void Draw(SpriteBatch batch, int frame, Vector2 screenPos, SpriteEffects spriteEffect)
         {
             var frameRectangle = new Rectangle(FrameWidth * frame, 0, FrameWidth, texture.Height);
-            batch.Draw(
+            batch.Draw(                
                 texture: texture,
                 position: screenPos,
                 sourceRectangle: frameRectangle, 
                 color: Color,
-                origin: origin
+                origin: origin,
+                effects: spriteEffect
             );
         }
     }

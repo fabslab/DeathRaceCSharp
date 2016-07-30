@@ -17,19 +17,19 @@ namespace Pedestrian
             set
             {
                 texture = value;
-                origin = new Vector2(value.Width / 2 - 1, value.Height / 2);
+                origin = new Vector2(value.Width / 2, value.Height / 2);
             }
         }
 
         public Tombstone(Vector2 position)
         {
             Position = position;    
-            Texture = PedestrianGame.Instance.Content.Load<Texture2D>("cross01");
+            Texture = PedestrianGame.Instance.Content.Load<Texture2D>("cross16bit01");
             Collider = new Collider
             {
                 Position = position,
-                Width = Texture.Width - 3,
-                Height = Texture.Height
+                Width = Texture.Width - 7,
+                Height = Texture.Height - 4
             };
         }
 

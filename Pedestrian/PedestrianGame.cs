@@ -13,13 +13,13 @@ namespace Pedestrian
         public static PedestrianGame Instance { get; private set; }
 
         #if DEBUG
-        public const bool DEBUG = false;
+        public const bool DEBUG = true;
         #else
         public const bool DEBUG = false;
         #endif
 
-        public const int VIRTUAL_WIDTH = 240;
-        public const int VIRTUAL_HEIGHT = 180;
+        public const int VIRTUAL_WIDTH = 480;
+        public const int VIRTUAL_HEIGHT = 360;
         public const float PREFERRED_ASPECT_RATIO = VIRTUAL_WIDTH / (float)VIRTUAL_HEIGHT;
 
         GraphicsDeviceManager graphics;

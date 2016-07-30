@@ -12,8 +12,9 @@ namespace Pedestrian.BitmapFonts
             var dx = position.X;
             var dy = position.Y;
 
-            foreach (var character in text)
+            for (var i = 0; i < text.Length; ++i)
             {
+                var character = text[i];
                 var fontRegion = bitmapFont.GetCharacterRegion(character);
 
                 if (fontRegion != null)
@@ -21,7 +22,15 @@ namespace Pedestrian.BitmapFonts
                     var charPosition = new Vector2(dx + fontRegion.XOffset, dy + fontRegion.YOffset);
 
                     spriteBatch.Draw(fontRegion.TextureRegion, charPosition, color);
-                    dx += fontRegion.XAdvance;
+
+                    if (i != text.Length - 1)
+                    {
+                        dx += fontRegion.XAdvance + bitmapFont.LetterSpacing;
+                    }
+                    else
+                    {
+                        dx += fontRegion.XOffset + fontRegion.Width;
+                    }
                 }
 
                 if (character == '\n')
@@ -42,7 +51,7 @@ namespace Pedestrian.BitmapFonts
             {
                 var words = sentence.Split(new[] { ' ' }, StringSplitOptions.None);
 
-                for (var i = 0; i < words.Length; i++)
+                for (var i = 0; i < words.Length; ++i)
                 {
                     var word = words[i];
                     var size = bitmapFont.GetStringRectangle(word, Vector2.Zero);
@@ -54,7 +63,15 @@ namespace Pedestrian.BitmapFonts
                     }
 
                     DrawString(spriteBatch, bitmapFont, word, new Vector2(dx, dy), color);
-                    dx += size.Width + bitmapFont.GetCharacterRegion(' ').XAdvance;
+                    dx += size.Width;
+                    if (i != words.Length - 1)
+                    {
+                        dx += bitmapFont.GetCharacterRegion(' ').XAdvance + bitmapFont.LetterSpacing;
+                    }
+                    else
+                    {
+                        dx += bitmapFont.GetCharacterRegion(' ').Width;
+                    }
                 }
 
                 dx = position.X;

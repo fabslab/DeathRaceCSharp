@@ -13,12 +13,23 @@ namespace Pedestrian
             // ie. subsequent lines are the same length
             if (lineTexture == null)
             {
-                lineTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, length);
+                lineTexture = new Texture2D(spriteBatch.GraphicsDevice, 2, length);
 
-                var pixelData = new Color[length];
-                for (var i = 2; i < length; i += 3)
+                // width of dashes in pixels
+                var width = 2;
+                // number of pixels to skip between dashes
+                var space = width * 2;
+
+                var pixelData = new Color[width * length];
+                var l = pixelData.Length - width * space;
+                var increment = width * space + space;
+                for (var i = width * space; i < l; i += increment)
                 {
-                    pixelData[i] = Color.White;
+                    // make square dashes
+                    for (var j = i; j < i + width * width; ++j)
+                    {
+                        pixelData[j] = Color.White;
+                    }
                 }
                 lineTexture.SetData<Color>(pixelData);
             }

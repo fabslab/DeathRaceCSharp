@@ -16,7 +16,8 @@ namespace Pedestrian.BitmapFonts
 
         private readonly Dictionary<char, BitmapFontRegion> _characterMap;
 
-        public int LineHeight { get; private set; }
+        public int LineHeight { get; set; }
+        public int LetterSpacing { get; set; } = 0;
 
         public BitmapFontRegion GetCharacterRegion(char character)
         {
@@ -29,13 +30,21 @@ namespace Pedestrian.BitmapFonts
             var width = 0;
             var height = 0;
 
-            foreach (var c in text)
+            for (var i = 0; i < text.Length; ++i)
             {
+                var c = text[i];
                 BitmapFontRegion fontRegion;
 
                 if (_characterMap.TryGetValue(c, out fontRegion))
                 {
-                    width += fontRegion.XAdvance;
+                    if (i != text.Length - 1)
+                    {
+                        width += fontRegion.XAdvance + LetterSpacing;
+                    }
+                    else
+                    {
+                        width += fontRegion.XOffset + fontRegion.Width;
+                    }
 
                     if (fontRegion.Height + fontRegion.YOffset > height)
                     {

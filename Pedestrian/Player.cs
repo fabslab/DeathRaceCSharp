@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,15 +17,15 @@ namespace Pedestrian
         public Vector2 Position { get; set; } = Vector2.Zero;
         public PlayerInput Input { get; set; } = new KeyboardInput();
         // Assume sprite was drawn pointing up for default direction
-        public Vector2 InitialDirection { get; set; } = DirectionMap.DIRECTION_VECTOR[Direction.Up];
+        public Vector2 InitialDirection { get; set; } = DirectionMap.DIRECTION_VECTORS[Direction.Up];
         // Rotation from InitialDirection vector in radians
         public float Rotation { get; set; } = 0;
         // Maximum turn value in one frame in radians
         public float MaxTurnAngle { get; set; } = MathHelper.PiOver4 / 6;
         public float RotationSnapValue { get; set; } = MathHelper.PiOver4;
         // Max number of pixels to move in one movement
-        public float MaxSpeed { get; set; } = 1f;
-        public float MaxReverseSpeed { get; set; } = 0.5f;
+        public float MaxSpeed { get; set; } = 1.5f;
+        public float MaxReverseSpeed { get; set; } = 1f;
         public Texture2D Texture
         {
             get { return texture; }
@@ -41,13 +40,13 @@ namespace Pedestrian
         public Player(Vector2 position)
         {
             Position = position;
-            Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car01");
+            Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit01");
 
             Collider = new Collider
             {
                 Position = Position,
-                Width = Texture.Width,
-                Height = Texture.Height,
+                Width = Texture.Width - 5,
+                Height = Texture.Height - 3,
                 OnCollisionEnter = OnCollisionEnter
             };
         }

@@ -13,7 +13,7 @@ namespace Pedestrian
 
     public static class DirectionMap
     {
-        public static Dictionary<Direction, Vector2> DIRECTION_VECTOR = new Dictionary<Direction, Vector2>
+        public static Dictionary<Direction, Vector2> DIRECTION_VECTORS = new Dictionary<Direction, Vector2>
         {
             { Direction.Up, -Vector2.UnitY },
             { Direction.Right, Vector2.UnitX },
