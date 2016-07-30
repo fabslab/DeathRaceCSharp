@@ -6,34 +6,52 @@ using Microsoft.Xna.Framework;
 
 namespace Pedestrian.BitmapFonts
 {
-    public class BitmapFont 
+    public class BitmapFont
     {
-        internal BitmapFont(IEnumerable<BitmapFontRegion> regions, int lineHeight)
+        internal BitmapFont(string name, IEnumerable<BitmapFontRegion> regions, int lineHeight)
         {
-            _characterMap = regions.ToDictionary(r => r.Character);// BuildCharacterMap(textures, _fontFile);
+            _characterMap = regions.ToDictionary(r => r.Character);
+
+            Name = name;
             LineHeight = lineHeight;
         }
 
-        private readonly Dictionary<char, BitmapFontRegion> _characterMap;
+        private readonly Dictionary<int, BitmapFontRegion> _characterMap;
 
-        public int LineHeight { get; set; }
-        public int LetterSpacing { get; set; } = 0;
+        public string Name { get; }
+        public int LineHeight { get; private set; }
+        public int LetterSpacing { get; set; }
 
-        public BitmapFontRegion GetCharacterRegion(char character)
+        public BitmapFontRegion GetCharacterRegion(int character)
         {
             BitmapFontRegion region;
             return _characterMap.TryGetValue(character, out region) ? region : null;
+        }
+
+        internal static IEnumerable<int> GetUnicodeCodePoints(string s)
+        {
+            if (!string.IsNullOrEmpty(s))
+            {
+                for (int i = 0; i < s.Length; i += 1)
+                {
+                    if (char.IsLowSurrogate(s, i))
+                        continue;
+
+                    yield return char.ConvertToUtf32(s, i);
+                }
+            }
         }
 
         public Size GetSize(string text)
         {
             var width = 0;
             var height = 0;
+            var codePoints = GetUnicodeCodePoints(text).ToArray();
 
-            for (var i = 0; i < text.Length; ++i)
+            for (int i = 0, l = codePoints.Length; i < l; i++)
             {
-                var c = text[i];
                 BitmapFontRegion fontRegion;
+                var c = codePoints[i];
 
                 if (_characterMap.TryGetValue(c, out fontRegion))
                 {
@@ -56,15 +74,15 @@ namespace Pedestrian.BitmapFonts
             return new Size(width, height);
         }
 
-        public Vector2 MeasureString(string text)
+        public Size MeasureString(string text)
         {
             if (text == null) throw new ArgumentNullException(nameof(text));
 
             var size = GetSize(text);
-            return new Vector2(size.Width, size.Height);
+            return size;
         }
 
-        public Vector2 MeasureString(StringBuilder stringBuilder)
+        public Size MeasureString(StringBuilder stringBuilder)
         {
             if (stringBuilder == null) throw new ArgumentNullException(nameof(stringBuilder));
 
@@ -76,6 +94,11 @@ namespace Pedestrian.BitmapFonts
             var size = GetSize(text);
             var p = position.ToPoint();
             return new Rectangle(p.X, p.Y, size.Width, size.Height);
+        }
+
+        public override string ToString()
+        {
+            return $"{Name}";
         }
     }
 }

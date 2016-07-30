@@ -4,7 +4,7 @@ namespace Pedestrian.BitmapFonts
 {
     public class BitmapFontRegion
     {
-        public BitmapFontRegion(TextureRegion2D textureRegion, char character, int xOffset, int yOffset, int xAdvance)
+        public BitmapFontRegion(TextureRegion2D textureRegion, int character, int xOffset, int yOffset, int xAdvance)
         {
             TextureRegion = textureRegion;
             Character = character;
@@ -12,8 +12,8 @@ namespace Pedestrian.BitmapFonts
             YOffset = yOffset;
             XAdvance = xAdvance;
         }
-        
-        public char Character { get; set; }
+
+        public int Character { get; set; }
         public TextureRegion2D TextureRegion { get; }
         public int XOffset { get; set; }
         public int YOffset { get; set; }

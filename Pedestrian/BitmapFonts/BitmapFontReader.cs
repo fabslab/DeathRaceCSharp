@@ -30,7 +30,7 @@ namespace Pedestrian.BitmapFonts
 
             for (var r = 0; r < regionCount; r++)
             {
-                var character = (char)reader.ReadInt32();
+                var character = reader.ReadInt32();
                 var textureIndex = reader.ReadInt32();
                 var x = reader.ReadInt32();
                 var y = reader.ReadInt32();
@@ -42,8 +42,8 @@ namespace Pedestrian.BitmapFonts
                 var textureRegion = new TextureRegion2D(textures[textureIndex], x, y, width, height);
                 regions[r] = new BitmapFontRegion(textureRegion, character, xOffset, yOffset, xAdvance);
             }
-            
-            return new BitmapFont(regions, lineHeight);
+
+            return new BitmapFont(reader.AssetName, regions, lineHeight);
         }
     }
 }
