@@ -13,7 +13,7 @@ namespace Pedestrian
         public static PedestrianGame Instance { get; private set; }
 
         #if DEBUG
-        public const bool DEBUG = true;
+        public const bool DEBUG = false;
         #else
         public const bool DEBUG = false;
         #endif
@@ -27,7 +27,7 @@ namespace Pedestrian
         RenderTarget2D renderTarget;
         Rectangle destinationRectangle;
         Scene scene;
-        double targetUpdateTime = 1 / 60d * 1000;
+        double targetUpdateTime = 1 / 30d * 1000;
         double timeSinceUpdate = 0;
 
         public PedestrianGame()
@@ -35,12 +35,13 @@ namespace Pedestrian
             Instance = this;
             graphics = new GraphicsDeviceManager(this);
 
-            // run in fullscreen and fill player's screen resolution
+            // run fullscreen and fill player's screen resolution
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             //graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
+            TargetElapsedTime = TimeSpan.FromMilliseconds(targetUpdateTime);
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace Pedestrian
             // Ensure update timestep is fixed so that draw rate
             // can be freely changed without affecting gameplay
             timeSinceUpdate += gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (timeSinceUpdate > targetUpdateTime)
+            if (timeSinceUpdate >= targetUpdateTime)
             {
                 var updateTime = new GameTime(
                     gameTime.TotalGameTime,
@@ -107,7 +108,7 @@ namespace Pedestrian
         }
 
         /// <summary>
-        /// The update loop once timestep has been fixed
+        /// The update loop that assumes timestep has been fixed
         /// </summary>
         /// <param name="gameTime"></param>
         protected void FixedStepUpdate(GameTime gameTime)

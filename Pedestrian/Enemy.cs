@@ -15,13 +15,14 @@ namespace Pedestrian
         AnimatedTexture currentSprite;
         Vector2 initialDirection;
         Vector2 initialPosition;
+        Vector2 previousPosition;
         int updatesSinceTurn = 0;
 
         // Min and max update cycles to wait before turning pedestrian in random direction
-        public int[] IntervalRangeForTurn { get; set; } = new int[] { 20, 60 };
+        public int[] IntervalRangeForTurn { get; set; } = new int[] { 15, 50 };
         public Color Color { get; set; } = Color.White;
         public Vector2 Position { get; set; }
-        public float Speed { get; set; } = 1.5f;
+        public float Speed { get; set; } = 3f;
         public Vector2 MovementDirection { get; set; }
         public Collider Collider { get; private set; }
 
@@ -29,6 +30,7 @@ namespace Pedestrian
         {
             Position = enemyPosition;
             initialPosition = enemyPosition;
+            previousPosition = enemyPosition;
             
             initialDirection = DirectionMap.DIRECTION_VECTORS[Direction.Down];
             MovementDirection = initialDirection;
@@ -39,7 +41,7 @@ namespace Pedestrian
             sideSprite.Load("gremlin16bit-side01", 2, 50);
             currentSprite = frontSprite;
 
-            Collider = new Collider
+            Collider = new BoxCollider
             {
                 Position = enemyPosition,
                 Width = frontSprite.FrameWidth - 3,
@@ -55,6 +57,12 @@ namespace Pedestrian
                 Scene.Events.Emit(CoreEvents.EnemyKilled, this);
                 Die();
             }
+            else if (entities.Any())
+            {
+                Position = previousPosition;
+                MakeRandomTurn();
+                Collider.Clear();
+            }
         }
 
         public void Die()
@@ -67,12 +75,14 @@ namespace Pedestrian
 
         public void MakeRandomTurn()
         {
-            var randomDirection = randomTurn.Next(0, 2);
             Vector3 resultantDirection = Vector3.Cross(new Vector3(MovementDirection, 0), Vector3.UnitZ);
+
+            var randomDirection = randomTurn.Next(0, 2);
             if (randomDirection == 0)
             {
                 resultantDirection = -resultantDirection;
             }
+
             MovementDirection = new Vector2(resultantDirection.X, resultantDirection.Y);
 
             if (MovementDirection == DirectionMap.DIRECTION_VECTORS[Direction.Left] ||
@@ -91,47 +101,38 @@ namespace Pedestrian
         public void Update(GameTime time)
         {
             updatesSinceTurn++;
-            var mustTurn = false;
-            var previousPosition = Position;
-
+            var shouldTurn = false;
             if (updatesSinceTurn >= IntervalRangeForTurn[1])
             {
-                mustTurn = true;
+                shouldTurn = true;
             }
             else if (updatesSinceTurn >= IntervalRangeForTurn[0])
             {
                 // 5% chance to turn each update during allowed interval
-                mustTurn = randomTurn.Next(0, 20) == 0;
+                shouldTurn = randomTurn.Next(0, 20) == 0;
             }
-
-            if (mustTurn)
+            if (shouldTurn)
             {
                 MakeRandomTurn();
             }
 
+            previousPosition = Position;
             Position += MovementDirection * Speed;
             Collider.Position = Position;
-            var willCollide = !Scene.Bounds.Contains(Collider.Bounds);
-
-            while (willCollide)
-            {
-                Position = previousPosition;
-                MakeRandomTurn();
-                Position += MovementDirection * Speed;
-                Collider.Position = Position;
-                willCollide = !Scene.Bounds.Contains(Collider.Bounds);
-            }
             
             currentSprite.Update(time);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            // Assume side sprite is drawn facing left direction 
+            // so flip if current direction is right
             SpriteEffects flipEffect = SpriteEffects.None;
             if (MovementDirection == DirectionMap.DIRECTION_VECTORS[Direction.Right])
             {
                 flipEffect = SpriteEffects.FlipHorizontally;
             }
+
             currentSprite.Draw(spriteBatch, Position, flipEffect);
         }
 

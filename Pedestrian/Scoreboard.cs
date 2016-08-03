@@ -8,6 +8,7 @@ namespace Pedestrian
     {
         // Duration of game in seconds 
         public const int GAME_TIME = 99;
+        public int Margin { get; set; }
         public bool IsActive { get; set; } = false;
 
         BitmapFont font;
@@ -15,9 +16,11 @@ namespace Pedestrian
         double timeTracked;
         Player[] players;
         int[] scores;
+        Rectangle displayArea;
 
-        public Scoreboard(Player[] players)
+        public Scoreboard(Player[] players, Rectangle displayArea)
         {
+            this.displayArea = displayArea;
             this.players = players;
             scores = new int[players.Length];
             font = PedestrianGame.Instance.Content.Load<BitmapFont>("munro-edit-font01");
@@ -68,20 +71,20 @@ namespace Pedestrian
             if (scores.Length >= 1)
             {
                 var text = scores[0].ToString("D2");
-                var xPosition = Scene.Bounds.X + Scene.SIDEWALK_WIDTH + Scene.BORDER_WIDTH;
+                var xPosition = displayArea.X + Margin;
                 spriteBatch.DrawString(font, text, new Vector2(xPosition, 0), Color.White);
             }
             
             var timeText = timeRemaining.ToString("D2");
             var timeSize = font.GetSize(timeText);
-            var timeXPosition = Scene.Bounds.Width / 2 - timeSize.Width / 2;
+            var timeXPosition = displayArea.Left + (displayArea.Width / 2 - timeSize.Width / 2);
             spriteBatch.DrawString(font, timeText, new Vector2(timeXPosition, 0), Color.White);
 
             if (scores.Length >= 2)
             {
                 var text = scores[1].ToString("D2");
                 var textSize = font.GetSize(text);
-                var xPosition = Scene.Bounds.Right - Scene.SIDEWALK_WIDTH - textSize.Width;
+                var xPosition = displayArea.Right - Margin - textSize.Width;
                 spriteBatch.DrawString(font, text, new Vector2(xPosition, 0), Color.White);
             }
         }

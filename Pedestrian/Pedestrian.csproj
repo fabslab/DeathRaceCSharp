@@ -84,10 +84,13 @@
     <Compile Include="BitmapFonts\BitmapFontReader.cs" />
     <Compile Include="BitmapFonts\BitmapFontRegion.cs" />
     <Compile Include="Border.cs" />
+    <Compile Include="BoxCollider.cs" />
     <Compile Include="Collision.cs" />
+    <Compile Include="ContainerCollider.cs" />
     <Compile Include="ContentExtensions\ContentManagerExtensions.cs" />
     <Compile Include="ContentExtensions\ContentReaderExtensions.cs" />
     <Compile Include="EventEmitter.cs" />
+    <Compile Include="GameArea.cs" />
     <Compile Include="Scoreboard.cs" />
     <Compile Include="Size.cs" />
     <Compile Include="TextureAtlases\SpriteBatchExtensions.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="Tombstone.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="OpenTK">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\OpenTK.dll</HintPath>
     </Reference>

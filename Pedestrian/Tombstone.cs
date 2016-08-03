@@ -23,9 +23,9 @@ namespace Pedestrian
 
         public Tombstone(Vector2 position)
         {
-            Position = position;    
+            Position = position;
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("cross16bit01");
-            Collider = new Collider
+            Collider = new BoxCollider
             {
                 Position = position,
                 Width = Texture.Width - 7,

@@ -14,9 +14,9 @@ namespace Pedestrian
         /// <param name="entity"></param>
         /// <param name="collisionEntities"></param>
         /// <returns></returns>
-        public static IEnumerable<IEntity> GetCollisions(IEntity entity, IEnumerable<IEntity> collisionEntities)
+        public static IEntity[] GetCollisions(IEntity entity, IEnumerable<IEntity> collisionEntities)
         {
-            return collisionEntities.Where(c => IsColliding(entity, c));
+            return collisionEntities.Where(c => IsColliding(entity, c)).ToArray();
         }
 
         public static bool IsColliding(IEntity entity1, IEntity entity2)
@@ -26,20 +26,21 @@ namespace Pedestrian
                 entity1.Collider != null &&
                 entity2.Collider != null &&
                 entity1.Collider != entity2.Collider &&
-                entity1.Collider.Bounds.Intersects(entity2.Collider.Bounds);
+                entity1.Collider.Collides(entity2.Collider);
         }
 
         public static void Update(IEnumerable<IEntity> entities)
         {
+            var entityArray = entities.ToArray();
+
             // Get all collisions first before notifying colliders to avoid any
             // changes inside collision handlers affecting subsequent collision checks
             foreach (var entity in entities)
             {
-                entity.Collider.CurrentCollidingEntities = GetCollisions(entity, entities).ToArray();
+                entity.Collider.CurrentCollidingEntities = GetCollisions(entity, entityArray);
             }
-
-            var collidingEntities = entities.ToArray();
-            foreach (var entity in collidingEntities)
+            
+            foreach (var entity in entityArray)
             {
                 var collider = entity.Collider;
                 var entered = Enumerable.Except(collider.CurrentCollidingEntities, collider.PreviousCollidingEntities);

@@ -24,7 +24,7 @@ namespace Pedestrian
         public float MaxTurnAngle { get; set; } = MathHelper.PiOver4 / 6;
         public float RotationSnapValue { get; set; } = MathHelper.PiOver4;
         // Max number of pixels to move in one movement
-        public float MaxSpeed { get; set; } = 1.5f;
+        public float MaxSpeed { get; set; } = 3f;
         public float MaxReverseSpeed { get; set; } = 1f;
         public Texture2D Texture
         {
@@ -42,7 +42,7 @@ namespace Pedestrian
             Position = position;
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit01");
 
-            Collider = new Collider
+            Collider = new BoxCollider
             {
                 Position = Position,
                 Width = Texture.Width - 5,

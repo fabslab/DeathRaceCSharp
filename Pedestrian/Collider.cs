@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace Pedestrian
 {
-    public class Collider
+    public abstract class Collider
     {
         // By default the collider will do nothing on collisions
-        static Action<IEnumerable<IEntity>> defaultCollisionHandler = (entities => { });
-        Rectangle bounds;
-        Vector2 position;
-        bool invalidBounds = true;
+        protected static Action<IEnumerable<IEntity>> defaultCollisionHandler = (entities => { });
+        protected Rectangle bounds;
+        protected Vector2 position;
+        protected bool invalidBounds = true;
 
         public int Width { get; set; }
         public int Height { get; set; }
@@ -50,6 +50,19 @@ namespace Pedestrian
                 position = value;
                 invalidBounds = true;
             }
+        }
+
+        public abstract bool Collides(BoxCollider other);
+        public abstract bool Collides(ContainerCollider other);
+        public bool Collides(Collider other)
+        {
+            return Collides((dynamic)other);
+        }
+
+        public void Clear()
+        {
+            Array.Clear(CurrentCollidingEntities, 0, CurrentCollidingEntities.Length);
+            Array.Clear(PreviousCollidingEntities, 0, PreviousCollidingEntities.Length);
         }
 
         public void Draw(SpriteBatch spriteBatch)

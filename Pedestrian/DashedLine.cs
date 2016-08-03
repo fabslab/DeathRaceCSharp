@@ -7,16 +7,14 @@ namespace Pedestrian
     {
         private static Texture2D lineTexture;
 
-        public static void Draw(SpriteBatch spriteBatch, Vector2 start, int length, Color color)
+        public static void Draw(SpriteBatch spriteBatch, Vector2 start, int length, int width, Color color)
         {
             // assume once the line texture is created, it can be reused (game-specific)
             // ie. subsequent lines are the same length
             if (lineTexture == null)
             {
                 lineTexture = new Texture2D(spriteBatch.GraphicsDevice, 2, length);
-
-                // width of dashes in pixels
-                var width = 2;
+                
                 // number of pixels to skip between dashes
                 var space = width * 2;
 
