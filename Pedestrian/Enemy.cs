@@ -127,6 +127,7 @@ namespace Pedestrian
         {
             // Assume side sprite is drawn facing left direction 
             // so flip if current direction is right
+            // TODO: create right-facing sprite instead of using flip effect
             SpriteEffects flipEffect = SpriteEffects.None;
             if (MovementDirection == DirectionMap.DIRECTION_VECTORS[Direction.Right])
             {

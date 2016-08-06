@@ -28,7 +28,7 @@ namespace Pedestrian
         public float MaxReverseSpeed { get; set; } = 1f;
         public float CrashedSpeed { get; set; } = 0;
         // Num ms player will be stationary after crashing if not cancelled by reversing
-        public int MaxCrashTime { get; set; } = 500;
+        public int MaxCrashTime { get; set; } = 1000;
         public bool IsCrashed { get; set; } = false;
         public Collider Collider { get; }
 
@@ -79,12 +79,14 @@ namespace Pedestrian
         {
             var throttle = Input.GetThrottleValue();
             var speed = MaxSpeed;
-            if (IsCrashed)
+            if (throttle < 0)
+            {
+                speed = MaxReverseSpeed;
+                IsCrashed = false;
+            }
+            else if (IsCrashed)
             {
                 speed = CrashedSpeed;
-            }
-            else if (throttle < 0) {
-                speed = MaxReverseSpeed;
             }
             speed *= throttle;
 

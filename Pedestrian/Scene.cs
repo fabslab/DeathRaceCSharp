@@ -7,7 +7,7 @@ namespace Pedestrian
 {
     public class Scene
     {
-        public const int SCOREBOARD_HEIGHT = 32;
+        public const int SCOREBOARD_HEIGHT = 30;
         
         public static EventEmitter<CoreEvents, IEntity> Events { get; set; }
 
@@ -18,6 +18,7 @@ namespace Pedestrian
         Scoreboard scoreboard;
         GameArea gameArea;
         SpriteBatch spriteBatch;
+        bool gameOver = false;
 
         public void CreateTombstone(IEntity enemy)
         {
@@ -74,11 +75,25 @@ namespace Pedestrian
 
             Events = new EventEmitter<CoreEvents, IEntity>(new CoreEventsComparer());
             Events.AddObserver(CoreEvents.EnemyKilled, CreateTombstone);
+            Events.AddObserver(CoreEvents.GameOver, e => gameOver = true);
         }
 
         public void Update(GameTime gameTime)
         {
-            entities.ForEach(e => e.Update(gameTime));
+            foreach (var entity in entities)
+            {
+                if (entity is Player)
+                {
+                    if (!gameOver)
+                    {
+                        entity.Update(gameTime);
+                    }
+                }
+                else
+                {
+                    entity.Update(gameTime);
+                }
+            }
             Collision.Update(entities);
             UpdateAfterCollision(gameTime);
         }
