@@ -22,7 +22,7 @@ namespace Pedestrian
         public float Rotation { get; set; } = 0;
         // Maximum turn value in one frame in radians
         public float MaxTurnAngle { get; set; } = MathHelper.PiOver4 / 6;
-        public float RotationSnapValue { get; set; } = MathHelper.PiOver4;
+        public float RotationSnapValue { get; set; } = MathHelper.PiOver4 / 2;
         // Max number of pixels to move in one movement
         public float MaxSpeed { get; set; } = 3f;
         public float MaxReverseSpeed { get; set; } = 1f;

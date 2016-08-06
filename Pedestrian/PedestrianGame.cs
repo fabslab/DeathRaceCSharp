@@ -27,8 +27,6 @@ namespace Pedestrian
         RenderTarget2D renderTarget;
         Rectangle destinationRectangle;
         Scene scene;
-        double targetUpdateTime = 1 / 30d * 1000;
-        double timeSinceUpdate = 0;
 
         public PedestrianGame()
         {
@@ -41,7 +39,9 @@ namespace Pedestrian
             //graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
-            TargetElapsedTime = TimeSpan.FromMilliseconds(targetUpdateTime);
+
+            // Set target update and draw rate to 30fps
+            TargetElapsedTime = TimeSpan.FromMilliseconds(1 / 30d * 1000);
         }
 
         /// <summary>
@@ -86,32 +86,10 @@ namespace Pedestrian
         }
 
         /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
-        {
-            // Ensure update timestep is fixed so that draw rate
-            // can be freely changed without affecting gameplay
-            timeSinceUpdate += gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (timeSinceUpdate >= targetUpdateTime)
-            {
-                var updateTime = new GameTime(
-                    gameTime.TotalGameTime,
-                    TimeSpan.FromMilliseconds(timeSinceUpdate),
-                    gameTime.IsRunningSlowly
-                );
-                FixedStepUpdate(updateTime);
-                timeSinceUpdate -= targetUpdateTime;
-            }
-        }
-
-        /// <summary>
         /// The update loop that assumes timestep has been fixed
         /// </summary>
         /// <param name="gameTime"></param>
-        protected void FixedStepUpdate(GameTime gameTime)
+        protected override void Update(GameTime gameTime)
         {
             if (IsActive)
             {

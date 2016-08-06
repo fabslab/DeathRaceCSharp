@@ -16,10 +16,10 @@ namespace Pedestrian
         Vector2 initialDirection;
         Vector2 initialPosition;
         Vector2 previousPosition;
-        int updatesSinceTurn = 0;
+        int timeSinceTurn = 0;
 
-        // Min and max update cycles to wait before turning pedestrian in random direction
-        public int[] IntervalRangeForTurn { get; set; } = new int[] { 15, 50 };
+        // Min and max ms to wait before enemy turns
+        public int[] IntervalRangeForTurn { get; set; } = new int[] { 500, 1800 };
         public Color Color { get; set; } = Color.White;
         public Vector2 Position { get; set; }
         public float Speed { get; set; } = 3f;
@@ -95,18 +95,18 @@ namespace Pedestrian
                 currentSprite = frontSprite;
             }
 
-            updatesSinceTurn = 0;
+            timeSinceTurn = 0;
         }
 
         public void Update(GameTime time)
         {
-            updatesSinceTurn++;
+            timeSinceTurn += time.ElapsedGameTime.Milliseconds;
             var shouldTurn = false;
-            if (updatesSinceTurn >= IntervalRangeForTurn[1])
+            if (timeSinceTurn >= IntervalRangeForTurn[1])
             {
                 shouldTurn = true;
             }
-            else if (updatesSinceTurn >= IntervalRangeForTurn[0])
+            else if (timeSinceTurn >= IntervalRangeForTurn[0])
             {
                 // 5% chance to turn each update during allowed interval
                 shouldTurn = randomTurn.Next(0, 20) == 0;
