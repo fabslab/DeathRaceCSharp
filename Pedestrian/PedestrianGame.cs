@@ -97,6 +97,7 @@ namespace Pedestrian
                 {
                     Exit();
                 }
+                Timers.Update(gameTime);
                 scene.Update(gameTime);
             }
         }

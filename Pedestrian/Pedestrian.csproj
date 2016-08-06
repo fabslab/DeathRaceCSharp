@@ -97,6 +97,7 @@
     <Compile Include="TextureAtlases\TextureAtlas.cs" />
     <Compile Include="TextureAtlases\TextureAtlasReader.cs" />
     <Compile Include="TextureAtlases\TextureRegion2D.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="UnorderedPair.cs" />
     <Compile Include="DashedLine.cs" />
     <Compile Include="Direction.cs" />

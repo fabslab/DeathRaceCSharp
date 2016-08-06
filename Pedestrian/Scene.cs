@@ -65,7 +65,8 @@ namespace Pedestrian
             entities.Add(enemy2);
             entities.Add(player1);
             entities.Add(player2);
-
+            
+            // Scoreboard displays player scores and time remaining in the game
             var scoreboardArea = new Rectangle(Point.Zero, new Point(Width, SCOREBOARD_HEIGHT));
             scoreboard = new Scoreboard(new Player[] { player1, player2 }, scoreboardArea);
             scoreboard.Margin = gameArea.SidewalkWidth + gameArea.BorderWidth;
@@ -77,12 +78,13 @@ namespace Pedestrian
 
         public void Update(GameTime gameTime)
         {
-            foreach (var entity in entities)
-            {
-                entity.Update(gameTime);
-            }
+            entities.ForEach(e => e.Update(gameTime));
+            Collision.Update(entities);
+            UpdateAfterCollision(gameTime);
+        }
 
-            Collision.Update(entities.ToArray());
+        public void UpdateAfterCollision(GameTime gameTime)
+        {
             scoreboard.Update(gameTime);
         }
 

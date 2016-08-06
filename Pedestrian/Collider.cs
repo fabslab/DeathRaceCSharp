@@ -7,8 +7,6 @@ namespace Pedestrian
 {
     public abstract class Collider
     {
-        // By default the collider will do nothing on collisions
-        protected static Action<IEnumerable<IEntity>> defaultCollisionHandler = (entities => { });
         protected Rectangle bounds;
         protected Vector2 position;
         protected bool invalidBounds = true;
@@ -18,8 +16,8 @@ namespace Pedestrian
         public Vector2 Offset { get; set; } = Vector2.Zero;
         public IEntity[] PreviousCollidingEntities { get; set; } = new IEntity[] { };
         public IEntity[] CurrentCollidingEntities { get; set; } = new IEntity[] { };
-        public Action<IEnumerable<IEntity>> OnCollisionEnter { get; set; } = defaultCollisionHandler;
-        public Action<IEnumerable<IEntity>> OnCollisionExit { get; set; } = defaultCollisionHandler;
+        public Action<IEnumerable<IEntity>> OnCollisionEnter { get; set; }
+        public Action<IEnumerable<IEntity>> OnCollisionExit { get; set; }
 
         public Rectangle Bounds
         {

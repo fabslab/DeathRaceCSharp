@@ -10,9 +10,9 @@ namespace Pedestrian
         Texture2D texture;
         Vector2 origin;
         float snappedRotation;
+        Timer crashTimer;
         
         public int Score { get; private set; } = 0;
-
         public Color Color { get; set; } = Color.White;
         public Vector2 Position { get; set; } = Vector2.Zero;
         public PlayerInput Input { get; set; } = new KeyboardInput();
@@ -26,7 +26,13 @@ namespace Pedestrian
         // Max number of pixels to move in one movement
         public float MaxSpeed { get; set; } = 3f;
         public float MaxReverseSpeed { get; set; } = 1f;
-        public Texture2D Texture
+        public float CrashedSpeed { get; set; } = 0;
+        // Num ms player will be stationary after crashing if not cancelled by reversing
+        public int MaxCrashTime { get; set; } = 500;
+        public bool IsCrashed { get; set; } = false;
+        public Collider Collider { get; }
+
+        private Texture2D Texture
         {
             get { return texture; }
             set
@@ -35,13 +41,11 @@ namespace Pedestrian
                 origin = new Vector2(value.Width / 2, value.Height / 2);
             }
         }
-        public Collider Collider { get; }
 
         public Player(Vector2 position)
         {
             Position = position;
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit01");
-
             Collider = new BoxCollider
             {
                 Position = Position,
@@ -49,6 +53,9 @@ namespace Pedestrian
                 Height = Texture.Height - 3,
                 OnCollisionEnter = OnCollisionEnter
             };
+            crashTimer = Timers.GetTimer(MaxCrashTime);
+            crashTimer.Paused = true;
+            crashTimer.OnTimerEnd = (() => IsCrashed = false);
         }
 
         public void OnCollisionEnter(IEnumerable<IEntity> entities)
@@ -63,14 +70,20 @@ namespace Pedestrian
 
         private void Crash()
         {
-            //throw new NotImplementedException();
+            IsCrashed = true;
+            crashTimer.Reset();
+            crashTimer.Paused = false;
         }
 
         public void Update(GameTime time)
         {
             var throttle = Input.GetThrottleValue();
             var speed = MaxSpeed;
-            if (throttle < 0) {
+            if (IsCrashed)
+            {
+                speed = CrashedSpeed;
+            }
+            else if (throttle < 0) {
                 speed = MaxReverseSpeed;
             }
             speed *= throttle;

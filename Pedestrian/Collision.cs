@@ -35,23 +35,25 @@ namespace Pedestrian
 
             // Get all collisions first before notifying colliders to avoid any
             // changes inside collision handlers affecting subsequent collision checks
-            foreach (var entity in entities)
+            for (int i = 0, l = entityArray.Length; i < l; ++i)
             {
+                var entity = entityArray[i];
                 entity.Collider.CurrentCollidingEntities = GetCollisions(entity, entityArray);
             }
-            
-            foreach (var entity in entityArray)
+
+            for (int i = 0, l = entityArray.Length; i < l; ++i)
             {
+                var entity = entityArray[i];
                 var collider = entity.Collider;
                 var entered = Enumerable.Except(collider.CurrentCollidingEntities, collider.PreviousCollidingEntities);
                 var exited = Enumerable.Except(collider.PreviousCollidingEntities, collider.CurrentCollidingEntities);
                 if (entered.Any())
                 {
-                    collider.OnCollisionEnter(entered);
+                    collider.OnCollisionEnter?.Invoke(entered);
                 }
                 if (exited.Any())
                 {
-                    collider.OnCollisionExit(exited);
+                    collider.OnCollisionExit?.Invoke(exited);
                 }
                 collider.PreviousCollidingEntities = collider.CurrentCollidingEntities;
             }
