@@ -36,7 +36,7 @@ namespace Pedestrian
             // run fullscreen and fill player's screen resolution
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            //graphics.ToggleFullScreen();
+            graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
 
