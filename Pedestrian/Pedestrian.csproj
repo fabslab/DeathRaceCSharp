@@ -86,12 +86,14 @@
     <Compile Include="Border.cs" />
     <Compile Include="BoxCollider.cs" />
     <Compile Include="Collision.cs" />
+    <Compile Include="ColliderCategory.cs" />
     <Compile Include="ContainerCollider.cs" />
     <Compile Include="ContentExtensions\ContentManagerExtensions.cs" />
     <Compile Include="ContentExtensions\ContentReaderExtensions.cs" />
     <Compile Include="EventEmitter.cs" />
     <Compile Include="GameArea.cs" />
     <Compile Include="Scoreboard.cs" />
+    <Compile Include="AreaEntity.cs" />
     <Compile Include="Size.cs" />
     <Compile Include="TextureAtlases\SpriteBatchExtensions.cs" />
     <Compile Include="TextureAtlases\TextureAtlas.cs" />

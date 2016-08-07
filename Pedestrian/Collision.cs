@@ -21,29 +21,33 @@ namespace Pedestrian
 
         public static bool IsColliding(IEntity entity1, IEntity entity2)
         {
+            var collider1 = entity1.Collider;
+            var collider2 = entity2.Collider;
             return 
                 entity1 != entity2 && 
-                entity1.Collider != null &&
-                entity2.Collider != null &&
-                entity1.Collider != entity2.Collider &&
-                entity1.Collider.Collides(entity2.Collider);
+                collider1 != null && collider2 != null &&
+                collider1 != collider2 &&
+                (collider1.CollisionFilter & collider2.Category) != 0 &&
+                (collider2.CollisionFilter & collider1.Category) != 0 &&
+                collider1.Collides(collider2);
         }
 
         public static void Update(IEnumerable<IEntity> entities)
         {
-            var entityArray = entities.ToArray();
+            var allEntities = entities.ToArray();
+            var movingEntities = entities.Where(e => !e.IsStatic).ToArray();
 
             // Get all collisions first before notifying colliders to avoid any
             // changes inside collision handlers affecting subsequent collision checks
-            for (int i = 0, l = entityArray.Length; i < l; ++i)
+            for (int i = 0, l = movingEntities.Length; i < l; ++i)
             {
-                var entity = entityArray[i];
-                entity.Collider.CurrentCollidingEntities = GetCollisions(entity, entityArray);
+                var entity = movingEntities[i];
+                entity.Collider.CurrentCollidingEntities = GetCollisions(entity, allEntities);
             }
 
-            for (int i = 0, l = entityArray.Length; i < l; ++i)
+            for (int i = 0, l = movingEntities.Length; i < l; ++i)
             {
-                var entity = entityArray[i];
+                var entity = movingEntities[i];
                 var collider = entity.Collider;
                 var entered = Enumerable.Except(collider.CurrentCollidingEntities, collider.PreviousCollidingEntities);
                 var exited = Enumerable.Except(collider.PreviousCollidingEntities, collider.CurrentCollidingEntities);

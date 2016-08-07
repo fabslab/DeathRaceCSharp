@@ -13,6 +13,7 @@ namespace Pedestrian
         Timer crashTimer;
         
         public int Score { get; private set; } = 0;
+        public bool IsStatic { get; } = false;
         public Color Color { get; set; } = Color.White;
         public Vector2 Position { get; set; } = Vector2.Zero;
         public PlayerInput Input { get; set; } = new KeyboardInput();
@@ -31,6 +32,7 @@ namespace Pedestrian
         public int MaxCrashTime { get; set; } = 1000;
         public bool IsCrashed { get; set; } = false;
         public Collider Collider { get; }
+
 
         private Texture2D Texture
         {
@@ -53,6 +55,7 @@ namespace Pedestrian
                 Height = Texture.Height - 3,
                 OnCollisionEnter = OnCollisionEnter
             };
+
             crashTimer = Timers.GetTimer(MaxCrashTime);
             crashTimer.Paused = true;
             crashTimer.OnTimerEnd = (() => IsCrashed = false);

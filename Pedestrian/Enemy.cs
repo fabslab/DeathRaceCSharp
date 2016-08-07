@@ -21,10 +21,11 @@ namespace Pedestrian
         // Min and max ms to wait before enemy turns
         public int[] IntervalRangeForTurn { get; set; } = new int[] { 500, 1800 };
         public Color Color { get; set; } = Color.White;
-        public Vector2 Position { get; set; }
+        public bool IsStatic { get; } = false;
         public float Speed { get; set; } = 3f;
-        public Vector2 MovementDirection { get; set; }
-        public Collider Collider { get; private set; }
+        public Vector2 Position { get; private set; }
+        public Vector2 MovementDirection { get; private set; }
+        public Collider Collider { get; }
 
         public Enemy(Vector2 enemyPosition)
         {
@@ -40,13 +41,15 @@ namespace Pedestrian
             sideSprite = new AnimatedTexture();
             sideSprite.Load("gremlin16bit-side01", 2, 50);
             currentSprite = frontSprite;
-
+            
             Collider = new BoxCollider
             {
                 Position = enemyPosition,
                 Width = frontSprite.FrameWidth - 3,
                 Height = frontSprite.FrameHeight - 1,
-                OnCollisionEnter = OnCollisionEnter
+                OnCollisionEnter = OnCollisionEnter,
+                // Collides only with default and not other collider types (sidewalk)
+                CollisionFilter = ColliderCategory.Default
             };
         }
 
@@ -119,7 +122,7 @@ namespace Pedestrian
             previousPosition = Position;
             Position += MovementDirection * Speed;
             Collider.Position = Position;
-            
+
             currentSprite.Update(time);
         }
 

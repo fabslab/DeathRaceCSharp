@@ -18,6 +18,11 @@ namespace Pedestrian
         public IEntity[] CurrentCollidingEntities { get; set; } = new IEntity[] { };
         public Action<IEnumerable<IEntity>> OnCollisionEnter { get; set; }
         public Action<IEnumerable<IEntity>> OnCollisionExit { get; set; }
+        
+        // Defines which categories of colliders this collider can collide with
+        // By default it will collide with all categories of colliders
+        public ColliderCategory CollisionFilter { get; set; } = ColliderCategory.All;
+        public ColliderCategory Category { get; set; } = ColliderCategory.Default;
 
         public Rectangle Bounds
         {
@@ -61,6 +66,11 @@ namespace Pedestrian
         {
             Array.Clear(CurrentCollidingEntities, 0, CurrentCollidingEntities.Length);
             Array.Clear(PreviousCollidingEntities, 0, PreviousCollidingEntities.Length);
+        }
+
+        public void SetCollisionFilter(ColliderCategory categories)
+        {
+            CollisionFilter = categories;
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -35,7 +35,7 @@ namespace Pedestrian
                 Width,
                 Height
             );
-            gameArea = new GameArea(borderRectangle);
+            gameArea = new GameArea(borderRectangle, entities);
 
             // Initialize the players
             var player1Position = new Vector2((int)(Width * 0.25), (int)(Height * 0.8));

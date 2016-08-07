@@ -9,6 +9,7 @@ namespace Pedestrian
         Vector2 origin;
 
         public Color Color { get; set; } = Color.White;
+        public bool IsStatic { get; } = true;
         public Vector2 Position { get; private set; }
         public Collider Collider { get; }
         public Texture2D Texture

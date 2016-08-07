@@ -8,6 +8,7 @@ namespace Pedestrian
     {
         Collider Collider { get; }
         Vector2 Position { get; }
+        bool IsStatic { get; }
 
         void Update(GameTime gameTime);
         void Draw(GameTime gameTime, SpriteBatch spriteBatch);
