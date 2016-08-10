@@ -27,7 +27,6 @@ namespace Pedestrian
         // Max number of pixels to move in one movement
         public float MaxSpeed { get; set; } = 3f;
         public float MaxReverseSpeed { get; set; } = 1f;
-        public float CrashedSpeed { get; set; } = 0;
         // Num ms player will be stationary after crashing if not cancelled by reversing
         public int MaxCrashTime { get; set; } = 1000;
         public bool IsCrashed { get; set; } = false;
@@ -53,7 +52,8 @@ namespace Pedestrian
                 Position = Position,
                 Width = Texture.Width - 5,
                 Height = Texture.Height - 3,
-                OnCollisionEnter = OnCollisionEnter
+                OnCollisionEnter = OnCollisionEnter,
+                OnCollisionExit = OnCollisionExit
             };
 
             crashTimer = Timers.GetTimer(MaxCrashTime);
@@ -68,7 +68,13 @@ namespace Pedestrian
             if (entities.Any())
             {
                 Crash();
+                MaxSpeed /= 2;
             }
+        }
+
+        public void OnCollisionExit(IEnumerable<IEntity> entities)
+        {
+            MaxSpeed *= 2;
         }
 
         private void Crash()
@@ -89,7 +95,7 @@ namespace Pedestrian
             }
             else if (IsCrashed)
             {
-                speed = CrashedSpeed;
+                speed = 0;
             }
             speed *= throttle;
 
