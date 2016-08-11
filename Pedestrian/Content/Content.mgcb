@@ -62,11 +62,6 @@
 /processorParam:TextureFormat=Color
 /build:gremlin16bit02.png
 
-#begin munro-edit-font01.fnt
-/importer:BitmapFontImporter
-/processor:BitmapFontProcessor
-/build:munro-edit-font01.fnt
-
 #begin munro-edit-font01_0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -78,4 +73,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:munro-edit-font01_0.png
+
+#begin munro-edit-font01.fnt
+/importer:
+/processor:
+/build:munro-edit-font01.fnt
 

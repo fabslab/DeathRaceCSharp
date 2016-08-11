@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Pedestrian.TextureAtlases
+namespace Pedestrian.Engine.TextureAtlases
 {
     public class TextureRegion2D
     {

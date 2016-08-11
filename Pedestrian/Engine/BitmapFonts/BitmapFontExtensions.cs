@@ -1,10 +1,10 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pedestrian.TextureAtlases;
+using Pedestrian.Engine.TextureAtlases;
 using System.Linq;
 
-namespace Pedestrian.BitmapFonts
+namespace Pedestrian.Engine.BitmapFonts
 {
     public static class BitmapFontExtensions
     {

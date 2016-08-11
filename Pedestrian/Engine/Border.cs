@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Pedestrian
+namespace Pedestrian.Engine
 {
     public static class Border
     {

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pedestrian.Engine;
+using Pedestrian.Engine.Collision;
 using System.Collections.Generic;
 
 namespace Pedestrian

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace Pedestrian.BitmapFonts
+namespace Pedestrian.Engine.BitmapFonts
 {
     public class BitmapFont
     {

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace Pedestrian
+namespace Pedestrian.Engine.Collision
 {
     public abstract class Collider
     {
@@ -17,12 +17,13 @@ namespace Pedestrian
         public IEntity[] PreviousCollidingEntities { get; set; } = new IEntity[] { };
         public IEntity[] CurrentCollidingEntities { get; set; } = new IEntity[] { };
         public Action<IEnumerable<IEntity>> OnCollisionEnter { get; set; }
+        public Action<IEnumerable<IEntity>> OnCollision { get; set; }
         public Action<IEnumerable<IEntity>> OnCollisionExit { get; set; }
         
         // Defines which categories of colliders this collider can collide with
         // By default it will collide with all categories of colliders
-        public ColliderCategory CollisionFilter { get; set; } = ColliderCategory.All;
-        public ColliderCategory Category { get; set; } = ColliderCategory.Default;
+        public Enum CollisionFilter { get; set; } = ColliderCategory.All;
+        public Enum Category { get; set; } = ColliderCategory.Default;
 
         public Rectangle Bounds
         {

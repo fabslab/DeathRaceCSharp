@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Pedestrian.BitmapFonts;
+using Pedestrian.Engine.BitmapFonts;
 
 namespace Pedestrian.Pipeline.BitmapFonts
 {

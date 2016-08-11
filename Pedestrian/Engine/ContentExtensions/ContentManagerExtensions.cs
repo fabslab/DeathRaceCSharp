@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Pedestrian.ContentExtension
+namespace Pedestrian.Engine.ContentExtensions
 {
     public static class ContentManagerExtensions
     {

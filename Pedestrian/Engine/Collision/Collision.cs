@@ -1,10 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Pedestrian
+namespace Pedestrian.Engine.Collision
 {
     public static class Collision
     {
@@ -27,8 +24,8 @@ namespace Pedestrian
                 entity1 != entity2 && 
                 collider1 != null && collider2 != null &&
                 collider1 != collider2 &&
-                (collider1.CollisionFilter & collider2.Category) != 0 &&
-                (collider2.CollisionFilter & collider1.Category) != 0 &&
+                (collider1.CollisionFilter.HasFlag(collider2.Category)) &&
+                (collider2.CollisionFilter.HasFlag(collider1.Category)) &&
                 collider1.Collides(collider2);
         }
 
@@ -54,6 +51,10 @@ namespace Pedestrian
                 if (entered.Any())
                 {
                     collider.OnCollisionEnter?.Invoke(entered);
+                }
+                if (collider.CurrentCollidingEntities.Any())
+                {
+                    collider.OnCollision?.Invoke(collider.CurrentCollidingEntities);
                 }
                 if (exited.Any())
                 {

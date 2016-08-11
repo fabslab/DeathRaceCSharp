@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Pedestrian
+namespace Pedestrian.Engine
 {
     /// <summary>
     /// Simple event emitter where generic contraint should be either an int or an enum

@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Pedestrian.ContentExtensions;
+using Pedestrian.Engine.ContentExtensions;
 
-namespace Pedestrian.TextureAtlases
+namespace Pedestrian.Engine.TextureAtlases
 {
     public class TextureAtlasReader : ContentTypeReader<TextureAtlas>
     {

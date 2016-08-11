@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pedestrian.Engine;
+using Pedestrian.Engine.Collision;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,10 +27,11 @@ namespace Pedestrian
         public float MaxTurnAngle { get; set; } = MathHelper.PiOver4 / 6;
         public float RotationSnapValue { get; set; } = MathHelper.PiOver4 / 2;
         // Max number of pixels to move in one movement
-        public float MaxSpeed { get; set; } = 3f;
+        public float DefaultMaxSpeed { get; set; } = 3f;
+        public float CurrentMaxSpeed { get; set; } = 3f;
         public float MaxReverseSpeed { get; set; } = 1f;
         // Num ms player will be stationary after crashing if not cancelled by reversing
-        public int MaxCrashTime { get; set; } = 1000;
+        public int MaxCrashTime { get; set; } = 1500;
         public bool IsCrashed { get; set; } = false;
         public Collider Collider { get; }
 
@@ -53,7 +56,8 @@ namespace Pedestrian
                 Width = Texture.Width - 5,
                 Height = Texture.Height - 3,
                 OnCollisionEnter = OnCollisionEnter,
-                OnCollisionExit = OnCollisionExit
+                OnCollisionExit = OnCollisionExit,
+                OnCollision = OnCollision
             };
 
             crashTimer = Timers.GetTimer(MaxCrashTime);
@@ -68,13 +72,17 @@ namespace Pedestrian
             if (entities.Any())
             {
                 Crash();
-                MaxSpeed /= 2;
             }
+        }
+
+        public void OnCollision(IEnumerable<IEntity> entities)
+        {
+            CurrentMaxSpeed = DefaultMaxSpeed / 2;
         }
 
         public void OnCollisionExit(IEnumerable<IEntity> entities)
         {
-            MaxSpeed *= 2;
+            CurrentMaxSpeed = DefaultMaxSpeed;
         }
 
         private void Crash()
@@ -87,10 +95,11 @@ namespace Pedestrian
         public void Update(GameTime time)
         {
             var throttle = Input.GetThrottleValue();
-            var speed = MaxSpeed;
+            var speed = CurrentMaxSpeed;
             if (throttle < 0)
             {
                 speed = MaxReverseSpeed;
+                // Reversing cancels crash time
                 IsCrashed = false;
             }
             else if (IsCrashed)
@@ -103,9 +112,9 @@ namespace Pedestrian
 
             // Invert turn angle when in reverse so still 
             // move in corresponding direction in screen space
-            if (speed < 0) { turnRadians = -turnRadians; }
-            // Decrease turning speed by half when not accelerating
-            else if (speed == 0) { turnRadians /= 2; }
+            if (speed < 0) {
+                turnRadians = -turnRadians;
+            }
 
             Rotation += turnRadians;
             snappedRotation = MathUtil.Snap(Rotation, RotationSnapValue);

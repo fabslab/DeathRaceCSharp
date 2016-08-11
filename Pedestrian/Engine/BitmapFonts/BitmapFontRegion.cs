@@ -1,6 +1,6 @@
-using Pedestrian.TextureAtlases;
+using Pedestrian.Engine.TextureAtlases;
 
-namespace Pedestrian.BitmapFonts
+namespace Pedestrian.Engine.BitmapFonts
 {
     public class BitmapFontRegion
     {

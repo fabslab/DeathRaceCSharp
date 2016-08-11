@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Pedestrian.TextureAtlases
+namespace Pedestrian.Engine.TextureAtlases
 {
     public class TextureAtlas : IEnumerable<TextureRegion2D>
     {

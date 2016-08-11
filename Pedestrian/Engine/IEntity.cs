@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
+using Pedestrian.Engine.Collision;
 
-namespace Pedestrian
+namespace Pedestrian.Engine
 {
     public interface IEntity
     {

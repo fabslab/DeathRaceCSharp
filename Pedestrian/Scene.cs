@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pedestrian.BitmapFonts;
+using Pedestrian.Engine;
+using Pedestrian.Engine.Collision;
 using System.Collections.Generic;
 
 namespace Pedestrian
@@ -9,7 +10,7 @@ namespace Pedestrian
     {
         public const int SCOREBOARD_HEIGHT = 30;
         
-        public static EventEmitter<CoreEvents, IEntity> Events { get; set; }
+        public static EventEmitter<GameEvents, IEntity> Events { get; set; }
 
         int Width { get { return PedestrianGame.VIRTUAL_WIDTH; } }
         int Height { get { return PedestrianGame.VIRTUAL_HEIGHT - SCOREBOARD_HEIGHT - 1; } }
@@ -73,9 +74,9 @@ namespace Pedestrian
             scoreboard.Margin = gameArea.SidewalkWidth + gameArea.BorderWidth;
             scoreboard.IsActive = true;
 
-            Events = new EventEmitter<CoreEvents, IEntity>(new CoreEventsComparer());
-            Events.AddObserver(CoreEvents.EnemyKilled, CreateTombstone);
-            Events.AddObserver(CoreEvents.GameOver, e => gameOver = true);
+            Events = new EventEmitter<GameEvents, IEntity>(new CoreEventsComparer());
+            Events.AddObserver(GameEvents.EnemyKilled, CreateTombstone);
+            Events.AddObserver(GameEvents.GameOver, e => gameOver = true);
         }
 
         public void Update(GameTime gameTime)

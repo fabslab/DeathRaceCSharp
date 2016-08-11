@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Content;
 
-namespace Pedestrian.ContentExtensions
+namespace Pedestrian.Engine.ContentExtensions
 {
     internal static class ContentReaderExtensions
     {

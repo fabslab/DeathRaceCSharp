@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pedestrian.BitmapFonts;
+using Pedestrian.Engine.BitmapFonts;
 
 namespace Pedestrian
 {
@@ -61,7 +61,7 @@ namespace Pedestrian
                 if (timeRemaining == 0)
                 {
                     IsActive = false;
-                    Scene.Events.Emit(CoreEvents.GameOver, null);
+                    Scene.Events.Emit(GameEvents.GameOver, null);
                 }
             }
         }

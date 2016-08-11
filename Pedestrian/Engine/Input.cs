@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System;
 
-namespace Pedestrian
+namespace Pedestrian.Engine
 {
     public interface PlayerInput
     {

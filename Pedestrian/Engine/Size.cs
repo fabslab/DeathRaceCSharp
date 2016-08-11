@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace Pedestrian
+namespace Pedestrian.Engine
 {
     public struct Size : IEquatable<Size>
     {

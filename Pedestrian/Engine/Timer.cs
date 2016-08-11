@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Pedestrian
+namespace Pedestrian.Engine
 {
     public static class Timers
     {

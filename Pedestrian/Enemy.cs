@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pedestrian.Engine;
+using Pedestrian.Engine.Collision;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +59,7 @@ namespace Pedestrian
         {
             if (entities.Any(e => e is Player))
             {
-                Scene.Events.Emit(CoreEvents.EnemyKilled, this);
+                Scene.Events.Emit(GameEvents.EnemyKilled, this);
                 Die();
             }
             else if (entities.Any())

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Pedestrian
+namespace Pedestrian.Engine.Collision
 {
     public class ContainerCollider : Collider
     {

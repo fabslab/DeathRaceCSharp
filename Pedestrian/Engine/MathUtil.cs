@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace Pedestrian
+namespace Pedestrian.Engine
 {
     public static class MathUtil
     {

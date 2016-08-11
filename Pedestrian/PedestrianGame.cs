@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Pedestrian.Engine;
 using System;
 
 namespace Pedestrian
@@ -36,7 +37,7 @@ namespace Pedestrian
             // run fullscreen and fill player's screen resolution
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            graphics.ToggleFullScreen();
+            //graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
 

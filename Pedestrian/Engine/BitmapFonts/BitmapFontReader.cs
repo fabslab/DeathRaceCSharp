@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Pedestrian.ContentExtensions;
-using Pedestrian.TextureAtlases;
+using Pedestrian.Engine.ContentExtensions;
+using Pedestrian.Engine.TextureAtlases;
 
-namespace Pedestrian.BitmapFonts
+namespace Pedestrian.Engine.BitmapFonts
 {
     public class BitmapFontReader : ContentTypeReader<BitmapFont>
     {

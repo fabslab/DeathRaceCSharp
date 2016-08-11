@@ -78,41 +78,40 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AnimatedTexture.cs" />
-    <Compile Include="BitmapFonts\BitmapFont.cs" />
-    <Compile Include="BitmapFonts\BitmapFontExtensions.cs" />
-    <Compile Include="BitmapFonts\BitmapFontReader.cs" />
-    <Compile Include="BitmapFonts\BitmapFontRegion.cs" />
-    <Compile Include="Border.cs" />
-    <Compile Include="BoxCollider.cs" />
-    <Compile Include="Collision.cs" />
+    <Compile Include="Engine\AnimatedTexture.cs" />
+    <Compile Include="Engine\BitmapFonts\BitmapFont.cs" />
+    <Compile Include="Engine\BitmapFonts\BitmapFontExtensions.cs" />
+    <Compile Include="Engine\BitmapFonts\BitmapFontReader.cs" />
+    <Compile Include="Engine\BitmapFonts\BitmapFontRegion.cs" />
+    <Compile Include="Engine\Border.cs" />
+    <Compile Include="Engine\Collision\BoxCollider.cs" />
+    <Compile Include="Engine\Collision\Collision.cs" />
     <Compile Include="ColliderCategory.cs" />
-    <Compile Include="ContainerCollider.cs" />
-    <Compile Include="ContentExtensions\ContentManagerExtensions.cs" />
-    <Compile Include="ContentExtensions\ContentReaderExtensions.cs" />
-    <Compile Include="EventEmitter.cs" />
+    <Compile Include="Engine\Collision\ContainerCollider.cs" />
+    <Compile Include="Engine\ContentExtensions\ContentManagerExtensions.cs" />
+    <Compile Include="Engine\ContentExtensions\ContentReaderExtensions.cs" />
+    <Compile Include="Engine\EventEmitter.cs" />
     <Compile Include="GameArea.cs" />
     <Compile Include="Scoreboard.cs" />
     <Compile Include="AreaEntity.cs" />
-    <Compile Include="Size.cs" />
-    <Compile Include="TextureAtlases\SpriteBatchExtensions.cs" />
-    <Compile Include="TextureAtlases\TextureAtlas.cs" />
-    <Compile Include="TextureAtlases\TextureAtlasReader.cs" />
-    <Compile Include="TextureAtlases\TextureRegion2D.cs" />
-    <Compile Include="Timer.cs" />
-    <Compile Include="UnorderedPair.cs" />
+    <Compile Include="Engine\Size.cs" />
+    <Compile Include="Engine\TextureAtlases\SpriteBatchExtensions.cs" />
+    <Compile Include="Engine\TextureAtlases\TextureAtlas.cs" />
+    <Compile Include="Engine\TextureAtlases\TextureAtlasReader.cs" />
+    <Compile Include="Engine\TextureAtlases\TextureRegion2D.cs" />
+    <Compile Include="Engine\Timer.cs" />
     <Compile Include="DashedLine.cs" />
-    <Compile Include="Direction.cs" />
-    <Compile Include="Collider.cs" />
-    <Compile Include="IEntity.cs" />
+    <Compile Include="Engine\Direction.cs" />
+    <Compile Include="Engine\Collision\Collider.cs" />
+    <Compile Include="Engine\IEntity.cs" />
     <Compile Include="Enemy.cs" />
-    <Compile Include="Input.cs" />
+    <Compile Include="Engine\Input.cs" />
     <Compile Include="PedestrianGame.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />
-    <Compile Include="MathUtil.cs" />
+    <Compile Include="Engine\MathUtil.cs" />
     <Compile Include="Tombstone.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -131,7 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
-    <Compile Include="CoreEvents.cs" />
+    <Compile Include="GameEvents.cs" />
     <Content Include="OpenTK.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
