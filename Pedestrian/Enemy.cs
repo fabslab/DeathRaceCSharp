@@ -13,7 +13,8 @@ namespace Pedestrian
         static Random randomTurn = new Random();
 
         AnimatedTexture frontSprite;
-        AnimatedTexture sideSprite;
+        AnimatedTexture leftSprite;
+        AnimatedTexture rightSprite;
         AnimatedTexture currentSprite;
         Vector2 initialDirection;
         Vector2 initialPosition;
@@ -40,8 +41,10 @@ namespace Pedestrian
 
             frontSprite = new AnimatedTexture();
             frontSprite.Load("gremlin16bit02", 2, 50);
-            sideSprite = new AnimatedTexture();
-            sideSprite.Load("gremlin16bit-side01", 2, 50);
+            leftSprite = new AnimatedTexture();
+            leftSprite.Load("gremlin16bit-left01", 2, 50);
+            rightSprite = new AnimatedTexture();
+            rightSprite.Load("gremlin16bit-right01", 2, 50);
             currentSprite = frontSprite;
 
             // Collides only with default and not other collider types (sidewalk)
@@ -89,10 +92,13 @@ namespace Pedestrian
 
             MovementDirection = new Vector2(resultantDirection.X, resultantDirection.Y);
 
-            if (MovementDirection == DirectionMap.DIRECTION_VECTORS[Direction.Left] ||
-                MovementDirection == DirectionMap.DIRECTION_VECTORS[Direction.Right])
+            if (MovementDirection == DirectionMap.DIRECTION_VECTORS[Direction.Left])
             {
-                currentSprite = sideSprite;
+                currentSprite = leftSprite;
+            }
+            else if (MovementDirection == DirectionMap.DIRECTION_VECTORS[Direction.Right])
+            {
+                currentSprite = rightSprite;
             }
             else
             {
@@ -129,16 +135,7 @@ namespace Pedestrian
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // Assume side sprite is drawn facing left direction 
-            // so flip if current direction is right
-            // TODO: create right-facing sprite instead of using flip effect
-            SpriteEffects flipEffect = SpriteEffects.None;
-            if (MovementDirection == DirectionMap.DIRECTION_VECTORS[Direction.Right])
-            {
-                flipEffect = SpriteEffects.FlipHorizontally;
-            }
-
-            currentSprite.Draw(spriteBatch, Position, flipEffect);
+            currentSprite.Draw(spriteBatch, Position);
         }
 
         public void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch)

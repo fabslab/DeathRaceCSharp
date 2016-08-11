@@ -6,12 +6,14 @@ namespace Pedestrian
     public class ControllerInput : IPlayerInput
     {
         GamePadState controller;
+        PlayerIndex index;
 
         public bool IsConnected => controller.IsConnected;
 
         public ControllerInput(PlayerIndex playerIndex = PlayerIndex.One)
         {
-            controller = GamePad.GetState(playerIndex);
+            index = playerIndex;
+            controller = GamePad.GetState(index);
         }
 
         public float GetThrottleValue()
@@ -20,11 +22,11 @@ namespace Pedestrian
 
             var throttle = 0;
 
-            if (controller.Triggers.Right >= 0.8)
+            if (controller.Triggers.Right >= 0.4)
             {
                 throttle += 1;
             }
-            if (controller.Triggers.Left >= 0.8)
+            if (controller.Triggers.Left >= 0.4)
             {
                 throttle -= 1;
             }
