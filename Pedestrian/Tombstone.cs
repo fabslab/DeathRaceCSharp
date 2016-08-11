@@ -28,7 +28,7 @@ namespace Pedestrian
         {
             Position = position;
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("cross16bit01");
-            Collider = new BoxCollider
+            Collider = new BoxCollider(ColliderCategory.Default, ColliderCategory.All)
             {
                 Position = position,
                 Width = Texture.Width - 7,

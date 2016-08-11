@@ -14,13 +14,10 @@ namespace Pedestrian
         public Vector2 Position { get; }
         public bool IsStatic { get; } = true;
 
-        public AreaEntity(Rectangle area, ColliderCategory colliderCategory)
+        public AreaEntity(Rectangle area, ColliderCategory colliderCategory, ColliderCategory collisionFilter)
         {
             Position = new Vector2(area.Center.X, area.Center.Y);
-            Collider = new BoxCollider(area)
-            {
-                Category = colliderCategory
-            };
+            Collider = new BoxCollider(area, colliderCategory, collisionFilter);
         }
 
         public void Update(GameTime gameTime) { }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Pedestrian
 {
-    public class GameArea : IEntity
+    public class PlayArea : IEntity
     {
         public Collider Collider { get; }
         public Vector2 Position { get; }
@@ -18,7 +18,7 @@ namespace Pedestrian
         Rectangle borderRect, bounds;
         AreaEntity leftSidwalk, rightSidewalk;
 
-        public GameArea(Rectangle area, List<IEntity> entities)
+        public PlayArea(Rectangle area, List<IEntity> entities)
         {
             borderRect = area;
 
@@ -30,7 +30,7 @@ namespace Pedestrian
                 area.Height - 2 * BorderWidth
             );
 
-            Collider = new ContainerCollider(bounds);
+            Collider = new ContainerCollider(bounds, ColliderCategory.Default, ColliderCategory.All);
 
             var leftSidewalkArea = new Rectangle(bounds.X, bounds.Y, SidewalkWidth, bounds.Height);
             var rightSidewalkArea = new Rectangle(bounds.Right - SidewalkWidth, bounds.Y, SidewalkWidth, bounds.Height);
@@ -38,8 +38,8 @@ namespace Pedestrian
             sidewalkLine1Position = new Vector2(leftSidewalkArea.Right - BorderWidth, leftSidewalkArea.Y);
             sidewalkLine2Position = new Vector2(rightSidewalkArea.X, leftSidewalkArea.Y);
 
-            leftSidwalk = new AreaEntity(leftSidewalkArea, ColliderCategory.Sidewalk);
-            rightSidewalk = new AreaEntity(rightSidewalkArea, ColliderCategory.Sidewalk);
+            leftSidwalk = new AreaEntity(leftSidewalkArea, ColliderCategory.Sidewalk, ColliderCategory.Default);
+            rightSidewalk = new AreaEntity(rightSidewalkArea, ColliderCategory.Sidewalk, ColliderCategory.Default);
             entities.Add(leftSidwalk);
             entities.Add(rightSidewalk);
         }

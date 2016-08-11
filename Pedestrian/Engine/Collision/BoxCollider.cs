@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Pedestrian.Engine.Collision
 {
@@ -7,9 +8,11 @@ namespace Pedestrian.Engine.Collision
     /// </summary>
     public class BoxCollider : Collider
     {
-        public BoxCollider() {}
+        public BoxCollider(Enum category, Enum collisionFilter) 
+            : base(category, collisionFilter) {}
 
-        public BoxCollider(Rectangle area)
+        public BoxCollider(Rectangle area, Enum category, Enum collisionFilter)
+            : base(category, collisionFilter)
         {
             Position = new Vector2(area.Center.X, area.Center.Y);
             Width = area.Width;

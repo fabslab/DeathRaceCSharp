@@ -43,15 +43,14 @@ namespace Pedestrian
             sideSprite = new AnimatedTexture();
             sideSprite.Load("gremlin16bit-side01", 2, 50);
             currentSprite = frontSprite;
-            
-            Collider = new BoxCollider
+
+            // Collides only with default and not other collider types (sidewalk)
+            Collider = new BoxCollider(ColliderCategory.Default, ColliderCategory.Default)
             {
                 Position = enemyPosition,
                 Width = frontSprite.FrameWidth - 3,
                 Height = frontSprite.FrameHeight - 1,
-                OnCollisionEnter = OnCollisionEnter,
-                // Collides only with default and not other collider types (sidewalk)
-                CollisionFilter = ColliderCategory.Default
+                OnCollisionEntered = OnCollisionEnter
             };
         }
 

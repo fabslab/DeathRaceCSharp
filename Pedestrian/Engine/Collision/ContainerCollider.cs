@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Pedestrian.Engine.Collision
 {
     public class ContainerCollider : Collider
     {
-        public ContainerCollider(Rectangle rectangle)
+        public ContainerCollider(Rectangle rectangle, Enum category, Enum collisionFilter)
+            : base(category, collisionFilter)
         {
             bounds = rectangle;
             invalidBounds = false;

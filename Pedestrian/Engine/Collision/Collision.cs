@@ -50,7 +50,7 @@ namespace Pedestrian.Engine.Collision
                 var exited = Enumerable.Except(collider.PreviousCollidingEntities, collider.CurrentCollidingEntities);
                 if (entered.Any())
                 {
-                    collider.OnCollisionEnter?.Invoke(entered);
+                    collider.OnCollisionEntered?.Invoke(entered);
                 }
                 if (collider.CurrentCollidingEntities.Any())
                 {
@@ -58,7 +58,7 @@ namespace Pedestrian.Engine.Collision
                 }
                 if (exited.Any())
                 {
-                    collider.OnCollisionExit?.Invoke(exited);
+                    collider.OnCollisionExited?.Invoke(exited);
                 }
                 collider.PreviousCollidingEntities = collider.CurrentCollidingEntities;
             }

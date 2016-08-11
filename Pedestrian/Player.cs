@@ -50,13 +50,13 @@ namespace Pedestrian
         {
             Position = position;
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit01");
-            Collider = new BoxCollider
+            Collider = new BoxCollider(ColliderCategory.Default, ColliderCategory.All)
             {
                 Position = Position,
                 Width = Texture.Width - 5,
                 Height = Texture.Height - 3,
-                OnCollisionEnter = OnCollisionEnter,
-                OnCollisionExit = OnCollisionExit,
+                OnCollisionEntered = OnCollisionEntered,
+                OnCollisionExited = OnCollisionExited,
                 OnCollision = OnCollision
             };
 
@@ -65,7 +65,7 @@ namespace Pedestrian
             crashTimer.OnTimerEnd = (() => IsCrashed = false);
         }
 
-        public void OnCollisionEnter(IEnumerable<IEntity> entities)
+        public void OnCollisionEntered(IEnumerable<IEntity> entities)
         {
             Score += entities.Count(e => e is Enemy);
 
@@ -80,7 +80,7 @@ namespace Pedestrian
             CurrentMaxSpeed = DefaultMaxSpeed / 2;
         }
 
-        public void OnCollisionExit(IEnumerable<IEntity> entities)
+        public void OnCollisionExited(IEnumerable<IEntity> entities)
         {
             CurrentMaxSpeed = DefaultMaxSpeed;
         }

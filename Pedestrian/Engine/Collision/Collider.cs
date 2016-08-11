@@ -16,14 +16,14 @@ namespace Pedestrian.Engine.Collision
         public Vector2 Offset { get; set; } = Vector2.Zero;
         public IEntity[] PreviousCollidingEntities { get; set; } = new IEntity[] { };
         public IEntity[] CurrentCollidingEntities { get; set; } = new IEntity[] { };
-        public Action<IEnumerable<IEntity>> OnCollisionEnter { get; set; }
+        public Action<IEnumerable<IEntity>> OnCollisionEntered { get; set; }
         public Action<IEnumerable<IEntity>> OnCollision { get; set; }
-        public Action<IEnumerable<IEntity>> OnCollisionExit { get; set; }
+        public Action<IEnumerable<IEntity>> OnCollisionExited { get; set; }
         
         // Defines which categories of colliders this collider can collide with
         // By default it will collide with all categories of colliders
-        public Enum CollisionFilter { get; set; } = ColliderCategory.All;
-        public Enum Category { get; set; } = ColliderCategory.Default;
+        public Enum CollisionFilter { get; set; }
+        public Enum Category { get; set; }
 
         public Rectangle Bounds
         {
@@ -54,6 +54,12 @@ namespace Pedestrian.Engine.Collision
                 position = value;
                 invalidBounds = true;
             }
+        }
+
+        public Collider(Enum category, Enum collisionFilter)
+        {
+            Category = category;
+            CollisionFilter = collisionFilter;
         }
 
         public abstract bool Collides(BoxCollider other);
