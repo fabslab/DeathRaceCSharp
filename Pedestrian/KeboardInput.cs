@@ -6,7 +6,7 @@ namespace Pedestrian
 {
     public class KeyboardInput : IPlayerInput
     {
-        private Dictionary<InputDirection, Keys> currentInputMap;
+        Dictionary<InputDirection, Keys> currentInputMap;
 
         public KeyboardInput(Dictionary<InputDirection, Keys> inputMap = null)
         {

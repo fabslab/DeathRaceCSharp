@@ -1,10 +1,23 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
 namespace Pedestrian.Engine
 {
     public class KeyboardInputMap
     {
+        public static Dictionary<InputDirection, Keys> GetInputMap(PlayerIndex playerIndex)
+        {
+            if (playerIndex == PlayerIndex.One)
+            {
+                return Primary;
+            }
+            else
+            {
+                return Secondary;
+            }
+        }
+
         public static Dictionary<InputDirection, Keys> Primary = new Dictionary<InputDirection, Keys>
             {
                 { InputDirection.Forward, Keys.W },

@@ -40,13 +40,12 @@ namespace Pedestrian
 
             // Initialize the players
             var player1Position = new Vector2((int)(Width * 0.25), (int)(Height * 0.8));
-            var player1 = new Player(player1Position);
+            var player1 = new Player(player1Position, PlayerIndex.One);
 
             var player2Position = new Vector2((int)(Width * 0.75), (int)(Height * 0.8));
-            var player2 = new Player(player2Position)
+            var player2 = new Player(player2Position, PlayerIndex.Two)
             {
-                Color = Color.DimGray,
-                Input = new KeyboardInput(KeyboardInputMap.Secondary)
+                Color = Color.DimGray
             };
 
             // Initialize the enemies - start them in specific positions

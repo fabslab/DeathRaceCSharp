@@ -18,7 +18,7 @@ namespace Pedestrian
         public bool IsStatic { get; } = false;
         public Color Color { get; set; } = Color.White;
         public Vector2 Position { get; set; } = Vector2.Zero;
-        public IPlayerInput Input { get; set; } = new KeyboardInput();
+        public IPlayerInput Input { get; set; }
         // Assume sprite was drawn pointing up for default direction
         public Vector2 InitialDirection { get; set; } = DirectionMap.DIRECTION_VECTORS[Direction.Up];
         // Rotation from InitialDirection vector in radians
@@ -46,8 +46,9 @@ namespace Pedestrian
             }
         }
 
-        public Player(Vector2 position)
+        public Player(Vector2 position, PlayerIndex playerIndex, IPlayerInput inputHandler = null)
         {
+            Input = inputHandler ?? new KeyboardInput(KeyboardInputMap.GetInputMap(playerIndex));
             Position = position;
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit01");
             Collider = new BoxCollider(ColliderCategory.Default, ColliderCategory.All)
