@@ -46,7 +46,7 @@ namespace Pedestrian
             var player2 = new Player(player2Position)
             {
                 Color = Color.DimGray,
-                Input = new KeyboardInput(KeyboardInput.INPUT_MAP_SECONDARY)
+                Input = new KeyboardInput(KeyboardInputMap.Secondary)
             };
 
             // Initialize the enemies - start them in specific positions

@@ -18,7 +18,7 @@ namespace Pedestrian
         public bool IsStatic { get; } = false;
         public Color Color { get; set; } = Color.White;
         public Vector2 Position { get; set; } = Vector2.Zero;
-        public PlayerInput Input { get; set; } = new KeyboardInput();
+        public IPlayerInput Input { get; set; } = new KeyboardInput();
         // Assume sprite was drawn pointing up for default direction
         public Vector2 InitialDirection { get; set; } = DirectionMap.DIRECTION_VECTORS[Direction.Up];
         // Rotation from InitialDirection vector in radians
