@@ -137,7 +137,11 @@ namespace Pedestrian
                 origin: origin,
                 position: Position,
                 rotation: snappedRotation,
-                color: Color
+                color: Color,
+                effects: SpriteEffects.None,
+                scale: 1,
+                layerDepth: 0,
+                sourceRectangle: null
             );
         }
 

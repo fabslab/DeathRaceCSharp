@@ -37,7 +37,7 @@ namespace Pedestrian
             // run fullscreen and fill player's screen resolution
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            //graphics.ToggleFullScreen();
+            graphics.ToggleFullScreen();
 
             Content.RootDirectory = "Content";
 
@@ -64,7 +64,6 @@ namespace Pedestrian
 
             Window.ClientSizeChanged += (s, e) => UpdateDestinationRectangle();
             Window.AllowUserResizing = true;
-            Window.Position = new Point();
         }
 
         /// <summary>
@@ -115,7 +114,13 @@ namespace Pedestrian
 
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred, 
+                BlendState.AlphaBlend, 
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullCounterClockwise
+            );
             spriteBatch.Draw(renderTarget, destinationRectangle, Color.White);
             spriteBatch.End();
         }

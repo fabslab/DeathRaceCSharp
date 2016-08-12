@@ -41,11 +41,16 @@ namespace Pedestrian
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
-                    texture: Texture,
-                    origin: origin,
-                    position: Position,
-                    color: Color
-                );
+                texture: Texture,
+                origin: origin,
+                position: Position,
+                color: Color,
+                effects: SpriteEffects.None,
+                rotation: 0,
+                scale: 1,
+                sourceRectangle: null,
+                layerDepth: 0
+            );
         }
 
         public void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch)

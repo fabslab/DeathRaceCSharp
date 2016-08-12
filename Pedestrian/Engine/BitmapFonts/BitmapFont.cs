@@ -92,8 +92,7 @@ namespace Pedestrian.Engine.BitmapFonts
         public Rectangle GetStringRectangle(string text, Vector2 position)
         {
             var size = GetSize(text);
-            var p = position.ToPoint();
-            return new Rectangle(p.X, p.Y, size.Width, size.Height);
+            return new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);
         }
 
         public override string ToString()

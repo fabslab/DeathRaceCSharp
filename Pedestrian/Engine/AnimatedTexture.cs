@@ -58,13 +58,16 @@ namespace Pedestrian.Engine
         public void Draw(SpriteBatch batch, int frame, Vector2 screenPos, SpriteEffects spriteEffect)
         {
             var frameRectangle = new Rectangle(FrameWidth * frame, 0, FrameWidth, texture.Height);
-            batch.Draw(                
+            batch.Draw(
                 texture: texture,
                 position: screenPos,
-                sourceRectangle: frameRectangle, 
+                sourceRectangle: frameRectangle,
                 color: Color,
                 origin: origin,
-                effects: spriteEffect
+                effects: spriteEffect,
+                scale: 1,
+                layerDepth: 0,
+                rotation: 0
             );
         }
     }

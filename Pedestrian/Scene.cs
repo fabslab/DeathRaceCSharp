@@ -66,9 +66,9 @@ namespace Pedestrian
             entities.Add(enemy2);
             entities.Add(player1);
             entities.Add(player2);
-            
+
             // Scoreboard displays player scores and time remaining in the game
-            var scoreboardArea = new Rectangle(Point.Zero, new Point(Width, SCOREBOARD_HEIGHT));
+            var scoreboardArea = new Rectangle(0, 0, Width, SCOREBOARD_HEIGHT);
             scoreboard = new Scoreboard(new Player[] { player1, player2 }, scoreboardArea);
             scoreboard.Margin = gameArea.SidewalkWidth + gameArea.BorderWidth;
             scoreboard.IsActive = true;
@@ -105,7 +105,13 @@ namespace Pedestrian
 
         public void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullCounterClockwise
+            );
 
             scoreboard.Draw(gameTime, spriteBatch);
 
