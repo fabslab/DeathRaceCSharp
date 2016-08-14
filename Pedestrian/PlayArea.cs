@@ -15,7 +15,9 @@ namespace Pedestrian
         public int BorderWidth { get; set; } = 2;
         Vector2 sidewalkLine1Position, sidewalkLine2Position;
 
-        Rectangle borderRect, bounds;
+        public static Rectangle Bounds { get; set; }
+
+        Rectangle borderRect;
         AreaEntity leftSidwalk, rightSidewalk;
 
         public PlayArea(Rectangle area, List<IEntity> entities)
@@ -23,17 +25,17 @@ namespace Pedestrian
             borderRect = area;
 
             // bounds is the area inside the border
-            bounds = new Rectangle(
+            Bounds = new Rectangle(
                 area.X + BorderWidth,
                 area.Y + BorderWidth,
                 area.Width - 2 * BorderWidth,
                 area.Height - 2 * BorderWidth
             );
 
-            Collider = new ContainerCollider(bounds, ColliderCategory.Default, ColliderCategory.All);
+            Collider = new ContainerCollider(Bounds, ColliderCategory.Default, ColliderCategory.All);
 
-            var leftSidewalkArea = new Rectangle(bounds.X, bounds.Y, SidewalkWidth, bounds.Height);
-            var rightSidewalkArea = new Rectangle(bounds.Right - SidewalkWidth, bounds.Y, SidewalkWidth, bounds.Height);
+            var leftSidewalkArea = new Rectangle(Bounds.X, Bounds.Y, SidewalkWidth, Bounds.Height);
+            var rightSidewalkArea = new Rectangle(Bounds.Right - SidewalkWidth, Bounds.Y, SidewalkWidth, Bounds.Height);
 
             sidewalkLine1Position = new Vector2(leftSidewalkArea.Right - BorderWidth, leftSidewalkArea.Y);
             sidewalkLine2Position = new Vector2(rightSidewalkArea.X, leftSidewalkArea.Y);

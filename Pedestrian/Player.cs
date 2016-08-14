@@ -126,7 +126,7 @@ namespace Pedestrian
             var movementDirection = Vector2.Transform(InitialDirection, rotationMatrix);
             var movement = speed * movementDirection;
 
-            Position += movement;
+            Position = PositionUtil.WrapPosition(Position + movement, PlayArea.Bounds);
             Collider.Position = Position;
         }
 
