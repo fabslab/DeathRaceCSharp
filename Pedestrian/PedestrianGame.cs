@@ -26,7 +26,7 @@ namespace Pedestrian
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        RenderTarget2D renderTarget;
+        RenderTarget2D renderTarget1, renderTarget2;
         Rectangle destinationRectangle;
         Scene scene;
         Bloom bloomEffect;
@@ -63,9 +63,19 @@ namespace Pedestrian
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            var presentationParams = GraphicsDevice.PresentationParameters;
+
             // Create render target at virtual resolution for game to render to first,
-            // then render result upscaled to screen with PointClamp to keep pixel alignment
-            renderTarget = new RenderTarget2D(GraphicsDevice, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+            // then render result upscaled to second render target at full resolution
+            // with PointClamp to keep pixel alignment then apply post processing
+            renderTarget1 = new RenderTarget2D(
+                GraphicsDevice, 
+                VIRTUAL_WIDTH, 
+                VIRTUAL_HEIGHT);
+            renderTarget2 = new RenderTarget2D(
+                GraphicsDevice,
+                presentationParams.BackBufferWidth,
+                presentationParams.BackBufferHeight);
         }
 
         /// <summary>
@@ -90,7 +100,7 @@ namespace Pedestrian
         protected override void UnloadContent()
         {
             Content.Unload();
-            renderTarget.Dispose();
+            renderTarget1.Dispose();
             bloomEffect.UnloadContent();
         }
 
@@ -117,23 +127,23 @@ namespace Pedestrian
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.SetRenderTarget(renderTarget);
+            GraphicsDevice.SetRenderTarget(renderTarget1);
             GraphicsDevice.Clear(Color.Black);
             scene.Draw(gameTime);
 
-            bloomEffect.BeginDraw();
+            GraphicsDevice.SetRenderTarget(renderTarget2);
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
                 BlendState.AlphaBlend,
                 SamplerState.PointClamp,
                 DepthStencilState.None,
-                RasterizerState.CullCounterClockwise
+                RasterizerState.CullNone
             );
-            spriteBatch.Draw(renderTarget, destinationRectangle, Color.White);
+            spriteBatch.Draw(renderTarget1, destinationRectangle, Color.White);
             spriteBatch.End();
 
-            bloomEffect.Draw(gameTime);
+            bloomEffect.Process(renderTarget2, null);
         }
 
         protected override void EndDraw()

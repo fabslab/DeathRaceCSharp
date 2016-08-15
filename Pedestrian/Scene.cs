@@ -117,7 +117,7 @@ namespace Pedestrian
                 BlendState.AlphaBlend,
                 SamplerState.PointClamp,
                 DepthStencilState.None,
-                RasterizerState.CullCounterClockwise
+                RasterizerState.CullNone
             );
 
             scoreboard.Draw(gameTime, spriteBatch);
