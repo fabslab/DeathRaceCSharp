@@ -79,7 +79,10 @@ namespace Pedestrian
                         enemy.Kill();
                         Score++;
                     }
-                    Crash();
+                    if (entities.Any(e => !(e is Enemy)))
+                    {
+                        Crash();
+                    }
                 }
             }
         }
