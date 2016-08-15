@@ -7,7 +7,7 @@ namespace Pedestrian.Engine
     {
         private static Texture2D pixel;
 
-        public static void Draw(SpriteBatch spriteBatch, Rectangle area, Color color, int borderWidth = 1)
+        public static void Draw(SpriteBatch spriteBatch, Rectangle area, Color color, int borderWidth = 1, bool drawOutside = false)
         {
             if (pixel == null)
             {
@@ -15,10 +15,26 @@ namespace Pedestrian.Engine
                 pixel.SetData<Color>(new Color[1] { Color.White });
             }
 
-            spriteBatch.Draw(pixel, new Rectangle(area.X, area.Y, area.Width, borderWidth), color);
-            spriteBatch.Draw(pixel, new Rectangle(area.X, area.Y, borderWidth, area.Height), color);
-            spriteBatch.Draw(pixel, new Rectangle(area.X + area.Width - borderWidth, area.Y, borderWidth, area.Height), color);
-            spriteBatch.Draw(pixel, new Rectangle(area.X, area.Y + area.Height - borderWidth, area.Width, borderWidth), color);
+            Rectangle leftLine, rightLine, topLine, bottomLine;
+            if (drawOutside)
+            {
+                topLine = new Rectangle(area.X - borderWidth, area.Y - borderWidth, area.Width + borderWidth * 2, borderWidth);
+                rightLine = new Rectangle(area.X + area.Width, area.Y, borderWidth, area.Height);
+                leftLine = new Rectangle(area.X - borderWidth, area.Y, borderWidth, area.Height);
+                bottomLine = new Rectangle(area.X - borderWidth, area.Y + area.Height, area.Width + borderWidth * 2, borderWidth);
+            }
+            else
+            {
+                topLine = new Rectangle(area.X, area.Y, area.Width, borderWidth);
+                rightLine = new Rectangle(area.X + area.Width - borderWidth, area.Y, borderWidth, area.Height);
+                leftLine = new Rectangle(area.X, area.Y, borderWidth, area.Height);
+                bottomLine = new Rectangle(area.X, area.Y + area.Height - borderWidth, area.Width, borderWidth);
+            }
+
+            spriteBatch.Draw(pixel, leftLine, color);
+            spriteBatch.Draw(pixel, topLine, color);
+            spriteBatch.Draw(pixel, rightLine, color);
+            spriteBatch.Draw(pixel, bottomLine, color);
         }
     }
 }

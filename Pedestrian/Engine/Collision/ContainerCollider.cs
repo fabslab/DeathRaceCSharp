@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Pedestrian.Engine.Collision
 {
@@ -21,6 +22,18 @@ namespace Pedestrian.Engine.Collision
         {
             // Doesn't make sense to have two container colliders collide
             return false;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, Color color)
+        {
+            // Since collision occurs with the outside of the container
+            // draw debug box around the outside of the bounds
+            Border.Draw(
+                spriteBatch,
+                Bounds,
+                color,
+                drawOutside: true
+            );
         }
     }
 }

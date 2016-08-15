@@ -112,8 +112,8 @@
     <Compile Include="Engine\PositionUtil.cs" />
     <Compile Include="IPlayerInput.cs" />
     <Compile Include="PlayArea.cs" />
+    <Compile Include="RoadBounds.cs" />
     <Compile Include="Scoreboard.cs" />
-    <Compile Include="AreaEntity.cs" />
     <Compile Include="Engine\Size.cs" />
     <Compile Include="Engine\TextureAtlases\SpriteBatchExtensions.cs" />
     <Compile Include="Engine\TextureAtlases\TextureAtlas.cs" />

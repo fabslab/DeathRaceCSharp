@@ -8,21 +8,24 @@ namespace Pedestrian
 {
     public class PlayArea : IEntity
     {
+        public static PlayArea Instance { get; private set; }
+
         public Collider Collider { get; }
         public Vector2 Position { get; }
         public bool IsStatic { get; } = true;
-        public int SidewalkWidth { get; set; } = 32;
-        public int BorderWidth { get; set; } = 2;
+        public int SidewalkWidth { get; private set; }
+        public int BorderWidth { get; private set; }
         Vector2 sidewalkLine1Position, sidewalkLine2Position;
-
-        public static Rectangle Bounds { get; set; }
+        public Rectangle Bounds { get; set; }
 
         Rectangle borderRect;
-        AreaEntity leftSidwalk, rightSidewalk;
 
-        public PlayArea(Rectangle area, List<IEntity> entities)
+        public PlayArea(Rectangle area, int sidewalkWidth, int borderWidth)
         {
+            Instance = this;
             borderRect = area;
+            SidewalkWidth = sidewalkWidth;
+            BorderWidth = borderWidth;
 
             // bounds is the area inside the border
             Bounds = new Rectangle(
@@ -32,18 +35,10 @@ namespace Pedestrian
                 area.Height - 2 * BorderWidth
             );
 
-            Collider = new ContainerCollider(Bounds, ColliderCategory.Default, ColliderCategory.All);
+            Collider = new ContainerCollider(Bounds, ColliderCategory.GameBounds, ColliderCategory.All);
 
-            var leftSidewalkArea = new Rectangle(Bounds.X, Bounds.Y, SidewalkWidth, Bounds.Height);
-            var rightSidewalkArea = new Rectangle(Bounds.Right - SidewalkWidth, Bounds.Y, SidewalkWidth, Bounds.Height);
-
-            sidewalkLine1Position = new Vector2(leftSidewalkArea.Right - BorderWidth, leftSidewalkArea.Y);
-            sidewalkLine2Position = new Vector2(rightSidewalkArea.X, leftSidewalkArea.Y);
-
-            leftSidwalk = new AreaEntity(leftSidewalkArea, ColliderCategory.Sidewalk, ColliderCategory.Default);
-            rightSidewalk = new AreaEntity(rightSidewalkArea, ColliderCategory.Sidewalk, ColliderCategory.Default);
-            entities.Add(leftSidwalk);
-            entities.Add(rightSidewalk);
+            sidewalkLine1Position = new Vector2(Bounds.X + SidewalkWidth - BorderWidth, Bounds.Y);
+            sidewalkLine2Position = new Vector2(Bounds.Right - SidewalkWidth, Bounds.Y);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -61,6 +56,6 @@ namespace Pedestrian
         }
 
         public void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch) {}
-        public void Update(GameTime gameTime) { }
+        public void Update(GameTime gameTime) {}
     }
 }

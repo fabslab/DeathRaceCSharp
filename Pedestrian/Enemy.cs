@@ -47,8 +47,8 @@ namespace Pedestrian
             rightSprite.Load("gremlin16bit-right01", 2, 50);
             currentSprite = frontSprite;
 
-            // Collides only with default and not other collider types (sidewalk)
-            Collider = new BoxCollider(ColliderCategory.Default, ColliderCategory.Default)
+            // Collides only with default and not other collider types
+            Collider = new BoxCollider(ColliderCategory.Default, ColliderCategory.Default | ColliderCategory.GameBounds)
             {
                 Position = enemyPosition,
                 Width = frontSprite.FrameWidth - 3,
@@ -59,12 +59,7 @@ namespace Pedestrian
 
         public void OnCollisionEnter(IEnumerable<IEntity> entities)
         {
-            if (entities.Any(e => e is Player))
-            {
-                Scene.Events.Emit(GameEvents.EnemyKilled, this);
-                Die();
-            }
-            else if (entities.Any())
+            if (entities.Any(e => !(e is Player)))
             {
                 Position = previousPosition;
                 MakeRandomTurn();
@@ -72,8 +67,10 @@ namespace Pedestrian
             }
         }
 
-        public void Die()
+        public void Kill()
         {
+            Scene.Events.Emit(GameEvents.EnemyKilled, this);
+
             // Death just resets the entity
             Position = initialPosition;
             Collider.Position = initialPosition;

@@ -80,12 +80,12 @@ namespace Pedestrian.Engine.Collision
             CollisionFilter = categories;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             Draw(spriteBatch, Color.Red);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Color color)
+        public virtual void Draw(SpriteBatch spriteBatch, Color color)
         {
             Border.Draw(
                 spriteBatch,

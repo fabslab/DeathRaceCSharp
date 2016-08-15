@@ -17,7 +17,6 @@ namespace Pedestrian
 
         List<IEntity> entities = new List<IEntity>();
         Scoreboard scoreboard;
-        PlayArea gameArea;
         SpriteBatch spriteBatch;
         bool gameOver = false;
 
@@ -36,7 +35,14 @@ namespace Pedestrian
                 Width,
                 Height
             );
-            gameArea = new PlayArea(borderRectangle, entities);
+            var gameArea = new PlayArea(borderRectangle, 32, 2);
+            var roadArea = new RoadBounds(new Rectangle(
+                    gameArea.Bounds.X + gameArea.SidewalkWidth,
+                    gameArea.Bounds.Y,
+                    gameArea.Bounds.Width - 2 * gameArea.SidewalkWidth,
+                    gameArea.Bounds.Height
+                )
+            );
 
             // Initialize the players
             var player1Position = new Vector2((int)(Width * 0.25), (int)(Height * 0.8));
@@ -62,6 +68,7 @@ namespace Pedestrian
             var enemy2 = new Enemy(enemy2Position);
 
             entities.Add(gameArea);
+            entities.Add(roadArea);
             entities.Add(enemy1);
             entities.Add(enemy2);
             entities.Add(player1);

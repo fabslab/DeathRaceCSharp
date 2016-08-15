@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Collision;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Pedestrian
@@ -33,6 +34,7 @@ namespace Pedestrian
         // Num ms player will be stationary after crashing if not cancelled by reversing
         public int MaxCrashTime { get; set; } = 1500;
         public bool IsCrashed { get; set; } = false;
+        // Player can not kill enemies when out of bounds (on sidewalk)
         public Collider Collider { get; }
 
 
@@ -51,7 +53,7 @@ namespace Pedestrian
             Input = inputHandler ?? new KeyboardInput(KeyboardInputMap.GetInputMap(playerIndex));
             Position = position;
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit01");
-            Collider = new BoxCollider(ColliderCategory.Default, ColliderCategory.All)
+            Collider = new BoxCollider(ColliderCategory.Default, ~ColliderCategory.GameBounds)
             {
                 Position = Position,
                 Width = Texture.Width - 5,
@@ -68,17 +70,23 @@ namespace Pedestrian
 
         public void OnCollisionEntered(IEnumerable<IEntity> entities)
         {
-            Score += entities.Count(e => e is Enemy);
-
             if (entities.Any())
             {
-                Crash();
+                if (RoadBounds.Instance.Bounds.Contains(Position))
+                {
+                    foreach (Enemy enemy in entities.Where(e => e is Enemy))
+                    {
+                        enemy.Kill();
+                        Score++;
+                    }
+                    Crash();
+                }
             }
         }
 
         public void OnCollision(IEnumerable<IEntity> entities)
         {
-            CurrentMaxSpeed = DefaultMaxSpeed / 2;
+            CurrentMaxSpeed = DefaultMaxSpeed / 3;
         }
 
         public void OnCollisionExited(IEnumerable<IEntity> entities)
@@ -126,7 +134,7 @@ namespace Pedestrian
             var movementDirection = Vector2.Transform(InitialDirection, rotationMatrix);
             var movement = speed * movementDirection;
 
-            Position = PositionUtil.WrapPosition(Position + movement, PlayArea.Bounds);
+            Position = PositionUtil.WrapPosition(Position + movement, PlayArea.Instance.Bounds);
             Collider.Position = Position;
         }
 

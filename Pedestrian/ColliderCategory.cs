@@ -12,7 +12,8 @@ namespace Pedestrian
     {
         None = 0,
         Default = 1 << 0,
-        Sidewalk = 1 << 1,
+        RoadBounds = 1 << 1,
+        GameBounds = 1 << 2,
         All = ~None
     }
 }
