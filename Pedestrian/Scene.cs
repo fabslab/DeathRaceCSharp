@@ -51,7 +51,7 @@ namespace Pedestrian
             var player2Position = new Vector2((int)(Width * 0.75), (int)(Height * 0.8));
             var player2 = new Player(player2Position, PlayerIndex.Two)
             {
-                Color = Color.DimGray
+                Color = Color.Gray
             };
 
             // Initialize the enemies - start them in specific positions

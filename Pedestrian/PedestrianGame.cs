@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pedestrian.Engine;
+using Pedestrian.Engine.Effects;
 using System;
 
 namespace Pedestrian
@@ -28,6 +29,7 @@ namespace Pedestrian
         RenderTarget2D renderTarget;
         Rectangle destinationRectangle;
         Scene scene;
+        Bloom bloomEffect;
 
         public PedestrianGame()
         {
@@ -55,15 +57,15 @@ namespace Pedestrian
         {
             base.Initialize();
 
+            Window.ClientSizeChanged += (s, e) => SetDestinationRectangle();
+            Window.AllowUserResizing = true;
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Render game to own render target at virtual resolution
-            // then render that to back buffer at full resolution
+            // Create render target at virtual resolution for game to render to first,
+            // then render result upscaled to screen with PointClamp to keep pixel alignment
             renderTarget = new RenderTarget2D(GraphicsDevice, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-
-            Window.ClientSizeChanged += (s, e) => UpdateDestinationRectangle();
-            Window.AllowUserResizing = true;
         }
 
         /// <summary>
@@ -72,6 +74,11 @@ namespace Pedestrian
         /// </summary>
         protected override void LoadContent()
         {
+            bloomEffect = new Bloom(GraphicsDevice)
+            {
+                Settings = new BloomSettings("Custom1", 0, 1.4f, 0.9f, 1, 1, 1)
+            };
+            bloomEffect.LoadContent();
             scene = new Scene();
             scene.Load();
         }
@@ -83,6 +90,8 @@ namespace Pedestrian
         protected override void UnloadContent()
         {
             Content.Unload();
+            renderTarget.Dispose();
+            bloomEffect.UnloadContent();
         }
 
         /// <summary>
@@ -112,20 +121,27 @@ namespace Pedestrian
             GraphicsDevice.Clear(Color.Black);
             scene.Draw(gameTime);
 
-            GraphicsDevice.SetRenderTarget(null);
+            bloomEffect.BeginDraw();
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin(
-                SpriteSortMode.Deferred, 
-                BlendState.AlphaBlend, 
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
                 SamplerState.PointClamp,
                 DepthStencilState.None,
                 RasterizerState.CullCounterClockwise
             );
             spriteBatch.Draw(renderTarget, destinationRectangle, Color.White);
             spriteBatch.End();
+
+            bloomEffect.Draw(gameTime);
         }
 
-        private void UpdateDestinationRectangle()
+        protected override void EndDraw()
+        {
+            base.EndDraw();
+        }
+
+        private void SetDestinationRectangle()
         {
             float outputAspectRatio = Window.ClientBounds.Width / (float)Window.ClientBounds.Height;
             if (outputAspectRatio <= PREFERRED_ASPECT_RATIO)

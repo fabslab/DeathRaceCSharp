@@ -106,6 +106,8 @@
     <Compile Include="Engine\Collision\ContainerCollider.cs" />
     <Compile Include="Engine\ContentExtensions\ContentManagerExtensions.cs" />
     <Compile Include="Engine\ContentExtensions\ContentReaderExtensions.cs" />
+    <Compile Include="Engine\Effects\Bloom.cs" />
+    <Compile Include="Engine\Effects\BloomSettings.cs" />
     <Compile Include="Engine\EventEmitter.cs" />
     <Compile Include="Engine\InputDirection.cs" />
     <Compile Include="Engine\KeyboardInputMap.cs" />

@@ -50,23 +50,6 @@
 /processorParam:TextureFormat=Color
 /build:gremlin16bit02.png
 
-#begin munro-edit-font01_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:munro-edit-font01_0.png
-
-#begin munro-edit-font01.fnt
-/importer:BitmapFontImporter
-/processor:BitmapFontProcessor
-/build:munro-edit-font01.fnt
-
 #begin gremlin16bit-right01.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -90,4 +73,51 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:gremlin16bit-left01.png
+
+#begin Shaders/BloomCombine.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/BloomCombine.fx
+
+#begin Shaders/BloomExtract.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/BloomExtract.fx
+
+#begin Shaders/GaussianBlur.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/GaussianBlur.fx
+
+#begin gremlin16bit01.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:gremlin16bit01.png
+
+#begin Fonts/munro-edit-font01.fnt
+/importer:BitmapFontImporter
+/processor:BitmapFontProcessor
+/build:Fonts/munro-edit-font01.fnt
+
+#begin Fonts/munro-edit-font01_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Fonts/munro-edit-font01_0.png
 

@@ -7,7 +7,7 @@ namespace Pedestrian
     public class Scoreboard
     {
         // Duration of game in seconds 
-        public const int GAME_TIME = 99;
+        public int GAME_TIME { get; set; } = 99;
         public int Margin { get; set; }
         public bool IsActive { get; set; } = false;
 
@@ -23,7 +23,7 @@ namespace Pedestrian
             this.displayArea = displayArea;
             this.players = players;
             scores = new int[players.Length];
-            font = PedestrianGame.Instance.Content.Load<BitmapFont>("munro-edit-font01");
+            font = PedestrianGame.Instance.Content.Load<BitmapFont>("Fonts/munro-edit-font01");
             font.LetterSpacing = 5;
             Reset();
         }
