@@ -26,10 +26,11 @@ namespace Pedestrian
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        RenderTarget2D renderTarget1, renderTarget2;
+        RenderTarget2D virtualSizeRenderTarget, fullSizeRenderTarget1, fullSizeRenderTarget2;
         Rectangle destinationRectangle;
         Scene scene;
         Bloom bloomEffect;
+        ScanLines scanLinesEffect;
 
         public PedestrianGame()
         {
@@ -59,23 +60,6 @@ namespace Pedestrian
 
             Window.ClientSizeChanged += (s, e) => SetDestinationRectangle();
             Window.AllowUserResizing = true;
-
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            var presentationParams = GraphicsDevice.PresentationParameters;
-
-            // Create render target at virtual resolution for game to render to first,
-            // then render result upscaled to second render target at full resolution
-            // with PointClamp to keep pixel alignment then apply post processing
-            renderTarget1 = new RenderTarget2D(
-                GraphicsDevice, 
-                VIRTUAL_WIDTH, 
-                VIRTUAL_HEIGHT);
-            renderTarget2 = new RenderTarget2D(
-                GraphicsDevice,
-                presentationParams.BackBufferWidth,
-                presentationParams.BackBufferHeight);
         }
 
         /// <summary>
@@ -84,11 +68,35 @@ namespace Pedestrian
         /// </summary>
         protected override void LoadContent()
         {
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            var presentationParams = GraphicsDevice.PresentationParameters;
+
+            // Create render target at virtual resolution for game to render to first,
+            // then render result upscaled to second render target at full resolution
+            // with PointClamp to keep pixel alignment and apply post processing
+            virtualSizeRenderTarget = new RenderTarget2D(
+                GraphicsDevice,
+                VIRTUAL_WIDTH,
+                VIRTUAL_HEIGHT);
+            fullSizeRenderTarget1 = new RenderTarget2D(
+                GraphicsDevice,
+                presentationParams.BackBufferWidth,
+                presentationParams.BackBufferHeight);
+            fullSizeRenderTarget2 = new RenderTarget2D(
+                GraphicsDevice,
+                presentationParams.BackBufferWidth,
+                presentationParams.BackBufferHeight);
+
             bloomEffect = new Bloom(GraphicsDevice)
             {
                 Settings = new BloomSettings("Custom1", 0, 1.4f, 0.9f, 1, 1, 1)
             };
             bloomEffect.LoadContent();
+            scanLinesEffect = new ScanLines(GraphicsDevice);
+            scanLinesEffect.LoadContent();
+
             scene = new Scene();
             scene.Load();
         }
@@ -100,7 +108,8 @@ namespace Pedestrian
         protected override void UnloadContent()
         {
             Content.Unload();
-            renderTarget1.Dispose();
+            virtualSizeRenderTarget.Dispose();
+            fullSizeRenderTarget1.Dispose();
             bloomEffect.UnloadContent();
         }
 
@@ -127,11 +136,11 @@ namespace Pedestrian
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.SetRenderTarget(renderTarget1);
+            GraphicsDevice.SetRenderTarget(virtualSizeRenderTarget);
             GraphicsDevice.Clear(Color.Black);
             scene.Draw(gameTime);
 
-            GraphicsDevice.SetRenderTarget(renderTarget2);
+            GraphicsDevice.SetRenderTarget(fullSizeRenderTarget1);
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
@@ -140,10 +149,11 @@ namespace Pedestrian
                 DepthStencilState.None,
                 RasterizerState.CullNone
             );
-            spriteBatch.Draw(renderTarget1, destinationRectangle, Color.White);
+            spriteBatch.Draw(virtualSizeRenderTarget, destinationRectangle, Color.White);
             spriteBatch.End();
 
-            bloomEffect.Process(renderTarget2, null);
+            scanLinesEffect.Process(fullSizeRenderTarget1, fullSizeRenderTarget2);
+            bloomEffect.Process(fullSizeRenderTarget2, null);
         }
 
         protected override void EndDraw()

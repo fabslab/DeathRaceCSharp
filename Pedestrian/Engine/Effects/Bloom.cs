@@ -4,15 +4,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Pedestrian.Engine.Effects
 {
-    public class Bloom
+    public class Bloom : PostProcessor
     {
         public BloomSettings Settings
         {
             get { return settings; }
-            set { UpdateSettings(value); }
+            set { if (value != settings) UpdateSettings(value); }
         }
-
-        public SamplerState SamplerState { get; set; }
 
         /// <summary>
         /// Scales render targets used for blurring. Can be decreased safely to 
@@ -20,9 +18,6 @@ namespace Pedestrian.Engine.Effects
         /// Defaults to 0.5 (of width and height) of main back buffer.
         /// </summary>
         public float RenderTargetScale { get; set; } = 0.5f;
-
-        SpriteBatch spriteBatch;
-        GraphicsDevice graphicsDevice;
 
         BloomSettings settings;
 
@@ -43,20 +38,17 @@ namespace Pedestrian.Engine.Effects
             blurWeightsParam,
             blurOffsetsParam;
 
-        bool IsContentLoaded = false;
+        bool isContentLoaded = false;
 
-        public Bloom(GraphicsDevice graphicsDevice)
-        {
-            this.graphicsDevice = graphicsDevice;
-            settings = BloomSettings.PresetSettings[0];
-        }
+
+        public Bloom(GraphicsDevice graphicsDevice) : base(graphicsDevice) {}
 
         /// <summary>
         /// Load your graphics content.
         /// </summary>
-        public void LoadContent()
+        public override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(graphicsDevice);
+            base.LoadContent();
 
             bloomExtractEffect = PedestrianGame.Instance.Content.Load<Effect>("Shaders/BloomExtract");
             bloomCombineEffect = PedestrianGame.Instance.Content.Load<Effect>("Shaders/BloomCombine");
@@ -73,7 +65,7 @@ namespace Pedestrian.Engine.Effects
             blurWeightsParam = gaussianBlurEffect.Parameters["SampleWeights"];
             blurOffsetsParam = gaussianBlurEffect.Parameters["SampleOffsets"];
 
-            IsContentLoaded = true;
+            isContentLoaded = true;
 
             UpdateSettings(settings);
 
@@ -100,7 +92,7 @@ namespace Pedestrian.Engine.Effects
         /// This is where it all happens. Grabs a scene that has already been rendered,
         /// and uses postprocess magic to add a glowing bloom effect over the top of it.
         /// </summary>
-        public void Process(RenderTarget2D source, RenderTarget2D destination)
+        public override void Process(RenderTarget2D source, RenderTarget2D destination)
         {
             graphicsDevice.SamplerStates[1] = SamplerState.LinearClamp;
 
@@ -134,7 +126,7 @@ namespace Pedestrian.Engine.Effects
         {
             this.settings = settings;
 
-            if (!IsContentLoaded) return;
+            if (!isContentLoaded) return;
 
             bloomExtractThresholdParam.SetValue(settings.BloomThreshold);
 
@@ -142,37 +134,6 @@ namespace Pedestrian.Engine.Effects
             bloomBaseIntensityParam.SetValue(settings.BaseIntensity);
             bloomSaturationParam.SetValue(settings.BloomSaturation);
             bloomBaseSaturationParam.SetValue(settings.BaseSaturation);
-        }
-
-        /// <summary>
-        /// Helper for drawing a texture into a rendertarget, using
-        /// a custom shader to apply postprocessing effects.
-        /// </summary>
-        void DrawFullscreenQuad(Texture2D texture, RenderTarget2D renderTarget, Effect effect)
-        {
-            Rectangle destinationRectangle;
-            if (renderTarget == null)
-            {
-                var pp = graphicsDevice.PresentationParameters;
-                destinationRectangle = new Rectangle(0, 0, pp.BackBufferWidth, pp.BackBufferHeight);
-            }
-            else
-            {
-                destinationRectangle = new Rectangle(0, 0, renderTarget.Width, renderTarget.Height);
-            }
-            graphicsDevice.SetRenderTarget(renderTarget);
-            DrawFullscreenQuad(texture, destinationRectangle, effect);
-        }
-
-        /// <summary>
-        /// Helper for drawing a texture into the current rendertarget,
-        /// using a custom shader to apply postprocessing effects.
-        /// </summary>
-        void DrawFullscreenQuad(Texture2D texture, Rectangle destinationRectangle, Effect effect)
-        {
-            spriteBatch.Begin(0, BlendState.Opaque, SamplerState, DepthStencilState.None, RasterizerState.CullNone, effect);
-            spriteBatch.Draw(texture, destinationRectangle, Color.White);
-            spriteBatch.End();
         }
 
         /// <summary>

@@ -121,3 +121,9 @@
 /processorParam:TextureFormat=Color
 /build:Fonts/munro-edit-font01_0.png
 
+#begin Shaders/ScanLines.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/ScanLines.fx
+
