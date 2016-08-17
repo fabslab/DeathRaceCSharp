@@ -6,8 +6,25 @@ namespace Pedestrian.Engine.Effects
 {
     public class Bloom
     {
+        public BloomSettings Settings
+        {
+            get { return settings; }
+            set { UpdateSettings(value); }
+        }
+
+        public SamplerState SamplerState { get; set; }
+
+        /// <summary>
+        /// Scales render targets used for blurring. Can be decreased safely to 
+        /// minimize fillrate costs because blurring does not require high resolution
+        /// Defaults to 0.5 (of width and height) of main back buffer.
+        /// </summary>
+        public float RenderTargetScale { get; set; } = 0.5f;
+
         SpriteBatch spriteBatch;
         GraphicsDevice graphicsDevice;
+
+        BloomSettings settings;
 
         Effect bloomExtractEffect;
         Effect bloomCombineEffect;
@@ -26,19 +43,12 @@ namespace Pedestrian.Engine.Effects
             blurWeightsParam,
             blurOffsetsParam;
 
-        public BloomSettings Settings { get; set; } = BloomSettings.PresetSettings[0];
-        public SamplerState SamplerState { get; set; }
-
-        /// <summary>
-        /// Scales render targets used for blurring. Can be decreased safely to 
-        /// minimize fillrate costs because blurring does not require high resolution
-        /// Defaults to 0.5 (of width and height) of main back buffer.
-        /// </summary>
-        public float RenderTargetScale { get; set; } = 0.5f;
+        bool IsContentLoaded = false;
 
         public Bloom(GraphicsDevice graphicsDevice)
         {
             this.graphicsDevice = graphicsDevice;
+            settings = BloomSettings.PresetSettings[0];
         }
 
         /// <summary>
@@ -62,6 +72,10 @@ namespace Pedestrian.Engine.Effects
 
             blurWeightsParam = gaussianBlurEffect.Parameters["SampleWeights"];
             blurOffsetsParam = gaussianBlurEffect.Parameters["SampleOffsets"];
+
+            IsContentLoaded = true;
+
+            UpdateSettings(settings);
 
             // Look up the resolution and format of our main backbuffer to create render targets
             PresentationParameters pp = graphicsDevice.PresentationParameters;
@@ -92,7 +106,6 @@ namespace Pedestrian.Engine.Effects
 
             // Pass 1: draw the scene into rendertarget 1, using a
             // shader that extracts only the brightest parts of the image.
-            bloomExtractThresholdParam.SetValue(Settings.BloomThreshold);
             DrawFullscreenQuad(source, renderTarget1, bloomExtractEffect);
 
             // Pass 2: draw from rendertarget 1 into rendertarget 2,
@@ -108,12 +121,27 @@ namespace Pedestrian.Engine.Effects
             // Pass 4: draw both rendertarget 1 and the original scene
             // image into the destination target, using a shader that
             // combines them to produce the final bloomed result.
-            bloomIntensityParam.SetValue(Settings.BloomIntensity);
-            bloomBaseIntensityParam.SetValue(Settings.BaseIntensity);
-            bloomSaturationParam.SetValue(Settings.BloomSaturation);
-            bloomBaseSaturationParam.SetValue(Settings.BaseSaturation);
             bloomBaseTextureParam.SetValue(source);
             DrawFullscreenQuad(renderTarget1, destination, bloomCombineEffect);
+        }
+
+        /// <summary>
+		/// Updates the Settings configuration and sets the 
+        /// parameters used by the bloom and blur shaders.
+		/// </summary>
+		/// <param name="settings">Settings.</param>
+        void UpdateSettings(BloomSettings settings)
+        {
+            this.settings = settings;
+
+            if (!IsContentLoaded) return;
+
+            bloomExtractThresholdParam.SetValue(settings.BloomThreshold);
+
+            bloomIntensityParam.SetValue(settings.BloomIntensity);
+            bloomBaseIntensityParam.SetValue(settings.BaseIntensity);
+            bloomSaturationParam.SetValue(settings.BloomSaturation);
+            bloomBaseSaturationParam.SetValue(settings.BaseSaturation);
         }
 
         /// <summary>
@@ -162,7 +190,7 @@ namespace Pedestrian.Engine.Effects
 
             // The first sample always has a zero offset.
             sampleWeights[0] = ComputeGaussian(0);
-            sampleOffsets[0] = new Vector2(0);
+            sampleOffsets[0] = Vector2.Zero;
 
             // Maintain a sum of all the weighting values.
             var totalWeights = sampleWeights[0];

@@ -2,14 +2,11 @@
 // scene, using tweakable intensity levels and saturation.
 // This is the final step in applying a bloom postprocess.
 
-sampler BloomSampler : register(s0);
-sampler BaseSampler : register(s1)
-{
-	Texture = (BaseTexture);
-	Filter = Linear;
-	AddressU = clamp;
-	AddressV = clamp;
-};
+// From SpriteBatch
+sampler s0;
+
+texture BaseTexture;
+sampler BaseSampler = sampler_state { Texture = <BaseTexture>; };
 
 float BloomIntensity;
 float BaseIntensity;
@@ -32,7 +29,7 @@ float4 AdjustSaturation(float4 color, float saturation)
 float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 {
     // Look up the bloom and original base image colors.
-    float4 bloom = tex2D(BloomSampler, texCoord);
+    float4 bloom = tex2D(s0, texCoord);
     float4 base = tex2D(BaseSampler, texCoord);
     
     // Adjust color saturation and intensity.
