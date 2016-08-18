@@ -32,7 +32,7 @@ namespace Pedestrian
             {
                 Position = position,
                 Width = Texture.Width - 7,
-                Height = Texture.Height - 4
+                Height = Texture.Height - 2
             };
         }
 
