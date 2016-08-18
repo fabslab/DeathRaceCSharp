@@ -75,20 +75,24 @@ namespace Pedestrian
             Position = initialPosition;
             Collider.Position = initialPosition;
             MovementDirection = initialDirection;
+            UpdateSpriteDirection();
         }
 
         public void MakeRandomTurn()
         {
             Vector3 resultantDirection = Vector3.Cross(new Vector3(MovementDirection, 0), Vector3.UnitZ);
-
             var randomDirection = randomTurn.Next(0, 2);
             if (randomDirection == 0)
             {
                 resultantDirection = -resultantDirection;
             }
-
             MovementDirection = new Vector2(resultantDirection.X, resultantDirection.Y);
+            UpdateSpriteDirection();
+            timeSinceTurn = 0;
+        }
 
+        private void UpdateSpriteDirection()
+        {
             if (MovementDirection == DirectionMap.DIRECTION_VECTORS[Direction.Left])
             {
                 currentSprite = leftSprite;
@@ -101,8 +105,6 @@ namespace Pedestrian
             {
                 currentSprite = frontSprite;
             }
-
-            timeSinceTurn = 0;
         }
 
         public void Update(GameTime time)
