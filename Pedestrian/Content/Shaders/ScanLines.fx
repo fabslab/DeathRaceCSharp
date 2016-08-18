@@ -9,7 +9,7 @@ float4 PixelShaderFunction(float2 texCoord : TEXCOORD0, in float2 screenPos : VP
 {
 	float4 color = tex2D(s0, texCoord);
 	float scanline = sin(texCoord.y * LinesFactor) * Attenuation;
-	color.rgb -= scanline;
+	color.rgb -= scanline * (color.rgb);
 
 	return color;
 }

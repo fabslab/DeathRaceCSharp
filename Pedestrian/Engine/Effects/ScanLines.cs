@@ -9,8 +9,8 @@ namespace Pedestrian.Engine.Effects
             attenuationParam,
             linesFactorParam;
 
-        float attenuation = 0.02f;
-        float linesFactor = 800f;
+        float attenuation = 0.2f;
+        float linesFactor = 1800;
 
         bool isContentLoaded = false;
 

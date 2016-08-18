@@ -52,12 +52,12 @@ namespace Pedestrian
         {
             Input = inputHandler ?? new KeyboardInput(KeyboardInputMap.GetInputMap(playerIndex));
             Position = position;
-            Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit01");
+            Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit02");
             Collider = new BoxCollider(ColliderCategory.Default, ~ColliderCategory.GameBounds)
             {
                 Position = Position,
-                Width = Texture.Width - 5,
-                Height = Texture.Height - 3,
+                Width = Texture.Width - 4,
+                Height = Texture.Height,
                 OnCollisionEntered = OnCollisionEntered,
                 OnCollisionExited = OnCollisionExited,
                 OnCollision = OnCollision

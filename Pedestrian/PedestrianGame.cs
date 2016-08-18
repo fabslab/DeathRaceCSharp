@@ -91,7 +91,7 @@ namespace Pedestrian
 
             bloomEffect = new Bloom(GraphicsDevice)
             {
-                Settings = new BloomSettings("Custom1", 0, 1.4f, 0.9f, 1, 1, 1)
+                Settings = new BloomSettings("Custom1", 0, 1.2f, 0.9f, 1, 1, 1)
             };
             bloomEffect.LoadContent();
             scanLinesEffect = new ScanLines(GraphicsDevice);
