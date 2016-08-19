@@ -28,9 +28,9 @@ namespace Pedestrian
         public float MaxTurnAngle { get; set; } = MathHelper.PiOver4 / 6;
         public float RotationSnapValue { get; set; } = MathHelper.PiOver4 / 2;
         // Max number of pixels to move in one movement
-        public float DefaultMaxSpeed { get; set; } = 3f;
-        public float CurrentMaxSpeed { get; set; } = 3f;
-        public float MaxReverseSpeed { get; set; } = 1f;
+        public float DefaultMaxSpeed { get; set; } = 4f;
+        public float CurrentMaxSpeed { get; set; } = 4f;
+        public float MaxReverseSpeed { get; set; } = 2f;
         // Num ms player will be stationary after crashing if not cancelled by reversing
         public int MaxCrashTime { get; set; } = 1500;
         public bool IsCrashed { get; set; } = false;
@@ -76,8 +76,11 @@ namespace Pedestrian
                 {
                     foreach (Enemy enemy in entities.Where(e => e is Enemy))
                     {
-                        enemy.Kill();
-                        Score++;
+                        if (RoadBounds.Instance.Bounds.Contains(enemy.Position))
+                        {
+                            enemy.Kill();
+                            Score++;
+                        }
                     }
                     if (entities.Any(e => !(e is Enemy)))
                     {
@@ -89,7 +92,7 @@ namespace Pedestrian
 
         public void OnCollision(IEnumerable<IEntity> entities)
         {
-            CurrentMaxSpeed = DefaultMaxSpeed / 3;
+            CurrentMaxSpeed = 1;
         }
 
         public void OnCollisionExited(IEnumerable<IEntity> entities)
@@ -121,12 +124,6 @@ namespace Pedestrian
             speed *= throttle;
 
             var turnRadians = Input.GetTurnAngleNormalized() * MaxTurnAngle;
-
-            // Invert turn angle when in reverse so still 
-            // move in corresponding direction in screen space
-            if (speed < 0) {
-                turnRadians = -turnRadians;
-            }
 
             Rotation += turnRadians;
             snappedRotation = MathUtil.Snap(Rotation, RotationSnapValue);

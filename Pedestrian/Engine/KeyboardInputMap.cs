@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Pedestrian.Engine
 {
-    public class KeyboardInputMap
+    public static class KeyboardInputMap
     {
         public static Dictionary<InputDirection, Keys> GetInputMap(PlayerIndex playerIndex)
         {

@@ -17,18 +17,28 @@ namespace Pedestrian
         AnimatedTexture rightSprite;
         AnimatedTexture currentSprite;
         Vector2 initialDirection;
+        Vector2 movementDirection;
         Vector2 initialPosition;
         Vector2 previousPosition;
         int timeSinceTurn = 0;
 
         // Min and max ms to wait before enemy turns
-        public int[] IntervalRangeForTurn { get; set; } = new int[] { 500, 1800 };
+        public int[] IntervalRangeForTurn { get; set; } = new int[] { 350, 1800 };
         public Color Color { get; set; } = Color.White;
         public bool IsStatic { get; } = false;
         public float Speed { get; set; } = 3f;
-        public Vector2 Position { get; private set; }
-        public Vector2 MovementDirection { get; private set; }
         public Collider Collider { get; }
+        public Vector2 Position { get; private set; }
+        public Vector2 MovementDirection
+        {
+            get { return movementDirection; }
+            private set
+            {
+                movementDirection = value;
+                timeSinceTurn = 0;
+                UpdateSpriteDirection();
+            }
+        }
 
         public Enemy(Vector2 enemyPosition)
         {
@@ -61,8 +71,16 @@ namespace Pedestrian
         {
             if (entities.Any(e => !(e is Player)))
             {
+                // Create chance to turn in opposite direction when hitting wall
+                if (entities.Any(e => e is PlayArea) && randomTurn.Next(0, 2) == 0)
+                {
+                    MovementDirection = -MovementDirection;
+                }
+                else
+                {
+                    MakeRandomTurn();
+                }
                 Position = previousPosition;
-                MakeRandomTurn();
                 Collider.Clear();
             }
         }
@@ -75,7 +93,6 @@ namespace Pedestrian
             Position = initialPosition;
             Collider.Position = initialPosition;
             MovementDirection = initialDirection;
-            UpdateSpriteDirection();
         }
 
         public void MakeRandomTurn()
@@ -87,8 +104,6 @@ namespace Pedestrian
                 resultantDirection = -resultantDirection;
             }
             MovementDirection = new Vector2(resultantDirection.X, resultantDirection.Y);
-            UpdateSpriteDirection();
-            timeSinceTurn = 0;
         }
 
         private void UpdateSpriteDirection()
