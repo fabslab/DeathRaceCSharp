@@ -99,7 +99,7 @@
     <Compile Include="Engine\BitmapFonts\BitmapFontExtensions.cs" />
     <Compile Include="Engine\BitmapFonts\BitmapFontReader.cs" />
     <Compile Include="Engine\BitmapFonts\BitmapFontRegion.cs" />
-    <Compile Include="Engine\Border.cs" />
+    <Compile Include="Engine\Graphics\Border.cs" />
     <Compile Include="Engine\Collision\BoxCollider.cs" />
     <Compile Include="Engine\Collision\Collision.cs" />
     <Compile Include="ColliderCategory.cs" />
@@ -111,10 +111,15 @@
     <Compile Include="Engine\Effects\ScanLines.cs" />
     <Compile Include="Engine\Effects\PostProcessor.cs" />
     <Compile Include="Engine\EventEmitter.cs" />
+    <Compile Include="Engine\Graphics\PixelTextures.cs" />
+    <Compile Include="Engine\Graphics\Shapes\RectangleShape.cs" />
     <Compile Include="Engine\InputDirection.cs" />
     <Compile Include="Engine\KeyboardInputMap.cs" />
     <Compile Include="Engine\PositionUtil.cs" />
+    <Compile Include="Engine\UI\BorderButton.cs" />
+    <Compile Include="Engine\UI\Button.cs" />
     <Compile Include="IPlayerInput.cs" />
+    <Compile Include="MainMenu.cs" />
     <Compile Include="PlayArea.cs" />
     <Compile Include="RoadBounds.cs" />
     <Compile Include="Scoreboard.cs" />

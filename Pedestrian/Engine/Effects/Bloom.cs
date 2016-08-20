@@ -82,7 +82,7 @@ namespace Pedestrian.Engine.Effects
         /// <summary>
         /// Unload your graphics content.
         /// </summary>
-        public void UnloadContent()
+        public void Unload()
         {
             renderTarget1.Dispose();
             renderTarget2.Dispose();

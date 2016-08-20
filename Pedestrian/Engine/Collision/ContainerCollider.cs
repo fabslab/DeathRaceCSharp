@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using Microsoft.Xna.Framework.Graphics;
+using Pedestrian.Engine.Graphics;
 
 namespace Pedestrian.Engine.Collision
 {

@@ -34,5 +34,13 @@ namespace Pedestrian
 
             spriteBatch.Draw(lineTexture, start, color);
         }
+
+        public static void Unload()
+        {
+            if (lineTexture != null)
+            {
+                lineTexture.Dispose();
+            }
+        }
     }
 }

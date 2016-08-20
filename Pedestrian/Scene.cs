@@ -17,8 +17,8 @@ namespace Pedestrian
 
         List<IEntity> entities = new List<IEntity>();
         Scoreboard scoreboard;
-        SpriteBatch spriteBatch;
         bool gameOver = false;
+
 
         public void CreateTombstone(IEntity enemy)
         {
@@ -27,8 +27,6 @@ namespace Pedestrian
 
         public void Load()
         {
-            spriteBatch = new SpriteBatch(PedestrianGame.Instance.GraphicsDevice);
-
             var borderRectangle = new Rectangle(
                 0,
                 SCOREBOARD_HEIGHT,
@@ -85,6 +83,11 @@ namespace Pedestrian
             Events.AddObserver(GameEvents.GameOver, e => gameOver = true);
         }
 
+        public void Unload()
+        {
+            DashedLine.Unload();
+        }
+
         public void Update(GameTime gameTime)
         {
             foreach (var entity in entities)
@@ -110,15 +113,8 @@ namespace Pedestrian
             scoreboard.Update(gameTime);
         }
 
-        public void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(
-                SpriteSortMode.Deferred,
-                BlendState.AlphaBlend,
-                SamplerState.PointClamp,
-                DepthStencilState.None,
-                RasterizerState.CullNone
-            );
 
             scoreboard.Draw(gameTime, spriteBatch);
 
@@ -130,8 +126,6 @@ namespace Pedestrian
                     entity.DrawDebug(gameTime, spriteBatch);
                 }
             }
-
-            spriteBatch.End();
         }
     }
 }

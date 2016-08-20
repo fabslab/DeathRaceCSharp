@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Effects;
+using Pedestrian.Engine.Graphics;
 using System;
 
 namespace Pedestrian
@@ -28,6 +29,7 @@ namespace Pedestrian
         SpriteBatch spriteBatch;
         RenderTarget2D virtualSizeRenderTarget, fullSizeRenderTarget1, fullSizeRenderTarget2;
         Rectangle destinationRectangle;
+        MainMenu menu;
         Scene scene;
         Bloom bloomEffect;
         ScanLines scanLinesEffect;
@@ -71,6 +73,9 @@ namespace Pedestrian
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Initialize ColorPixels instance
+            new PixelTextures(GraphicsDevice);
+
             var presentationParams = GraphicsDevice.PresentationParameters;
 
             // Create render target at virtual resolution for game to render to first,
@@ -97,6 +102,8 @@ namespace Pedestrian
             scanLinesEffect = new ScanLines(GraphicsDevice);
             scanLinesEffect.LoadContent();
 
+            menu = new MainMenu(new Rectangle(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT));
+            menu.LoadContent();
             scene = new Scene();
             scene.Load();
         }
@@ -108,9 +115,11 @@ namespace Pedestrian
         protected override void UnloadContent()
         {
             Content.Unload();
+            scene.Unload();
             virtualSizeRenderTarget.Dispose();
             fullSizeRenderTarget1.Dispose();
-            bloomEffect.UnloadContent();
+            bloomEffect.Unload();
+            PixelTextures.Instance.Unload();
         }
 
         /// <summary>
@@ -138,7 +147,15 @@ namespace Pedestrian
         {
             GraphicsDevice.SetRenderTarget(virtualSizeRenderTarget);
             GraphicsDevice.Clear(Color.Black);
-            scene.Draw(gameTime);
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullNone
+            );
+            scene.Draw(gameTime, spriteBatch);
+            spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(fullSizeRenderTarget1);
             GraphicsDevice.Clear(Color.Black);
@@ -166,14 +183,14 @@ namespace Pedestrian
             float outputAspectRatio = Window.ClientBounds.Width / (float)Window.ClientBounds.Height;
             if (outputAspectRatio <= PREFERRED_ASPECT_RATIO)
             {
-                // letterbox with bars on top and bottom
+                // letterbox - bars on top and bottom
                 int presentHeight = (int)(Window.ClientBounds.Width / PREFERRED_ASPECT_RATIO + 0.5f);
                 int barHeight = (Window.ClientBounds.Height - presentHeight) / 2;
                 destinationRectangle = new Rectangle(0, barHeight, Window.ClientBounds.Width, presentHeight);
             }
             else
             {
-                // pillarbox with bars on left and right
+                // pillarbox - bars on left and right
                 int presentWidth = (int)(Window.ClientBounds.Height * PREFERRED_ASPECT_RATIO + 0.5f);
                 int barWidth = (Window.ClientBounds.Width - presentWidth) / 2;
                 destinationRectangle = new Rectangle(barWidth, 0, presentWidth, Window.ClientBounds.Height);
