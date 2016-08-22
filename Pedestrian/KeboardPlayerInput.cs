@@ -1,14 +1,17 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using Pedestrian.Engine;
+using Pedestrian.Engine.Input;
 using System.Collections.Generic;
 
 namespace Pedestrian
 {
-    public class KeyboardInput : IPlayerInput
+    /// <summary>
+    /// Input specific to gameplay. Instance to be created for each player.
+    /// </summary>
+    public class KeyboardPlayerInput : IPlayerInput
     {
-        Dictionary<InputDirection, Keys> currentInputMap;
+        Dictionary<InputCommand, Keys> currentInputMap;
 
-        public KeyboardInput(Dictionary<InputDirection, Keys> inputMap = null)
+        public KeyboardPlayerInput(Dictionary<InputCommand, Keys> inputMap = null)
         {
             currentInputMap = inputMap ?? KeyboardInputMap.Primary;
         }
@@ -18,11 +21,11 @@ namespace Pedestrian
             float turn = 0;
             var keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(currentInputMap[InputDirection.Right]))
+            if (keyboardState.IsKeyDown(currentInputMap[InputCommand.Right]))
             {
                 turn += 1;
             }
-            if (keyboardState.IsKeyDown(currentInputMap[InputDirection.Left]))
+            if (keyboardState.IsKeyDown(currentInputMap[InputCommand.Left]))
             {
                 turn -= 1;
             }
@@ -35,11 +38,11 @@ namespace Pedestrian
             float acceleration = 0;
             var keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(currentInputMap[InputDirection.Forward]))
+            if (keyboardState.IsKeyDown(currentInputMap[InputCommand.Forward]))
             {
                 acceleration += 1;
             }
-            if (keyboardState.IsKeyDown(currentInputMap[InputDirection.Reverse]))
+            if (keyboardState.IsKeyDown(currentInputMap[InputCommand.Reverse]))
             {
                 acceleration -= 1;
             }

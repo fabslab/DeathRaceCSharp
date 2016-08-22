@@ -36,8 +36,6 @@ namespace Pedestrian
             };
         }
 
-        public void Update(GameTime time) {}
-
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
@@ -57,5 +55,8 @@ namespace Pedestrian
         {
             Collider.Draw(spriteBatch);
         }
+
+        public void Update(GameTime time) { }
+        public void Reset() { }
     }
 }

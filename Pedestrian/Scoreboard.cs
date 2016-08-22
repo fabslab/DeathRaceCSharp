@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pedestrian.Engine;
 using Pedestrian.Engine.BitmapFonts;
+using System;
 
 namespace Pedestrian
 {
-    public class Scoreboard
+    public class Scoreboard : IDisposable
     {
         // Duration of game in seconds 
         public int GAME_TIME { get; set; } = 99;
@@ -14,33 +16,40 @@ namespace Pedestrian
         BitmapFont font;
         int timeRemaining;
         double timeTracked;
-        Player[] players;
         int[] scores;
+        int numPlayers;
         Rectangle displayArea;
 
-        public Scoreboard(Player[] players, Rectangle displayArea)
+        public Scoreboard(int numPlayers, Rectangle displayArea)
         {
+            this.numPlayers = numPlayers;
             this.displayArea = displayArea;
-            this.players = players;
-            scores = new int[players.Length];
-            font = PedestrianGame.Instance.Content.Load<BitmapFont>("Fonts/munro-edit-font01");
+            scores = new int[numPlayers];
+            font = PedestrianGame.Instance.Content.Load<BitmapFont>("Fonts/munro-edit-font-32px");
             font.LetterSpacing = 5;
             Reset();
+            PedestrianGame.Instance.Events.AddObserver(GameEvents.PlayerScored, OnPlayerScored);
+        }
+
+        private void OnPlayerScored(IEntity player)
+        {
+            var p = (Player)player;
+            var i = (int)p.PlayerIndex;
+            if (i <= numPlayers)
+            {
+                scores[i] = p.Score;
+            }
         }
 
         public void Reset()
         {
             timeRemaining = GAME_TIME;
             timeTracked = 0;
-            UpdateScores();
         }
 
-        private void UpdateScores()
+        public void Dispose()
         {
-            for (int i = 0, l = players.Length; i < l; ++i)
-            {
-                scores[i] = players[i].Score;
-            }
+            PedestrianGame.Instance.Events.RemoveObserver(GameEvents.PlayerScored, OnPlayerScored);
         }
 
         public void Update(GameTime gameTime)
@@ -49,8 +58,6 @@ namespace Pedestrian
             {
                 return;
             }
-
-            UpdateScores();
 
             // Scoreboard timer counts down every second
             timeTracked += gameTime.ElapsedGameTime.TotalSeconds;
@@ -61,14 +68,14 @@ namespace Pedestrian
                 if (timeRemaining == 0)
                 {
                     IsActive = false;
-                    Scene.Events.Emit(GameEvents.GameOver, null);
+                    PedestrianGame.Instance.Events.Emit(GameEvents.GameOver, null);
                 }
             }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (scores.Length >= 1)
+            if (numPlayers >= 1)
             {
                 var text = scores[0].ToString("D2");
                 var xPosition = displayArea.X + Margin;
@@ -80,7 +87,7 @@ namespace Pedestrian
             var timeXPosition = displayArea.Left + (displayArea.Width / 2 - timeSize.Width / 2);
             spriteBatch.DrawString(font, timeText, new Vector2(timeXPosition, 0), Color.White);
 
-            if (scores.Length >= 2)
+            if (numPlayers >= 2)
             {
                 var text = scores[1].ToString("D2");
                 var textSize = font.GetSize(text);

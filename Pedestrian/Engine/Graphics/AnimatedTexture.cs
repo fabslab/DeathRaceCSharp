@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Pedestrian.Engine
+namespace Pedestrian.Engine.Graphics
 {
     public class AnimatedTexture
     {

@@ -2,8 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Collision;
+using Pedestrian.Engine.Input;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Pedestrian
@@ -12,9 +12,12 @@ namespace Pedestrian
     {
         Texture2D texture;
         Vector2 origin;
+        Vector2 initialPosition;
         float snappedRotation;
+        float currentMaxSpeed;
         Timer crashTimer;
-        
+
+        public PlayerIndex PlayerIndex { get; private set; }
         public int Score { get; private set; } = 0;
         public bool IsStatic { get; } = false;
         public Color Color { get; set; } = Color.White;
@@ -29,7 +32,6 @@ namespace Pedestrian
         public float RotationSnapValue { get; set; } = MathHelper.PiOver4 / 2;
         // Max number of pixels to move in one movement
         public float DefaultMaxSpeed { get; set; } = 4f;
-        public float CurrentMaxSpeed { get; set; } = 4f;
         public float MaxReverseSpeed { get; set; } = 2f;
         // Num ms player will be stationary after crashing if not cancelled by reversing
         public int MaxCrashTime { get; set; } = 1500;
@@ -48,10 +50,13 @@ namespace Pedestrian
             }
         }
 
-        public Player(Vector2 position, PlayerIndex playerIndex, IPlayerInput inputHandler = null)
+        public Player(Vector2 initialPosition, PlayerIndex playerIndex, IPlayerInput inputHandler = null)
         {
-            Input = inputHandler ?? new KeyboardInput(KeyboardInputMap.GetInputMap(playerIndex));
-            Position = position;
+            currentMaxSpeed = DefaultMaxSpeed;
+            PlayerIndex = playerIndex;
+            this.initialPosition = initialPosition;
+            Position = initialPosition;
+            Input = inputHandler ?? new KeyboardPlayerInput(KeyboardInputMap.GetInputMap(playerIndex));
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit02");
             Collider = new BoxCollider(ColliderCategory.Default, ~ColliderCategory.GameBounds)
             {
@@ -62,7 +67,6 @@ namespace Pedestrian
                 OnCollisionExited = OnCollisionExited,
                 OnCollision = OnCollision
             };
-
             crashTimer = Timers.GetTimer(MaxCrashTime);
             crashTimer.Paused = true;
             crashTimer.OnTimerEnd = (() => IsCrashed = false);
@@ -80,6 +84,7 @@ namespace Pedestrian
                         {
                             enemy.Kill();
                             Score++;
+                            PedestrianGame.Instance.Events.Emit(GameEvents.PlayerScored, this);
                         }
                     }
                     if (entities.Any(e => !(e is Enemy)))
@@ -92,12 +97,12 @@ namespace Pedestrian
 
         public void OnCollision(IEnumerable<IEntity> entities)
         {
-            CurrentMaxSpeed = 1;
+            currentMaxSpeed = 1;
         }
 
         public void OnCollisionExited(IEnumerable<IEntity> entities)
         {
-            CurrentMaxSpeed = DefaultMaxSpeed;
+            currentMaxSpeed = DefaultMaxSpeed;
         }
 
         private void Crash()
@@ -110,12 +115,12 @@ namespace Pedestrian
         public void Update(GameTime time)
         {
             var throttle = Input.GetThrottleValue();
-            var speed = CurrentMaxSpeed;
+            var speed = currentMaxSpeed;
             if (throttle < 0)
             {
-                speed = MaxReverseSpeed;
-                // Reversing cancels crash time
+                // Reversing cancels crash
                 IsCrashed = false;
+                speed = MaxReverseSpeed;
             }
             else if (IsCrashed)
             {
@@ -136,6 +141,13 @@ namespace Pedestrian
 
             Position = PositionUtil.WrapPosition(Position + movement, PlayArea.Instance.Bounds);
             Collider.Position = Position;
+        }
+
+        public void Reset()
+        {
+            Position = initialPosition;
+            Collider.Position = initialPosition;
+            Rotation = 0;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

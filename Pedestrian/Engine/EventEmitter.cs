@@ -97,7 +97,10 @@ namespace Pedestrian.Engine
 
         public void RemoveObserver(T eventType, Action<U> handler)
         {
-            eventTable[eventType].Remove(handler);
+            if (eventTable[eventType].Contains(handler))
+            {
+                eventTable[eventType].Remove(handler);
+            }
         }
 
 

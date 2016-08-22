@@ -4,8 +4,10 @@ namespace Pedestrian
 {
     public enum GameEvents
     {
+        GameStart,
+        GameOver,
         EnemyKilled,
-        GameOver
+        PlayerScored,
     }
 
     /// <summary>

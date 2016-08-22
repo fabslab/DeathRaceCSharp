@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace Pedestrian.Engine
+namespace Pedestrian.Engine.Input
 {
     public enum Direction
     {

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Effects;
 using Pedestrian.Engine.Graphics;
+using Pedestrian.Engine.Input;
 using System;
 
 namespace Pedestrian
@@ -25,6 +26,10 @@ namespace Pedestrian
         public const int VIRTUAL_HEIGHT = 360;
         public const float PREFERRED_ASPECT_RATIO = VIRTUAL_WIDTH / (float)VIRTUAL_HEIGHT;
 
+        public int NumPlayers { get; set; } = 1;
+        public GameState CurrentState { get; set; } = GameState.Menu;
+        public EventEmitter<GameEvents, IEntity> Events { get; set; }
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         RenderTarget2D virtualSizeRenderTarget, fullSizeRenderTarget1, fullSizeRenderTarget2;
@@ -34,6 +39,7 @@ namespace Pedestrian
         Bloom bloomEffect;
         ScanLines scanLinesEffect;
 
+
         public PedestrianGame()
         {
             Instance = this;
@@ -42,12 +48,27 @@ namespace Pedestrian
             // run fullscreen and fill player's screen resolution
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            graphics.ToggleFullScreen();
+
+            if (!DEBUG)
+            {
+                graphics.ToggleFullScreen();
+            }
 
             Content.RootDirectory = "Content";
 
             // Set target update and draw rate to 30fps
             TargetElapsedTime = TimeSpan.FromMilliseconds(1 / 30d * 1000);
+
+            Events = new EventEmitter<GameEvents, IEntity>(new CoreEventsComparer());
+            Events.AddObserver(GameEvents.GameStart, (e) =>
+            {
+                CurrentState = GameState.Playing;
+                scene = new Scene(NumPlayers);
+            });
+            Events.AddObserver(GameEvents.GameOver, (e) =>
+            {
+                CurrentState = GameState.GameOver;
+            });
         }
 
         /// <summary>
@@ -104,8 +125,6 @@ namespace Pedestrian
 
             menu = new MainMenu(new Rectangle(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT));
             menu.LoadContent();
-            scene = new Scene();
-            scene.Load();
         }
 
         /// <summary>
@@ -115,11 +134,11 @@ namespace Pedestrian
         protected override void UnloadContent()
         {
             Content.Unload();
-            scene.Unload();
             virtualSizeRenderTarget.Dispose();
             fullSizeRenderTarget1.Dispose();
             bloomEffect.Unload();
             PixelTextures.Instance.Unload();
+            DashedLine.Unload();
         }
 
         /// <summary>
@@ -130,12 +149,21 @@ namespace Pedestrian
         {
             if (IsActive)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                GlobalInput.Update();
+                if (GlobalInput.WasCommandEntered(InputCommand.Quit))
                 {
                     Exit();
                 }
                 Timers.Update(gameTime);
-                scene.Update(gameTime);
+
+                if (CurrentState == GameState.Menu)
+                {
+                    menu.Update(gameTime);
+                }
+                else
+                {
+                    scene.Update(gameTime);
+                }
             }
         }
 
@@ -154,14 +182,23 @@ namespace Pedestrian
                 DepthStencilState.None,
                 RasterizerState.CullNone
             );
-            scene.Draw(gameTime, spriteBatch);
+
+            if (CurrentState == GameState.Menu)
+            {
+                menu.Draw(spriteBatch);
+            }
+            else if (CurrentState == GameState.Playing || CurrentState == GameState.GameOver)
+            {
+                scene.Draw(gameTime, spriteBatch);
+            }
+
             spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(fullSizeRenderTarget1);
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
-                BlendState.AlphaBlend,
+                BlendState.Opaque,
                 SamplerState.PointClamp,
                 DepthStencilState.None,
                 RasterizerState.CullNone
@@ -180,20 +217,25 @@ namespace Pedestrian
 
         private void SetDestinationRectangle()
         {
-            float outputAspectRatio = Window.ClientBounds.Width / (float)Window.ClientBounds.Height;
+            var pp = GraphicsDevice.PresentationParameters;
+            var screenWidth = pp.BackBufferWidth;
+            var screenHeight = pp.BackBufferHeight;
+
+            float outputAspectRatio = (float)screenWidth / screenHeight;
+
             if (outputAspectRatio <= PREFERRED_ASPECT_RATIO)
             {
                 // letterbox - bars on top and bottom
-                int presentHeight = (int)(Window.ClientBounds.Width / PREFERRED_ASPECT_RATIO + 0.5f);
-                int barHeight = (Window.ClientBounds.Height - presentHeight) / 2;
-                destinationRectangle = new Rectangle(0, barHeight, Window.ClientBounds.Width, presentHeight);
+                int gameHeight = (int)(screenWidth / PREFERRED_ASPECT_RATIO + 0.5f);
+                int barHeight = (screenHeight - gameHeight) / 2;
+                destinationRectangle = new Rectangle(0, barHeight, screenWidth, gameHeight);
             }
             else
             {
                 // pillarbox - bars on left and right
-                int presentWidth = (int)(Window.ClientBounds.Height * PREFERRED_ASPECT_RATIO + 0.5f);
-                int barWidth = (Window.ClientBounds.Width - presentWidth) / 2;
-                destinationRectangle = new Rectangle(barWidth, 0, presentWidth, Window.ClientBounds.Height);
+                int gameWidth = (int)(screenHeight * PREFERRED_ASPECT_RATIO + 0.5f);
+                int barWidth = (screenWidth - gameWidth) / 2;
+                destinationRectangle = new Rectangle(barWidth, 0, gameWidth, screenHeight);
             }
         }
     }

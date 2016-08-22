@@ -93,8 +93,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ControllerInput.cs" />
-    <Compile Include="Engine\AnimatedTexture.cs" />
+    <Compile Include="ControllerPlayerInput.cs" />
+    <Compile Include="Engine\Graphics\AnimatedTexture.cs" />
     <Compile Include="Engine\BitmapFonts\BitmapFont.cs" />
     <Compile Include="Engine\BitmapFonts\BitmapFontExtensions.cs" />
     <Compile Include="Engine\BitmapFonts\BitmapFontReader.cs" />
@@ -113,13 +113,21 @@
     <Compile Include="Engine\EventEmitter.cs" />
     <Compile Include="Engine\Graphics\PixelTextures.cs" />
     <Compile Include="Engine\Graphics\Shapes\RectangleShape.cs" />
-    <Compile Include="Engine\InputDirection.cs" />
-    <Compile Include="Engine\KeyboardInputMap.cs" />
+    <Compile Include="Engine\Input\ControllerInputMap.cs" />
+    <Compile Include="Engine\Input\GlobalInput.cs" />
+    <Compile Include="Engine\Input\InputDirection.cs" />
+    <Compile Include="Engine\Input\KeyboardInputMap.cs" />
     <Compile Include="Engine\PositionUtil.cs" />
     <Compile Include="Engine\UI\BorderButton.cs" />
     <Compile Include="Engine\UI\Button.cs" />
+    <Compile Include="Engine\UI\HorizontalFocusGroup.cs" />
+    <Compile Include="Engine\UI\IFocusable.cs" />
+    <Compile Include="Engine\UI\IFocusGroup.cs" />
+    <Compile Include="Engine\UI\TextBlock.cs" />
+    <Compile Include="GameState.cs" />
     <Compile Include="IPlayerInput.cs" />
     <Compile Include="MainMenu.cs" />
+    <Compile Include="MenuDirections.cs" />
     <Compile Include="PlayArea.cs" />
     <Compile Include="RoadBounds.cs" />
     <Compile Include="Scoreboard.cs" />
@@ -130,11 +138,11 @@
     <Compile Include="Engine\TextureAtlases\TextureRegion2D.cs" />
     <Compile Include="Engine\Timer.cs" />
     <Compile Include="DashedLine.cs" />
-    <Compile Include="Engine\Direction.cs" />
+    <Compile Include="Engine\Input\Direction.cs" />
     <Compile Include="Engine\Collision\Collider.cs" />
     <Compile Include="Engine\IEntity.cs" />
     <Compile Include="Enemy.cs" />
-    <Compile Include="KeboardInput.cs" />
+    <Compile Include="KeboardPlayerInput.cs" />
     <Compile Include="PedestrianGame.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

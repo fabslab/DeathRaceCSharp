@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Collision;
+using Pedestrian.Engine.Graphics;
+using Pedestrian.Engine.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,12 +89,8 @@ namespace Pedestrian
 
         public void Kill()
         {
-            Scene.Events.Emit(GameEvents.EnemyKilled, this);
-
-            // Death just resets the entity
-            Position = initialPosition;
-            Collider.Position = initialPosition;
-            MovementDirection = initialDirection;
+            PedestrianGame.Instance.Events.Emit(GameEvents.EnemyKilled, this);
+            Reset();
         }
 
         public void MakeRandomTurn()
@@ -145,6 +143,13 @@ namespace Pedestrian
             Collider.Position = Position;
 
             currentSprite.Update(time);
+        }
+
+        public void Reset()
+        {
+            Position = initialPosition;
+            Collider.Position = initialPosition;
+            MovementDirection = initialDirection;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

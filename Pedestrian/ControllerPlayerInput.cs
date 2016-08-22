@@ -3,14 +3,14 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Pedestrian
 {
-    public class ControllerInput : IPlayerInput
+    public class ControllerPlayerInput : IPlayerInput
     {
         GamePadState controller;
         PlayerIndex index;
 
         public bool IsConnected => controller.IsConnected;
 
-        public ControllerInput(PlayerIndex playerIndex = PlayerIndex.One)
+        public ControllerPlayerInput(PlayerIndex playerIndex = PlayerIndex.One)
         {
             index = playerIndex;
             controller = GamePad.GetState(index);
