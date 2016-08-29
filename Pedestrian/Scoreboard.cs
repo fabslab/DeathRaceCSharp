@@ -2,14 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pedestrian.Engine;
 using Pedestrian.Engine.BitmapFonts;
-using System;
 
 namespace Pedestrian
 {
-    public class Scoreboard : IDisposable
+    public class Scoreboard
     {
         // Duration of game in seconds 
-        public int GAME_TIME { get; set; } = 99;
+        public int GAME_TIME { get; set; } = 3;
         public int Margin { get; set; }
         public bool IsActive { get; set; } = false;
 
@@ -52,7 +51,7 @@ namespace Pedestrian
             timeTracked = 0;
         }
 
-        public void Dispose()
+        public void RemoveObservers()
         {
             PedestrianGame.Instance.Events.RemoveObserver(GameEvents.PlayerScored, OnPlayerScored);
         }

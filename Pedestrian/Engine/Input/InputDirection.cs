@@ -3,10 +3,13 @@
     public enum InputCommand
     {
         Forward,
+        Up,
         Right,
         Reverse,
+        Down,
         Left,
         Enter,
-        Quit
+        Exit,
+        Pause
     }
 }

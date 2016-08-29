@@ -24,8 +24,6 @@ namespace Pedestrian.Engine.Input
             { InputCommand.Right, Keys.Right },
             { InputCommand.Reverse, Keys.Down },
             { InputCommand.Left, Keys.Left },
-            { InputCommand.Enter, Keys.Enter },
-            { InputCommand.Quit, Keys.Escape },
         };
 
         public static Dictionary<InputCommand, Keys> Secondary = new Dictionary<InputCommand, Keys>
@@ -34,8 +32,17 @@ namespace Pedestrian.Engine.Input
             { InputCommand.Right, Keys.D },
             { InputCommand.Reverse, Keys.S },
             { InputCommand.Left, Keys.A },
+        };
+
+        public static Dictionary<InputCommand, Keys> Global = new Dictionary<InputCommand, Keys>
+        {
+            { InputCommand.Up, Keys.Up },
+            { InputCommand.Down, Keys.Down },
+            { InputCommand.Left, Keys.Left },
+            { InputCommand.Right, Keys.Right },
             { InputCommand.Enter, Keys.Enter },
-            { InputCommand.Quit, Keys.Escape }
+            { InputCommand.Exit, Keys.Escape },
+            { InputCommand.Pause, Keys.Escape },
         };
     }
 }

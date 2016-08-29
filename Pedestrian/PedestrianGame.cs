@@ -36,6 +36,7 @@ namespace Pedestrian
         Rectangle destinationRectangle;
         MainMenu menu;
         GameOverMenu gameOverMenu;
+        PauseMenu pauseMenu;
         Scene scene;
         Bloom bloomEffect;
         ScanLines scanLinesEffect;
@@ -64,6 +65,10 @@ namespace Pedestrian
             Events.AddObserver(GameEvents.GameStart, (e) =>
             {
                 CurrentState = GameState.Playing;
+                if (scene != null)
+                {
+                    scene.Unload();
+                }
                 scene = new Scene(NumPlayers);
             });
             Events.AddObserver(GameEvents.GameOver, (e) =>
@@ -77,6 +82,10 @@ namespace Pedestrian
             Events.AddObserver(GameEvents.Exit, (e) =>
             {
                 Exit();
+            });
+            Events.AddObserver(GameEvents.Resume, (e) =>
+            {
+                CurrentState = GameState.Playing;
             });
         }
 
@@ -137,6 +146,7 @@ namespace Pedestrian
             menu.LoadContent();
 
             gameOverMenu = new GameOverMenu(screenRect);
+            pauseMenu = new PauseMenu(screenRect);
         }
 
         /// <summary>
@@ -162,24 +172,47 @@ namespace Pedestrian
             if (IsActive)
             {
                 GlobalInput.Update();
-                if (GlobalInput.WasCommandEntered(InputCommand.Quit))
-                {
-                    Exit();
-                }
                 Timers.Update(gameTime);
 
                 if (CurrentState == GameState.Menu)
                 {
+                    if (GlobalInput.WasCommandEntered(InputCommand.Exit))
+                    {
+                        Exit();
+                    }
                     menu.Update(gameTime);
                 }
-                else if (CurrentState == GameState.Playing || CurrentState == GameState.GameOver)
+                else if (CurrentState == GameState.Playing)
                 {
-                    scene.Update(gameTime);
-                    if (CurrentState == GameState.GameOver)
+                    if (GlobalInput.WasCommandEntered(InputCommand.Pause))
                     {
-                        gameOverMenu.Update(gameTime);
+                        CurrentState = GameState.Paused;
+                    }
+                    else
+                    {
+                        scene.Update(gameTime);
                     }
                 }
+                else if (CurrentState == GameState.Paused)
+                {
+                    if (GlobalInput.WasCommandEntered(InputCommand.Pause))
+                    {
+                        CurrentState = GameState.Playing;
+                    }
+                    else
+                    {
+                        pauseMenu.Update(gameTime);
+                    }
+                }
+                else if (CurrentState == GameState.GameOver)
+                {
+                    gameOverMenu.Update(gameTime);
+                    scene.Update(gameTime);
+                }
+            }
+            else
+            {
+                CurrentState = GameState.Paused;
             }
         }
 
@@ -203,12 +236,19 @@ namespace Pedestrian
             {
                 menu.Draw(spriteBatch);
             }
-            else if (CurrentState == GameState.Playing || CurrentState == GameState.GameOver)
+            else if (CurrentState == GameState.Playing)
             {
                 scene.Draw(gameTime, spriteBatch);
-                if (CurrentState == GameState.GameOver) {
-                    gameOverMenu.Draw(spriteBatch);
-                }
+            }
+            else if (CurrentState == GameState.Paused)
+            {
+                scene.Draw(gameTime, spriteBatch);
+                pauseMenu.Draw(spriteBatch);
+            }
+            else if (CurrentState == GameState.GameOver)
+            {
+                scene.Draw(gameTime, spriteBatch);
+                gameOverMenu.Draw(spriteBatch);
             }
 
             spriteBatch.End();

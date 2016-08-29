@@ -11,7 +11,9 @@ namespace Pedestrian.Engine.Input
             { InputCommand.Forward, Buttons.RightTrigger },
             { InputCommand.Right, Buttons.LeftTrigger },
             { InputCommand.Reverse, Buttons.DPadDown },
-            { InputCommand.Left, Buttons.DPadLeft }
+            { InputCommand.Left, Buttons.DPadLeft },
+            { InputCommand.Enter, Buttons.A },
+            { InputCommand.Pause, Buttons.Start },
         };
     }
 }

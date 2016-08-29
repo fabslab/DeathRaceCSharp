@@ -16,7 +16,7 @@ namespace Pedestrian
 
         public CenteredText(Rectangle displayArea, string[] lines, int yPosition, Color textColor)
         {
-            for (int i = 0, l = lines.Length; i < l; i++)
+            for (int i = 0, l = lines.Length; i < l; ++i)
             {
                 var textBlock = new TextBlock
                 {

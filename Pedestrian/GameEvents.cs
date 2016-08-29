@@ -10,6 +10,7 @@ namespace Pedestrian
         PlayerScored,
         LoadMenu,
         Exit,
+        Resume,
     }
 
     /// <summary>

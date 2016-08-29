@@ -34,11 +34,11 @@ namespace Pedestrian.Engine.UI
             {
                 FocusRight();
             }
-            else if (GlobalInput.WasCommandEntered(InputCommand.Forward))
+            else if (GlobalInput.WasCommandEntered(InputCommand.Up))
             {
                 FocusUp();
             }
-            else if (GlobalInput.WasCommandEntered(InputCommand.Forward))
+            else if (GlobalInput.WasCommandEntered(InputCommand.Down))
             {
                 FocusDown();
             }

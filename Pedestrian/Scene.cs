@@ -2,12 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Collision;
-using System;
 using System.Collections.Generic;
 
 namespace Pedestrian
 {
-    public class Scene : IDisposable
+    public class Scene
     {
         public const int SCOREBOARD_HEIGHT = 30;
         
@@ -18,7 +17,7 @@ namespace Pedestrian
         Scoreboard scoreboard;
         
 
-        public Scene(int numPlayers = 1)
+        public Scene(int numPlayers)
         {
             var borderRectangle = new Rectangle(
                 0,
@@ -78,9 +77,10 @@ namespace Pedestrian
             PedestrianGame.Instance.Events.AddObserver(GameEvents.EnemyKilled, CreateTombstone);
         }
 
-        public void Dispose()
+        public void Unload()
         {
             PedestrianGame.Instance.Events.RemoveObserver(GameEvents.EnemyKilled, CreateTombstone);
+            scoreboard.RemoveObservers();
         }
 
         private void CreateTombstone(IEntity enemy)

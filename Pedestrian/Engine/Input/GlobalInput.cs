@@ -25,7 +25,7 @@ namespace Pedestrian.Engine.Input
         public static bool WasCommandEntered(InputCommand command)
         {
             Keys key;
-            if (KeyboardInputMap.Primary.TryGetValue(command, out key))
+            if (KeyboardInputMap.Global.TryGetValue(command, out key))
             {
                 if (lastKeyboardState.IsKeyUp(key) && keyboardState.IsKeyDown(key))
                 {

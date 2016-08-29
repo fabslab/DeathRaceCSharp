@@ -93,6 +93,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ButtonTypes.cs" />
     <Compile Include="ControllerPlayerInput.cs" />
     <Compile Include="Engine\Graphics\AnimatedTexture.cs" />
     <Compile Include="Engine\BitmapFonts\BitmapFont.cs" />
@@ -128,9 +129,11 @@
     <Compile Include="Engine\UI\VerticalFocusGroup.cs" />
     <Compile Include="GameOverMenu.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="HorizontalButtonMenu.cs" />
     <Compile Include="IPlayerInput.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="CenteredText.cs" />
+    <Compile Include="PauseMenu.cs" />
     <Compile Include="PlayArea.cs" />
     <Compile Include="RoadBounds.cs" />
     <Compile Include="Scoreboard.cs" />
@@ -153,6 +156,7 @@
     <Compile Include="Scene.cs" />
     <Compile Include="Engine\MathUtil.cs" />
     <Compile Include="Tombstone.cs" />
+    <Compile Include="VerticalButtonMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
