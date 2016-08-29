@@ -33,6 +33,11 @@ namespace Pedestrian
 
         private void OnPlayerScored(IEntity player)
         {
+            if (!IsActive)
+            {
+                return;
+            }
+
             var p = (Player)player;
             var i = (int)p.PlayerIndex;
             if (i <= numPlayers)

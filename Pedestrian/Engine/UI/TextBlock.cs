@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pedestrian.Engine.BitmapFonts;
+using Pedestrian.Engine.Graphics.Shapes;
 
 namespace Pedestrian.Engine.UI
 {
@@ -18,6 +19,9 @@ namespace Pedestrian.Engine.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            var size = Font.GetSize(Text);
+            var background = new Rectangle((int)Position.X, (int)Position.Y, size.Width, size.Height);
+            RectangleShape.Draw(spriteBatch, background, Color.Black);
             spriteBatch.DrawString(Font, Text, Position, Color);
         }
 

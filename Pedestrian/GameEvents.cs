@@ -8,6 +8,8 @@ namespace Pedestrian
         GameOver,
         EnemyKilled,
         PlayerScored,
+        LoadMenu,
+        Exit,
     }
 
     /// <summary>

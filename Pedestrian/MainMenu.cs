@@ -7,10 +7,10 @@ namespace Pedestrian
     public class MainMenu
     {
         Texture2D marquee;
-        Rectangle displayArea;
         Vector2 marqueePosition;
+        Rectangle displayArea;
         IFocusGroup buttons;
-        MenuDirections directions;
+        CenteredText directions;
 
         public MainMenu(Rectangle displayArea)
         {
@@ -44,7 +44,7 @@ namespace Pedestrian
             buttons.AddItem(new BorderButton
             {
                 BorderWidth = borderWidth,
-                Text = "2 PLAYER",
+                Text = "2 PLAYERS",
                 Position = new Vector2(buttonsX + buttonWidth + buttonSpacing, buttonsY),
                 Width = buttonWidth,
                 Height = buttonHeight,
@@ -56,7 +56,12 @@ namespace Pedestrian
                 PedestrianGame.Instance.Events.Emit(GameEvents.GameStart, null);
             };
 
-            directions = new MenuDirections(displayArea, buttonsY + 50, new Color(210, 210, 210));
+            var directionsText = new string[] {
+                "HIT GREMLINS FOR POINTS",
+                "USE REVERSE FOR QUICKER",
+                "GETAWAY AFTER CRASH",
+            };
+            directions = new CenteredText(displayArea, directionsText, buttonsY + 50, new Color(210, 210, 210));
         }
 
         public void Update(GameTime gameTime)

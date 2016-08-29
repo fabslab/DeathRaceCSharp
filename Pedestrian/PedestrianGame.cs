@@ -35,6 +35,7 @@ namespace Pedestrian
         RenderTarget2D virtualSizeRenderTarget, fullSizeRenderTarget1, fullSizeRenderTarget2;
         Rectangle destinationRectangle;
         MainMenu menu;
+        GameOverMenu gameOverMenu;
         Scene scene;
         Bloom bloomEffect;
         ScanLines scanLinesEffect;
@@ -68,6 +69,14 @@ namespace Pedestrian
             Events.AddObserver(GameEvents.GameOver, (e) =>
             {
                 CurrentState = GameState.GameOver;
+            });
+            Events.AddObserver(GameEvents.LoadMenu, (e) =>
+            {
+                CurrentState = GameState.Menu;
+            });
+            Events.AddObserver(GameEvents.Exit, (e) =>
+            {
+                Exit();
             });
         }
 
@@ -123,8 +132,11 @@ namespace Pedestrian
             scanLinesEffect = new ScanLines(GraphicsDevice);
             scanLinesEffect.LoadContent();
 
-            menu = new MainMenu(new Rectangle(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT));
+            var screenRect = new Rectangle(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+            menu = new MainMenu(screenRect);
             menu.LoadContent();
+
+            gameOverMenu = new GameOverMenu(screenRect);
         }
 
         /// <summary>
@@ -160,9 +172,13 @@ namespace Pedestrian
                 {
                     menu.Update(gameTime);
                 }
-                else
+                else if (CurrentState == GameState.Playing || CurrentState == GameState.GameOver)
                 {
                     scene.Update(gameTime);
+                    if (CurrentState == GameState.GameOver)
+                    {
+                        gameOverMenu.Update(gameTime);
+                    }
                 }
             }
         }
@@ -190,6 +206,9 @@ namespace Pedestrian
             else if (CurrentState == GameState.Playing || CurrentState == GameState.GameOver)
             {
                 scene.Draw(gameTime, spriteBatch);
+                if (CurrentState == GameState.GameOver) {
+                    gameOverMenu.Draw(spriteBatch);
+                }
             }
 
             spriteBatch.End();

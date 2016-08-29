@@ -1,13 +1,13 @@
 ﻿namespace Pedestrian.Engine.UI
 {
-    public class HorizontalFocusGroup : FocusGroup
+    public class VerticalFocusGroup : FocusGroup
     {
-        public override void FocusLeft()
+        public override void FocusUp()
         {
             SetFocus(focusedNode.Previous);
         }
 
-        public override void FocusRight()
+        public override void FocusDown()
         {
             SetFocus(focusedNode.Next);
         }
