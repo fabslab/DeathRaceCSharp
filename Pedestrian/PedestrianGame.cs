@@ -210,7 +210,7 @@ namespace Pedestrian
                     scene.Update(gameTime);
                 }
             }
-            else
+            else if (CurrentState == GameState.Playing)
             {
                 CurrentState = GameState.Paused;
             }
