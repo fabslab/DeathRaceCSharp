@@ -24,7 +24,7 @@ namespace Pedestrian
                 "11-20 POINTS: GREMLIN HUNTER",
                 "21 or OVER: EXPERT DRIVER"
             };
-            scores = new CenteredText(screenArea, scoreText, screenArea.Height / 2, new Color(210, 210, 210));
+            scores = new CenteredText(screenArea, scoreText, screenArea.Height / 2 + 10, new Color(210, 210, 210));
         }
 
         public void Update(GameTime gameTime)
