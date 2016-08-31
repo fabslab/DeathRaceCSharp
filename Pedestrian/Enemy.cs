@@ -52,11 +52,11 @@ namespace Pedestrian
             MovementDirection = initialDirection;
 
             frontSprite = new AnimatedTexture();
-            frontSprite.Load("gremlin16bit02", 2, 50);
+            frontSprite.Load("gremlin16bit02", 2, 60);
             leftSprite = new AnimatedTexture();
-            leftSprite.Load("gremlin16bit-left01", 2, 50);
+            leftSprite.Load("gremlin16bit-left01", 2, 60);
             rightSprite = new AnimatedTexture();
-            rightSprite.Load("gremlin16bit-right01", 2, 50);
+            rightSprite.Load("gremlin16bit-right01", 2, 60);
             currentSprite = frontSprite;
 
             // Collides only with default and not other collider types
@@ -65,12 +65,29 @@ namespace Pedestrian
                 Position = enemyPosition,
                 Width = frontSprite.FrameWidth - 3,
                 Height = frontSprite.FrameHeight - 1,
-                OnCollisionEntered = OnCollisionEnter
+                OnCollisionEntered = OnCollisionEntered
             };
         }
 
-        public void OnCollisionEnter(IEnumerable<IEntity> entities)
+        public void OnCollisionEntered(IEnumerable<IEntity> entities)
         {
+            if (RoadBounds.Instance.Bounds.Contains(Position))
+            {
+                var hitByPlayer = false;
+
+                foreach (Player player in entities.Where(e => e is Player))
+                {
+                    player.IncrementScore();
+                    hitByPlayer = true;
+                }
+
+                if (hitByPlayer)
+                {
+                    Kill();
+                    return;
+                }
+            }
+
             if (entities.Any(e => !(e is Player)))
             {
                 // Create chance to turn in opposite direction when hitting wall
@@ -83,11 +100,12 @@ namespace Pedestrian
                     MakeRandomTurn();
                 }
                 Position = previousPosition;
+                Collider.Position = previousPosition;
                 Collider.Clear();
             }
         }
 
-        public void Kill()
+        private void Kill()
         {
             PedestrianGame.Instance.Events.Emit(GameEvents.EnemyKilled, this);
             Reset();

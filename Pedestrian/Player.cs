@@ -78,21 +78,18 @@ namespace Pedestrian
             {
                 if (RoadBounds.Instance.Bounds.Contains(Position))
                 {
-                    foreach (Enemy enemy in entities.Where(e => e is Enemy))
-                    {
-                        if (RoadBounds.Instance.Bounds.Contains(enemy.Position))
-                        {
-                            enemy.Kill();
-                            Score++;
-                            PedestrianGame.Instance.Events.Emit(GameEvents.PlayerScored, this);
-                        }
-                    }
                     if (entities.Any(e => !(e is Enemy)))
                     {
                         Crash();
                     }
                 }
             }
+        }
+
+        public void IncrementScore()
+        {
+            Score++;
+            PedestrianGame.Instance.Events.Emit(GameEvents.PlayerScored, this);
         }
 
         public void OnCollision(IEnumerable<IEntity> entities)
