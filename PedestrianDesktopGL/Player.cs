@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Collision;
+using Pedestrian.Engine.Graphics.Shapes;
 using Pedestrian.Engine.Input;
 using System.Collections.Generic;
 using System.Linq;
@@ -181,6 +182,7 @@ namespace Pedestrian
         public void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch)
         {
             Collider.Draw(spriteBatch);
+            RectangleShape.Draw(spriteBatch, new Rectangle(Position.ToPoint(), new Point(1, 1)), Color.Red);
         }
     }
 }
