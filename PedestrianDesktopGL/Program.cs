@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Pedestrian;
+using System;
 
-namespace Pedestrian
+namespace DesktopGL
 {
     /// <summary>
     /// The main class.
@@ -14,9 +15,7 @@ namespace Pedestrian
         static void Main()
         {
             using (var game = new PedestrianGame())
-            {
                 game.Run();
-            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Collision;
 using Pedestrian.Engine.Input;
@@ -56,7 +57,7 @@ namespace Pedestrian
             PlayerIndex = playerIndex;
             this.initialPosition = initialPosition;
             Position = initialPosition;
-            Input = inputHandler ?? new KeyboardPlayerInput(KeyboardInputMap.GetInputMap(playerIndex));
+            SetInput(inputHandler);
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit02");
             Collider = new BoxCollider(ColliderCategory.Default, ~ColliderCategory.GameBounds)
             {
@@ -70,6 +71,21 @@ namespace Pedestrian
             crashTimer = Timers.GetTimer(MaxCrashTime);
             crashTimer.Paused = true;
             crashTimer.OnTimerEnd = (() => IsCrashed = false);
+        }
+
+        public void SetInput(IPlayerInput inputHandler = null)
+        {
+            if (inputHandler == null)
+            {
+                if (GamePad.GetState(PlayerIndex).IsConnected)
+                {
+                    Input = new ControllerPlayerInput(PlayerIndex);
+                }
+                else
+                {
+                    Input = new KeyboardPlayerInput(KeyboardInputMap.GetInputMap(PlayerIndex));
+                }
+            }
         }
 
         public void OnCollisionEntered(IEnumerable<IEntity> entities)

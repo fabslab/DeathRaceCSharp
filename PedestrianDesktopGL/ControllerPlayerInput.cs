@@ -5,20 +5,17 @@ namespace Pedestrian
 {
     public class ControllerPlayerInput : IPlayerInput
     {
-        GamePadState controller;
         PlayerIndex index;
-
-        public bool IsConnected => controller.IsConnected;
 
         public ControllerPlayerInput(PlayerIndex playerIndex = PlayerIndex.One)
         {
             index = playerIndex;
-            controller = GamePad.GetState(index);
         }
 
         public float GetThrottleValue()
         {
-            if (!IsConnected) return 0;
+            var controller = GamePad.GetState(index);
+            if (!controller.IsConnected) return 0;
 
             var throttle = 0;
 
@@ -36,7 +33,8 @@ namespace Pedestrian
 
         public float GetTurnAngleNormalized()
         {
-            if (!IsConnected) return 0;
+            var controller = GamePad.GetState(index);
+            if (!controller.IsConnected) return 0;
 
             float turn = 0;
 

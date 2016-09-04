@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Effects;
 using Pedestrian.Engine.Graphics;
@@ -51,11 +50,6 @@ namespace Pedestrian
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-            if (!DEBUG)
-            {
-                graphics.ToggleFullScreen();
-            }
-
             Content.RootDirectory = "Content";
 
             // Set target update and draw rate to 30fps
@@ -99,8 +93,12 @@ namespace Pedestrian
         {
             base.Initialize();
 
+            if (!DEBUG)
+            {
+                graphics.ToggleFullScreen();
+            }
+
             Window.ClientSizeChanged += (s, e) => SetDestinationRectangle();
-            Window.AllowUserResizing = true;
         }
 
         /// <summary>

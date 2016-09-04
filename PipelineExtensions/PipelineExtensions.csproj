@@ -100,9 +100,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pedestrian\Pedestrian.csproj">
-      <Project>{068fa0cf-e1ae-49eb-a593-05cf94477b24}</Project>
-      <Name>Pedestrian</Name>
+    <ProjectReference Include="..\PedestrianDesktopGL\PedestrianDesktopGL.csproj">
+      <Project>{7879dac7-5ff4-45ae-8726-5f6ea5b42b37}</Project>
+      <Name>PedestrianDesktopGL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
