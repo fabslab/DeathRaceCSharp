@@ -9,9 +9,9 @@ namespace Pedestrian
     /// </summary>
     public class KeyboardPlayerInput : IPlayerInput
     {
-        Dictionary<InputCommand, Keys> currentInputMap;
+        Dictionary<InputCommand, Keys[]> currentInputMap;
 
-        public KeyboardPlayerInput(Dictionary<InputCommand, Keys> inputMap = null)
+        public KeyboardPlayerInput(Dictionary<InputCommand, Keys[]> inputMap = null)
         {
             currentInputMap = inputMap ?? KeyboardInputMap.Primary;
         }
@@ -21,13 +21,21 @@ namespace Pedestrian
             float turn = 0;
             var keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(currentInputMap[InputCommand.Right]))
+            foreach (var key in currentInputMap[InputCommand.Right])
             {
-                turn += 1;
+                if (keyboardState.IsKeyDown(key))
+                {
+                    turn += 1;
+                    break;
+                }
             }
-            if (keyboardState.IsKeyDown(currentInputMap[InputCommand.Left]))
+            foreach (var key in currentInputMap[InputCommand.Left])
             {
-                turn -= 1;
+                if (keyboardState.IsKeyDown(key))
+                {
+                    turn -= 1;
+                    break;
+                }
             }
 
             return turn;
@@ -38,13 +46,21 @@ namespace Pedestrian
             float acceleration = 0;
             var keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(currentInputMap[InputCommand.Forward]))
+            foreach (var key in currentInputMap[InputCommand.Forward])
             {
-                acceleration += 1;
+                if (keyboardState.IsKeyDown(key))
+                {
+                    acceleration += 1;
+                    break;
+                }
             }
-            if (keyboardState.IsKeyDown(currentInputMap[InputCommand.Reverse]))
+            foreach (var key in currentInputMap[InputCommand.Reverse])
             {
-                acceleration -= 1;
+                if (keyboardState.IsKeyDown(key))
+                {
+                    acceleration -= 1;
+                    break;
+                }
             }
 
             return acceleration;

@@ -1,31 +1,42 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Pedestrian.Engine.Input;
+using System.Collections.Generic;
 
 namespace Pedestrian
 {
     public class ControllerPlayerInput : IPlayerInput
     {
         PlayerIndex index;
+        Dictionary<InputCommand, Buttons[]> currentInputMap;
 
-        public ControllerPlayerInput(PlayerIndex playerIndex = PlayerIndex.One)
+        public ControllerPlayerInput(Dictionary<InputCommand, Buttons[]> inputMap, PlayerIndex playerIndex)
         {
+            currentInputMap = inputMap;
             index = playerIndex;
         }
 
         public float GetThrottleValue()
         {
-            var controller = GamePad.GetState(index);
-            if (!controller.IsConnected) return 0;
-
             var throttle = 0;
+            var controller = GamePad.GetState(index);
+            if (!controller.IsConnected) return throttle;
 
-            if (controller.Triggers.Right >= 0.4)
+            foreach (var button in currentInputMap[InputCommand.Forward])
             {
-                throttle += 1;
+                if (controller.IsButtonDown(button))
+                {
+                    throttle += 1;
+                    break;
+                }
             }
-            if (controller.Triggers.Left >= 0.4)
+            foreach (var button in currentInputMap[InputCommand.Reverse])
             {
-                throttle -= 1;
+                if (controller.IsButtonDown(button))
+                {
+                    throttle -= 1;
+                    break;
+                }
             }
 
             return throttle;
@@ -33,18 +44,25 @@ namespace Pedestrian
 
         public float GetTurnAngleNormalized()
         {
-            var controller = GamePad.GetState(index);
-            if (!controller.IsConnected) return 0;
-
             float turn = 0;
+            var controller = GamePad.GetState(index);
+            if (!controller.IsConnected) return turn;
 
-            if (controller.DPad.Right == ButtonState.Pressed)
+            foreach (var button in currentInputMap[InputCommand.Right])
             {
-                turn += 1;
+                if (controller.IsButtonDown(button))
+                {
+                    turn += 1;
+                    break;
+                }
             }
-            if (controller.DPad.Left == ButtonState.Pressed)
+            foreach (var button in currentInputMap[InputCommand.Left])
             {
-                turn -= 1;
+                if (controller.IsButtonDown(button))
+                {
+                    turn -= 1;
+                    break;
+                }
             }
 
             return turn;

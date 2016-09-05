@@ -10,10 +10,10 @@ namespace Pedestrian
         ControllerPlayerInput controller;
         KeyboardPlayerInput keys;
 
-        public PlayerInput(PlayerIndex playerIndex = PlayerIndex.One)
+        public PlayerInput(PlayerIndex playerIndex)
         {
             this.playerIndex = playerIndex;
-            controller = new ControllerPlayerInput(playerIndex);
+            controller = new ControllerPlayerInput(ControllerInputMap.Primary, playerIndex);
             keys = new KeyboardPlayerInput(KeyboardInputMap.GetInputMap(playerIndex));
         }
 

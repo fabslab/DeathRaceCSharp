@@ -24,21 +24,27 @@ namespace Pedestrian.Engine.Input
         /// <returns></returns>
         public static bool WasCommandEntered(InputCommand command)
         {
-            Keys key;
-            if (KeyboardInputMap.Global.TryGetValue(command, out key))
+            Keys[] keys;
+            if (KeyboardInputMap.Global.TryGetValue(command, out keys))
             {
-                if (lastKeyboardState.IsKeyUp(key) && keyboardState.IsKeyDown(key))
+                foreach (var key in keys)
                 {
-                    return true;
+                    if (lastKeyboardState.IsKeyUp(key) && keyboardState.IsKeyDown(key))
+                    {
+                        return true;
+                    }
                 }
             }
 
-            Buttons button;
-            if (ControllerInputMap.Primary.TryGetValue(command, out button))
+            Buttons[] buttons;
+            if (ControllerInputMap.Primary.TryGetValue(command, out buttons))
             {
-                if (lastGamepadState.IsButtonUp(button) && gamepadState.IsButtonDown(button))
+                foreach (var button in buttons)
                 {
-                    return true;
+                    if (lastGamepadState.IsButtonUp(button) && gamepadState.IsButtonDown(button))
+                    {
+                        return true;
+                    }
                 }
             }
             
