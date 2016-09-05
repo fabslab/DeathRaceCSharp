@@ -14,7 +14,7 @@ namespace Pedestrian
                 ButtonType.Menu,
                 ButtonType.Exit
             };
-            buttons = new VerticalButtonMenu(screenArea, buttonTypes, screenArea.Height / 2 - 40);
+            buttons = new VerticalButtonMenu(screenArea, buttonTypes, screenArea.Height / 2 - 44);
         }
 
         public void Update(GameTime gameTime)
