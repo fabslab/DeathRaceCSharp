@@ -9,8 +9,8 @@
     <ProjectGuid>{7879DAC7-5FF4-45AE-8726-5F6EA5B42B37}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DesktopGL</RootNamespace>
-    <AssemblyName>DesktopGL</AssemblyName>
+    <RootNamespace>Pedestrian</RootNamespace>
+    <AssemblyName>PedestrianDesktopGL</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -97,6 +97,7 @@
     <Compile Include="PedestrianGame.cs" />
     <Compile Include="PlayArea.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerInput.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoadBounds.cs" />

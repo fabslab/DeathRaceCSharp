@@ -52,13 +52,13 @@ namespace Pedestrian
             }
         }
 
-        public Player(Vector2 initialPosition, PlayerIndex playerIndex, IPlayerInput inputHandler = null)
+        public Player(Vector2 initialPosition, PlayerIndex playerIndex)
         {
             currentMaxSpeed = DefaultMaxSpeed;
             PlayerIndex = playerIndex;
             this.initialPosition = initialPosition;
             Position = initialPosition;
-            SetInput(inputHandler);
+            Input = new PlayerInput(playerIndex);
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit02");
             Collider = new BoxCollider(ColliderCategory.Default, ~ColliderCategory.GameBounds)
             {
@@ -72,21 +72,6 @@ namespace Pedestrian
             crashTimer = Timers.GetTimer(MaxCrashTime);
             crashTimer.Paused = true;
             crashTimer.OnTimerEnd = (() => IsCrashed = false);
-        }
-
-        public void SetInput(IPlayerInput inputHandler = null)
-        {
-            if (inputHandler == null)
-            {
-                if (GamePad.GetState(PlayerIndex).IsConnected)
-                {
-                    Input = new ControllerPlayerInput(PlayerIndex);
-                }
-                else
-                {
-                    Input = new KeyboardPlayerInput(KeyboardInputMap.GetInputMap(PlayerIndex));
-                }
-            }
         }
 
         public void OnCollisionEntered(IEnumerable<IEntity> entities)
