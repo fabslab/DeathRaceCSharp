@@ -8,14 +8,14 @@ namespace Pedestrian
     {
         IFocusGroup buttons;
 
-        public VerticalButtonMenu(Rectangle screenArea, ButtonType[] buttonTypes)
+        public VerticalButtonMenu(Rectangle screenArea, ButtonType[] buttonTypes, float yPosition)
         {
             var buttonWidth = 120;
             var buttonHeight = 30;
             var buttonSpacing = 10;
             var borderWidth = 2;
             var buttonsX = screenArea.Width / 2 - buttonWidth / 2;
-            var buttonsY = screenArea.Width / 2 - 100;
+            var buttonsY = yPosition;
 
             buttons = new VerticalFocusGroup();
 

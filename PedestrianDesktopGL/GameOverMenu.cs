@@ -6,25 +6,25 @@ namespace Pedestrian
 {
     public class GameOverMenu
     {
-        HorizontalButtonMenu buttons;
+        VerticalButtonMenu buttons;
         CenteredText scores;
 
 
         public GameOverMenu(Rectangle screenArea)
         {
-            var buttonTypes = new ButtonType[] {
-                ButtonType.Menu,
-                ButtonType.Exit
-            };
-            buttons = new HorizontalButtonMenu(screenArea, buttonTypes);
-
             var scoreText = new string[] {
                 "1-3 POINTS: SKELETON CHASER",
                 "4-10 POINTS: BONE CRACKER",
                 "11-20 POINTS: GREMLIN HUNTER",
                 "21 or OVER: EXPERT DRIVER"
             };
-            scores = new CenteredText(screenArea, scoreText, screenArea.Height / 2 + 10, new Color(210, 210, 210));
+            scores = new CenteredText(screenArea, scoreText, screenArea.Height / 2 - 60, new Color(210, 210, 210));
+
+            var buttonTypes = new ButtonType[] {
+                ButtonType.Menu,
+                ButtonType.Exit
+            };
+            buttons = new VerticalButtonMenu(screenArea, buttonTypes, screenArea.Height / 2);
         }
 
         public void Update(GameTime gameTime)
