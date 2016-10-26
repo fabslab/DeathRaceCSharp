@@ -13,6 +13,6 @@ namespace Pedestrian.Engine
         void Update(GameTime gameTime);
         void Draw(GameTime gameTime, SpriteBatch spriteBatch);
         void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch);
-        void Reset();
+        void Unload();
     }
 }

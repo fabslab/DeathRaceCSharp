@@ -161,3 +161,27 @@
 /processorParam:TextureFormat=Color
 /build:marquee-8bit.png
 
+#begin Audio/scream.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/scream.wav
+
+#begin Audio/collision.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/collision.wav
+
+#begin Audio/engine-idle.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/engine-idle.wav
+
+#begin Audio/engine-running.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/engine-running.wav
+

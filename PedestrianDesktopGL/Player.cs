@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Collision;
 using Pedestrian.Engine.Graphics.Shapes;
@@ -18,6 +18,8 @@ namespace Pedestrian
         float snappedRotation;
         float currentMaxSpeed;
         Timer crashTimer;
+        SoundEffect collisionSound;
+        SoundEffectInstance engineSound;
 
         public PlayerIndex PlayerIndex { get; private set; }
         public int Score { get; private set; } = 0;
@@ -72,6 +74,10 @@ namespace Pedestrian
             crashTimer = Timers.GetTimer(MaxCrashTime);
             crashTimer.Paused = true;
             crashTimer.OnTimerEnd = (() => IsCrashed = false);
+
+            collisionSound = PedestrianGame.Instance.Content.Load<SoundEffect>("Audio/collision");
+            engineSound = PedestrianGame.Instance.Content.Load<SoundEffect>("Audio/engine-running").CreateInstance();
+            engineSound.IsLooped = true;
         }
 
         public void OnCollisionEntered(IEnumerable<IEntity> entities)
@@ -106,6 +112,7 @@ namespace Pedestrian
 
         private void Crash()
         {
+            collisionSound.Play();
             IsCrashed = true;
             crashTimer.Reset();
             crashTimer.Paused = false;
@@ -127,6 +134,8 @@ namespace Pedestrian
             }
             speed *= throttle;
 
+            UpdateEngineSound(speed);
+
             var turnRadians = Input.GetTurnAngleNormalized() * MaxTurnAngle;
 
             Rotation += turnRadians;
@@ -140,6 +149,30 @@ namespace Pedestrian
 
             Position = PositionUtil.WrapPosition(Position + movement, PlayArea.Instance.Bounds);
             Collider.Position = Position;
+        }
+
+        private void UpdateEngineSound(float speed)
+        {
+            if (speed != 0)
+            {
+                engineSound.Volume = 1;
+
+                if (engineSound.State == SoundState.Stopped)
+                {
+                    engineSound.Play();
+                }
+            }
+            else
+            {
+                if (engineSound.Volume < 0.1f)
+                {
+                    engineSound.Stop();
+                }
+                else
+                {
+                    engineSound.Volume -= 0.1f;
+                }
+            }
         }
 
         public void Reset()
@@ -168,6 +201,12 @@ namespace Pedestrian
         {
             Collider.Draw(spriteBatch);
             RectangleShape.Draw(spriteBatch, new Rectangle(Position.ToPoint(), new Point(1, 1)), Color.Red);
+        }
+
+        public void Unload()
+        {
+            engineSound.Stop();
+            Timers.RemoveTimer(crashTimer);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Collision;
@@ -24,6 +25,8 @@ namespace Pedestrian
         Vector2 initialPosition;
         Vector2 previousPosition;
         int timeSinceTurn = 0;
+        SoundEffect scream;
+
 
         // Min and max ms to wait before enemy turns
         public int[] IntervalRangeForTurn { get; set; } = new int[] { 350, 1800 };
@@ -51,6 +54,8 @@ namespace Pedestrian
             
             initialDirection = DirectionMap.DIRECTION_VECTORS[Direction.Down];
             MovementDirection = initialDirection;
+
+            scream = PedestrianGame.Instance.Content.Load<SoundEffect>("Audio/scream");
 
             frontSprite = new AnimatedTexture();
             frontSprite.Load("gremlin16bit02", 2, 60);
@@ -108,6 +113,7 @@ namespace Pedestrian
 
         private void Kill()
         {
+            scream.Play();
             PedestrianGame.Instance.Events.Emit(GameEvents.EnemyKilled, this);
             Reset();
         }
@@ -181,5 +187,7 @@ namespace Pedestrian
             Collider.Draw(spriteBatch);
             RectangleShape.Draw(spriteBatch, new Rectangle(Position.ToPoint(), new Point(1, 1)), Color.Red);
         }
+
+        public void Unload() { }
     }
 }

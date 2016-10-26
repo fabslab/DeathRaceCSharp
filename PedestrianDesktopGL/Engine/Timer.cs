@@ -19,6 +19,11 @@ namespace Pedestrian.Engine
         {
             timers.ForEach(timer => timer.Update(gameTime));
         }
+
+        public static void RemoveTimer(Timer timer)
+        {
+            timers.Remove(timer);
+        }
     }
 
     public class Timer

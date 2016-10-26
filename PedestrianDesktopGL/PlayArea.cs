@@ -58,6 +58,6 @@ namespace Pedestrian
 
         public void DrawDebug(GameTime gameTime, SpriteBatch spriteBatch) {}
         public void Update(GameTime gameTime) {}
-        public void Reset() {}
+        public void Unload() { }
     }
 }

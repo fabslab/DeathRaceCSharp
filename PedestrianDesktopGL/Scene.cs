@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Collision;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Pedestrian
 {
@@ -15,6 +16,7 @@ namespace Pedestrian
 
         List<IEntity> entities = new List<IEntity>();
         Scoreboard scoreboard;
+        SoundEffectInstance engineIdleSound;
         
 
         public Scene(int numPlayers)
@@ -68,6 +70,11 @@ namespace Pedestrian
             entities.Add(enemy1);
             entities.Add(enemy2);
 
+            // Have only one engine idle sound playing no mater how many players
+            engineIdleSound = PedestrianGame.Instance.Content.Load<SoundEffect>("Audio/engine-idle").CreateInstance();
+            engineIdleSound.IsLooped = true;
+            engineIdleSound.Play();
+
             // Scoreboard displays player scores and time remaining in the game
             var scoreboardArea = new Rectangle(0, 0, Width, SCOREBOARD_HEIGHT);
             scoreboard = new Scoreboard(numPlayers, scoreboardArea);
@@ -81,6 +88,8 @@ namespace Pedestrian
         {
             PedestrianGame.Instance.Events.RemoveObserver(GameEvents.EnemyKilled, CreateTombstone);
             scoreboard.RemoveObservers();
+            engineIdleSound.Stop();
+            entities.ForEach(e => e.Unload());
         }
 
         private void CreateTombstone(IEntity enemy)

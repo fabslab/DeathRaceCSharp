@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Pedestrian.Engine;
 using Pedestrian.Engine.Effects;
@@ -16,7 +17,7 @@ namespace Pedestrian
         public static PedestrianGame Instance { get; private set; }
 
         #if DEBUG
-        public const bool DEBUG = false;
+        public const bool DEBUG = true;
         #else
         public const bool DEBUG = false;
         #endif
@@ -66,10 +67,12 @@ namespace Pedestrian
                     scene.Unload();
                 }
                 scene = new Scene(NumPlayers);
+                SoundEffect.MasterVolume = 1;
             });
             Events.AddObserver(GameEvents.GameOver, (e) =>
             {
                 CurrentState = GameState.GameOver;
+                SoundEffect.MasterVolume = 0;
             });
             Events.AddObserver(GameEvents.LoadMenu, (e) =>
             {
@@ -169,50 +172,54 @@ namespace Pedestrian
         /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
-            if (IsActive)
+            if (!IsActive)
             {
-                GlobalInput.Update();
-                Timers.Update(gameTime);
+                if (CurrentState == GameState.Playing)
+                {
+                    CurrentState = GameState.Paused;
+                }
+                return;
+            }
 
-                if (CurrentState == GameState.Menu)
+            GlobalInput.Update();
+            Timers.Update(gameTime);
+
+            if (CurrentState == GameState.Menu)
+            {
+                if (GlobalInput.WasCommandEntered(InputCommand.Exit))
                 {
-                    if (GlobalInput.WasCommandEntered(InputCommand.Exit))
-                    {
-                        Exit();
-                    }
-                    menu.Update(gameTime);
+                    Exit();
                 }
-                else if (CurrentState == GameState.Playing)
-                {
-                    if (GlobalInput.WasCommandEntered(InputCommand.Pause))
-                    {
-                        CurrentState = GameState.Paused;
-                    }
-                    else
-                    {
-                        scene.Update(gameTime);
-                    }
-                }
-                else if (CurrentState == GameState.Paused)
-                {
-                    if (GlobalInput.WasCommandEntered(InputCommand.Pause))
-                    {
-                        CurrentState = GameState.Playing;
-                    }
-                    else
-                    {
-                        pauseMenu.Update(gameTime);
-                    }
-                }
-                else if (CurrentState == GameState.GameOver)
-                {
-                    gameOverMenu.Update(gameTime);
-                    scene.Update(gameTime);
-                }
+                menu.Update(gameTime);
             }
             else if (CurrentState == GameState.Playing)
             {
-                CurrentState = GameState.Paused;
+                if (GlobalInput.WasCommandEntered(InputCommand.Pause))
+                {
+                    CurrentState = GameState.Paused;
+                    SoundEffect.MasterVolume = 0;
+                }
+                else
+                {
+                    scene.Update(gameTime);
+                }
+            }
+            else if (CurrentState == GameState.Paused)
+            {
+                if (GlobalInput.WasCommandEntered(InputCommand.Pause))
+                {
+                    CurrentState = GameState.Playing;
+                    SoundEffect.MasterVolume = 1;
+                }
+                else
+                {
+                    pauseMenu.Update(gameTime);
+                }
+            }
+            else if (CurrentState == GameState.GameOver)
+            {
+                gameOverMenu.Update(gameTime);
+                scene.Update(gameTime);
             }
         }
 

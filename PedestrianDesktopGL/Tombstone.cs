@@ -57,6 +57,6 @@ namespace Pedestrian
         }
 
         public void Update(GameTime time) { }
-        public void Reset() { }
+        public void Unload() { }
     }
 }
