@@ -8,7 +8,7 @@ namespace Pedestrian
     public class Scoreboard
     {
         // Duration of game in seconds 
-        public int GameTime { get; set; } = 9;
+        public int GameTime { get; set; } = 99;
         public int Margin { get; set; }
         public bool IsActive { get; set; } = false;
 
