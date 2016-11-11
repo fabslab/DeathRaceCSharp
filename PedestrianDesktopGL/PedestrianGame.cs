@@ -100,6 +100,7 @@ namespace Pedestrian
 
             if (!DEBUG)
             {
+                graphics.HardwareModeSwitch = false;
                 graphics.ToggleFullScreen();
             }
 
@@ -172,15 +173,6 @@ namespace Pedestrian
         /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
-            if (!IsActive)
-            {
-                if (CurrentState == GameState.Playing)
-                {
-                    CurrentState = GameState.Paused;
-                }
-                return;
-            }
-
             GlobalInput.Update();
             Timers.Update(gameTime);
 
