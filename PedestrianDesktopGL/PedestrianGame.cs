@@ -141,7 +141,12 @@ namespace Pedestrian
             {
                 Settings = new BloomSettings("Custom1", 0, 1.2f, 0.9f, 1, 1, 1)
             };
-            bloomEffect.LoadContent();
+            var bloomExtractShader = Content.Load<Effect>("Shaders/BloomExtract");
+            var bloomCombineShader = Content.Load<Effect>("Shaders/BloomCombine");
+            var gaussianBlurShader = Content.Load<Effect>("Shaders/GaussianBlur");
+            bloomEffect.LoadContent(bloomExtractShader, bloomCombineShader, gaussianBlurShader);
+
+            var scanLinesShader = Content.Load<Effect>("Shaders/ScanLines");
             scanLinesEffect = new ScanLines(GraphicsDevice);
             scanLinesEffect.LoadContent();
 
