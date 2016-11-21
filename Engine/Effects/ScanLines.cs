@@ -44,11 +44,11 @@ namespace Pedestrian.Engine.Effects
         public ScanLines(GraphicsDevice graphicsDevice) : base(graphicsDevice) {}
 
 
-        public override void LoadContent()
+        public void LoadContent(Effect scanLines)
         {
             base.LoadContent();
 
-            Effect = PedestrianGame.Instance.Content.Load<Effect>("Shaders/ScanLines");
+            Effect = scanLines;
 
             attenuationParam = Effect.Parameters["Attenuation"];
             linesFactorParam = Effect.Parameters["LinesFactor"];

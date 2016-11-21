@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelineExtensions", "Pipel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PedestrianDesktopGL", "PedestrianDesktopGL\PedestrianDesktopGL.csproj", "{7879DAC7-5FF4-45AE-8726-5F6EA5B42B37}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{CDCBA78D-70A2-429B-9547-C9E8E7962604}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,18 @@ Global
 		{7879DAC7-5FF4-45AE-8726-5F6EA5B42B37}.Release|x64.Build.0 = Release|Any CPU
 		{7879DAC7-5FF4-45AE-8726-5F6EA5B42B37}.Release|x86.ActiveCfg = Release|Any CPU
 		{7879DAC7-5FF4-45AE-8726-5F6EA5B42B37}.Release|x86.Build.0 = Release|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Debug|x64.Build.0 = Debug|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Debug|x86.Build.0 = Debug|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Release|x64.ActiveCfg = Release|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Release|x64.Build.0 = Release|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Release|x86.ActiveCfg = Release|Any CPU
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

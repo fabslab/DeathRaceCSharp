@@ -20,9 +20,9 @@ namespace Pedestrian.Engine.UI
         BitmapFont font;
 
 
-        public Button()
+        public Button(BitmapFont fontAsset)
         {
-            font = PedestrianGame.Instance.Content.Load<BitmapFont>("Fonts/munro-edit-font-14px_2");
+            font = fontAsset;
             font.LetterSpacing = 2;
         }
 

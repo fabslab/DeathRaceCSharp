@@ -58,11 +58,17 @@ namespace Pedestrian
             scream = PedestrianGame.Instance.Content.Load<SoundEffect>("Audio/scream");
 
             frontSprite = new AnimatedTexture();
-            frontSprite.Load("gremlin16bit02", 2, 60);
+            var frontAsset = PedestrianGame.Instance.Content.Load<Texture2D>("gremlin16bit02");
+            frontSprite.Load(frontAsset, 2, 60);
+
             leftSprite = new AnimatedTexture();
-            leftSprite.Load("gremlin16bit-left01", 2, 60);
+            var leftAsset = PedestrianGame.Instance.Content.Load<Texture2D>("gremlin16bit-left01");
+            leftSprite.Load(leftAsset, 2, 60);
+
             rightSprite = new AnimatedTexture();
-            rightSprite.Load("gremlin16bit-right01", 2, 60);
+            var rightAsset = PedestrianGame.Instance.Content.Load<Texture2D>("gremlin16bit-right01");
+            rightSprite.Load(rightAsset, 2, 60);
+
             currentSprite = frontSprite;
 
             // Collides only with default and not other collider types

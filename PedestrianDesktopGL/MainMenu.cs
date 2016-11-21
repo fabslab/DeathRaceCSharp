@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pedestrian.Engine.BitmapFonts;
 using Pedestrian.Engine.UI;
 
 namespace Pedestrian
@@ -31,8 +32,10 @@ namespace Pedestrian
             var buttonsX = displayArea.Width / 2 - buttonsWidth / 2;
             var buttonsY = marquee.Height + 12;
 
+            var font = PedestrianGame.Instance.Content.Load<BitmapFont>("Fonts/munro-edit-font-14px_2");
+
             buttons = new HorizontalFocusGroup();
-            buttons.AddItem(new BorderButton
+            buttons.AddItem(new BorderButton(font)
             {
                 BorderWidth = borderWidth,
                 Text = "1 PLAYER",
@@ -41,7 +44,7 @@ namespace Pedestrian
                 Height = buttonHeight,
                 Meta = 1
             });
-            buttons.AddItem(new BorderButton
+            buttons.AddItem(new BorderButton(font)
             {
                 BorderWidth = borderWidth,
                 Text = "2 PLAYERS",

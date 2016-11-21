@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pedestrian.Engine.BitmapFonts;
 using Pedestrian.Engine.UI;
 
 namespace Pedestrian
@@ -20,10 +21,12 @@ namespace Pedestrian
 
             buttons = new HorizontalFocusGroup();
 
+            var font = PedestrianGame.Instance.Content.Load<BitmapFont>("Fonts/munro-edit-font-14px_2");
+
             for (int i = 0, l = buttonTypes.Length; i < l; ++i)
             {
                 var buttonType = buttonTypes[i];
-                buttons.AddItem(new BorderButton
+                buttons.AddItem(new BorderButton(font)
                 {
                     BorderWidth = borderWidth,
                     Text = buttonType.ToString().ToUpper(),

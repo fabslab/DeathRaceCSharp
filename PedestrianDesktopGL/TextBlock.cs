@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Pedestrian.Engine.BitmapFonts;
 using Pedestrian.Engine.Graphics.Shapes;
 
-namespace Pedestrian.Engine.UI
+namespace Pedestrian.UI
 {
     public class TextBlock
     {

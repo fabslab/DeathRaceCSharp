@@ -17,7 +17,10 @@ namespace Pedestrian.Engine
 
         public static void Update(GameTime gameTime)
         {
-            timers.ForEach(timer => timer.Update(gameTime));
+            foreach (var timer in timers)
+            {
+                timer.Update(gameTime);
+            }
         }
 
         public static void RemoveTimer(Timer timer)

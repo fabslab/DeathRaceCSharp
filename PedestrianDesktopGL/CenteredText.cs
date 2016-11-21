@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Pedestrian.Engine.UI;
+using Pedestrian.UI;
 using System.Collections.Generic;
 
 namespace Pedestrian

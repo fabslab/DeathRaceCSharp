@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Pedestrian.Engine.BitmapFonts;
 using Pedestrian.Engine.Graphics;
 
 namespace Pedestrian.Engine.UI
@@ -12,7 +13,7 @@ namespace Pedestrian.Engine.UI
         Color defaultColor = new Color(100, 100, 100);
 
 
-        public BorderButton()
+        public BorderButton(BitmapFont fontAsset) : base(fontAsset)
         {
             BorderColor = defaultColor;
             OnFocused = () =>

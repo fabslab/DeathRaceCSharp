@@ -46,13 +46,13 @@ namespace Pedestrian.Engine.Effects
         /// <summary>
         /// Load your graphics content.
         /// </summary>
-        public override void LoadContent()
+        public void LoadContent(Effect bloomExtract, Effect bloomCombine, Effect gaussianBlur)
         {
             base.LoadContent();
 
-            bloomExtractEffect = PedestrianGame.Instance.Content.Load<Effect>("Shaders/BloomExtract");
-            bloomCombineEffect = PedestrianGame.Instance.Content.Load<Effect>("Shaders/BloomCombine");
-            gaussianBlurEffect = PedestrianGame.Instance.Content.Load<Effect>("Shaders/GaussianBlur");
+            bloomExtractEffect = bloomExtract;
+            bloomCombineEffect = bloomCombine;
+            gaussianBlurEffect = gaussianBlur;
 
             bloomExtractThresholdParam = bloomExtractEffect.Parameters["BloomThreshold"];
 

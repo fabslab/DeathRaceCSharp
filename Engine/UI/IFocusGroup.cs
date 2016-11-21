@@ -4,7 +4,7 @@ using System;
 
 namespace Pedestrian.Engine.UI
 {
-    interface IFocusGroup
+    public interface IFocusGroup
     {
         IFocusable FocusedItem { get; }
         Action<IFocusable> OnItemSelected { get; set; }

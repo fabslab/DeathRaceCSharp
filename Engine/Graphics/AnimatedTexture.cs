@@ -21,9 +21,9 @@ namespace Pedestrian.Engine.Graphics
             }
         }
 
-        public void Load(string asset, int frameCount, int frameDuration)
+        public void Load(Texture2D asset, int frameCount, int frameDuration)
         {
-            texture = PedestrianGame.Instance.Content.Load<Texture2D>(asset);
+            texture = asset;
             this.frameCount = frameCount;
             this.frameDuration = frameDuration;
             FrameWidth = texture.Width / frameCount;

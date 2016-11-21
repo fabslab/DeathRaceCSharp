@@ -76,7 +76,7 @@ namespace Pedestrian.Engine.Collision
             Array.Clear(PreviousCollidingEntities, 0, PreviousCollidingEntities.Length);
         }
 
-        public void SetCollisionFilter(ColliderCategory categories)
+        public void SetCollisionFilter(Enum categories)
         {
             CollisionFilter = categories;
         }
