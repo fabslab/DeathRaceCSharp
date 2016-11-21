@@ -5,6 +5,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelineExtensions", "PipelineExtensions\PipelineExtensions.csproj", "{03C5D534-5B66-4FC9-BF46-3A60B734BAEC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PedestrianDesktopGL", "PedestrianDesktopGL\PedestrianDesktopGL.csproj", "{7879DAC7-5FF4-45AE-8726-5F6EA5B42B37}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CDCBA78D-70A2-429B-9547-C9E8E7962604} = {CDCBA78D-70A2-429B-9547-C9E8E7962604}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{CDCBA78D-70A2-429B-9547-C9E8E7962604}"
 EndProject
