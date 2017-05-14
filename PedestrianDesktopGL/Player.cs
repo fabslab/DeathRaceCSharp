@@ -54,13 +54,13 @@ namespace Pedestrian
             }
         }
 
-        public Player(Vector2 initialPosition, PlayerIndex playerIndex)
+        public Player(Vector2 initialPosition, PlayerIndex playerIndex, IEnumerable<IPlayerInput> supportedInputs)
         {
             currentMaxSpeed = DefaultMaxSpeed;
             PlayerIndex = playerIndex;
             this.initialPosition = initialPosition;
             Position = initialPosition;
-            Input = new PlayerInput(playerIndex);
+            Input = new PlayerInput(supportedInputs);
             Texture = PedestrianGame.Instance.Content.Load<Texture2D>("car16bit02");
             Collider = new BoxCollider(ColliderCategory.Default, ~ColliderCategory.GameBounds)
             {

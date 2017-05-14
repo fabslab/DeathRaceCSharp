@@ -1,44 +1,45 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Pedestrian.Engine.Input;
+using System.Collections.Generic;
 
 namespace Pedestrian
 {
     public class PlayerInput : IPlayerInput
     {
-        PlayerIndex playerIndex;
-        ControllerPlayerInput controller;
-        KeyboardPlayerInput keys;
+        IEnumerable<IPlayerInput> inputs;
 
-        public PlayerInput(PlayerIndex playerIndex)
+        public PlayerInput(IEnumerable<IPlayerInput> inputs)
         {
-            this.playerIndex = playerIndex;
-            controller = new ControllerPlayerInput(ControllerInputMap.Primary, playerIndex);
-            keys = new KeyboardPlayerInput(KeyboardInputMap.GetInputMap(playerIndex));
+            this.inputs = inputs;
         }
 
         public float GetThrottleValue()
         {
-            if (GamePad.GetState(playerIndex).IsConnected)
+            float throttle = 0;
+            foreach (var input in inputs)
             {
-                return controller.GetThrottleValue();
+                throttle = input.GetThrottleValue();
+                if (throttle != 0)
+                {
+                    return throttle;
+                }
             }
-            else
-            {
-                return keys.GetThrottleValue();
-            }
+            return throttle;
         }
 
         public float GetTurnAngleNormalized()
         {
-            if (GamePad.GetState(playerIndex).IsConnected)
+            float turnAngle = 0;
+            foreach (var input in inputs)
             {
-                return controller.GetTurnAngleNormalized();
+                turnAngle = input.GetTurnAngleNormalized();
+                if (turnAngle != 0)
+                {
+                    return turnAngle;
+                }
             }
-            else
-            {
-                return keys.GetTurnAngleNormalized();
-            }
+            return turnAngle;
         }
     }
 }

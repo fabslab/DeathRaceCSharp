@@ -18,7 +18,7 @@ namespace Pedestrian
 
         public float GetThrottleValue()
         {
-            var throttle = 0;
+            float throttle = 0;
             var controller = GamePad.GetState(index);
             if (!controller.IsConnected) return throttle;
 

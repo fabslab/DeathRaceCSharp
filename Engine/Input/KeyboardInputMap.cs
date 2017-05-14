@@ -18,7 +18,15 @@ namespace Pedestrian.Engine.Input
             }
         }
 
-        public static Dictionary<InputCommand, Keys[]> Primary = new Dictionary<InputCommand, Keys[]>
+        public static Dictionary<InputCommand, Keys[]> WASD = new Dictionary<InputCommand, Keys[]>
+        {
+            { InputCommand.Forward, new Keys[] { Keys.W } },
+            { InputCommand.Right, new Keys[] { Keys.D } },
+            { InputCommand.Reverse, new Keys[] { Keys.S } },
+            { InputCommand.Left, new Keys[] { Keys.A } },
+        };
+
+        public static Dictionary<InputCommand, Keys[]> Arrows = new Dictionary<InputCommand, Keys[]>
         {
             { InputCommand.Forward, new Keys[] { Keys.Up } },
             { InputCommand.Right, new Keys[] { Keys.Right } },
@@ -26,13 +34,8 @@ namespace Pedestrian.Engine.Input
             { InputCommand.Left, new Keys[] { Keys.Left } },
         };
 
-        public static Dictionary<InputCommand, Keys[]> Secondary = new Dictionary<InputCommand, Keys[]>
-        {
-            { InputCommand.Forward, new Keys[] { Keys.W } },
-            { InputCommand.Right, new Keys[] { Keys.D } },
-            { InputCommand.Reverse, new Keys[] { Keys.S } },
-            { InputCommand.Left, new Keys[] { Keys.A } },
-        };
+        public static Dictionary<InputCommand, Keys[]> Primary = WASD;
+        public static Dictionary<InputCommand, Keys[]> Secondary = Arrows;
 
         public static Dictionary<InputCommand, Keys[]> Global = new Dictionary<InputCommand, Keys[]>
         {

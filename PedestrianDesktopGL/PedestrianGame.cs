@@ -6,6 +6,7 @@ using Pedestrian.Engine.Effects;
 using Pedestrian.Engine.Graphics;
 using Pedestrian.Engine.Input;
 using System;
+using System.Diagnostics;
 
 namespace Pedestrian
 {
@@ -52,7 +53,6 @@ namespace Pedestrian
                 PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height,
             };
 
-
             Content.RootDirectory = "Content";
 
             // Set target update and draw rate to 30fps
@@ -97,14 +97,19 @@ namespace Pedestrian
         protected override void Initialize()
         {
             base.Initialize();
+            graphics.HardwareModeSwitch = false;
 
             if (!DEBUG)
             {
-                graphics.HardwareModeSwitch = false;
                 graphics.ToggleFullScreen();
             }
 
-            Window.ClientSizeChanged += (s, e) => SetDestinationRectangle();
+            Window.ClientSizeChanged += (s, e) =>
+            {
+                SetDestinationRectangle();
+            };
+
+            SetDestinationRectangle();
         }
 
         /// <summary>
@@ -191,13 +196,13 @@ namespace Pedestrian
             }
             else if (CurrentState == GameState.Playing)
             {
-                if (GlobalInput.WasCommandEntered(InputCommand.Pause))
+                if (GlobalInput.WasCommandEntered(InputCommand.Pause) || !IsActive)
                 {
                     CurrentState = GameState.Paused;
-                    SoundEffect.MasterVolume = 0;
                 }
                 else
                 {
+                    SoundEffect.MasterVolume = 1;
                     scene.Update(gameTime);
                 }
             }
@@ -206,10 +211,10 @@ namespace Pedestrian
                 if (GlobalInput.WasCommandEntered(InputCommand.Pause))
                 {
                     CurrentState = GameState.Playing;
-                    SoundEffect.MasterVolume = 1;
                 }
                 else
                 {
+                    SoundEffect.MasterVolume = 0;
                     pauseMenu.Update(gameTime);
                 }
             }
@@ -228,9 +233,11 @@ namespace Pedestrian
         {
             GraphicsDevice.SetRenderTarget(virtualSizeRenderTarget);
             GraphicsDevice.Clear(Color.Black);
+
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
                 BlendState.AlphaBlend,
+            
                 SamplerState.PointClamp,
                 DepthStencilState.None,
                 RasterizerState.CullNone
@@ -299,6 +306,11 @@ namespace Pedestrian
                 int gameWidth = (int)(screenHeight * PREFERRED_ASPECT_RATIO + 0.5f);
                 int barWidth = (screenWidth - gameWidth) / 2;
                 destinationRectangle = new Rectangle(barWidth, 0, gameWidth, screenHeight);
+            }
+
+            if (DEBUG)
+            {
+                Debug.WriteLine("Window size: " + destinationRectangle.Width + "x" + destinationRectangle.Height);
             }
         }
     }

@@ -4,6 +4,7 @@ using Pedestrian.Engine;
 using Pedestrian.Engine.Collision;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
+using Pedestrian.Engine.Input;
 
 namespace Pedestrian
 {
@@ -41,14 +42,27 @@ namespace Pedestrian
             // Initialize the players
             if (numPlayers >= 1)
             {
+                var supportedInputs = new List<IPlayerInput> {
+                    new ControllerPlayerInput(ControllerInputMap.Primary, PlayerIndex.One),
+                    new KeyboardPlayerInput(KeyboardInputMap.Primary),
+                };
+                if (numPlayers == 1)
+                {
+                    // allow both key inputs (arrows and wasd) if single player
+                    supportedInputs.Add(new KeyboardPlayerInput(KeyboardInputMap.Secondary));
+                }
                 var player1Position = new Vector2((int)(Width * 0.25), (int)(Height * 0.8));
-                var player1 = new Player(player1Position, PlayerIndex.One);
+                var player1 = new Player(player1Position, PlayerIndex.One, supportedInputs);
                 entities.Add(player1);
             }
-            if (numPlayers >= 2)
+            if (numPlayers == 2)
             {
+                var supportedInputs = new List<IPlayerInput> {
+                    new ControllerPlayerInput(ControllerInputMap.Primary, PlayerIndex.Two),
+                    new KeyboardPlayerInput(KeyboardInputMap.Secondary),
+                };
                 var player2Position = new Vector2((int)(Width * 0.75), (int)(Height * 0.8));
-                var player2 = new Player(player2Position, PlayerIndex.Two)
+                var player2 = new Player(player2Position, PlayerIndex.Two, supportedInputs)
                 {
                     Color = new Color(70, 90, 100)
                 };
