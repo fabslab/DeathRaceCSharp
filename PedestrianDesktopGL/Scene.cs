@@ -55,7 +55,7 @@ namespace Pedestrian
                 var player1 = new Player(player1Position, PlayerIndex.One, supportedInputs);
                 entities.Add(player1);
             }
-            if (numPlayers == 2)
+            if (numPlayers >= 2)
             {
                 var supportedInputs = new List<IPlayerInput> {
                     new ControllerPlayerInput(ControllerInputMap.Primary, PlayerIndex.Two),

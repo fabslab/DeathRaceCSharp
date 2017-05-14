@@ -18,7 +18,7 @@ namespace Pedestrian
         public static PedestrianGame Instance { get; private set; }
 
         #if DEBUG
-        public const bool DEBUG = true;
+        public const bool DEBUG = false;
         #else
         public const bool DEBUG = false;
         #endif
@@ -54,9 +54,6 @@ namespace Pedestrian
             };
 
             Content.RootDirectory = "Content";
-
-            // Set target update and draw rate to 30fps
-            TargetElapsedTime = TimeSpan.FromMilliseconds(1 / 30d * 1000);
 
             Events = new EventEmitter<GameEvents, IEntity>(new CoreEventsComparer());
             Events.AddObserver(GameEvents.GameStart, (e) =>
@@ -153,7 +150,7 @@ namespace Pedestrian
 
             var scanLinesShader = Content.Load<Effect>("Shaders/ScanLines");
             scanLinesEffect = new ScanLines(GraphicsDevice);
-            scanLinesEffect.LoadContent();
+            scanLinesEffect.LoadContent(scanLinesShader);
 
             var screenRect = new Rectangle(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
             menu = new MainMenu(screenRect);

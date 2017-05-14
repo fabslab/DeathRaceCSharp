@@ -32,11 +32,11 @@ namespace Pedestrian
         // Rotation from InitialDirection vector in radians
         public float Rotation { get; set; } = 0;
         // Maximum turn value in one frame in radians
-        public float MaxTurnAngle { get; set; } = MathHelper.PiOver4 / 6;
+        public float MaxTurnAngle { get; set; } = MathHelper.PiOver4 / 12;
         public float RotationSnapValue { get; set; } = MathHelper.PiOver4 / 2;
         // Max number of pixels to move in one movement
-        public float DefaultMaxSpeed { get; set; } = 4f;
-        public float MaxReverseSpeed { get; set; } = 2f;
+        public float DefaultMaxSpeed { get; set; } = 2f;
+        public float MaxReverseSpeed { get; set; } = 1f;
         // Num ms player will be stationary after crashing if not cancelled by reversing
         public int MaxCrashTime { get; set; } = 1500;
         public bool IsCrashed { get; set; } = false;

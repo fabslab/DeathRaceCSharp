@@ -32,7 +32,7 @@ namespace Pedestrian
         public int[] IntervalRangeForTurn { get; set; } = new int[] { 350, 1800 };
         public Color Color { get; set; } = Color.White;
         public bool IsStatic { get; } = false;
-        public float Speed { get; set; } = 3f;
+        public float Speed { get; set; } = 1.5f;
         public Collider Collider { get; }
         public Vector2 Position { get; private set; }
         public Vector2 MovementDirection
